@@ -1,0 +1,41 @@
+{
+  "name": "php-integrator-autocomplete-plus",
+  "main": "./lib/Main",
+  "version": "0.0.1",
+  "description": "Provides autocompletion for your PHP source code.",
+  "repository":  "https://github.com/Gert-dev/php-integrator-autocomplete-plus.git",
+  "license": "GPL-3.0",
+
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+
+  "providedServices": {
+    "autocomplete.provider": {
+      "versions": {
+        "2.0.0": "getProviders"
+      }
+    }
+  },
+
+  "consumedServices": {
+    "php-integrator.service": {
+      "versions": {
+        "^1.0.0": "setService"
+      }
+    }
+  },
+
+  "dependencies": {
+    "fuzzaldrin": "^2.1.0"
+  },
+
+  "keywords": [
+    "php",
+    "autocompletion",
+    "autocomplete-plus",
+    "integrator",
+    "integration",
+    "php-integrator"
+  ]
+}
