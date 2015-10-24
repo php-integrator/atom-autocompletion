@@ -78,7 +78,7 @@ class ClassProvider extends AbstractProvider
                 suggestions.push
                     text: word,
                     type: 'class',
-                    className: if classInfo.class.deprecated then 'php-atom-autocomplete-strike' else ''
+                    className: if classInfo.class.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
                     snippet: if insertParameterList then @getFunctionSnippet(word, args) else null
                     displayText: @getFunctionSignature(word, args)
                     data:
@@ -91,7 +91,7 @@ class ClassProvider extends AbstractProvider
                     text: word,
                     type: 'class',
                     prefix: prefix,
-                    className: if classInfo.class.deprecated then 'php-atom-autocomplete-strike' else ''
+                    className: if classInfo.class.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
                     replacementPrefix: prefix,
                     data:
                         kind: 'use'
@@ -101,7 +101,7 @@ class ClassProvider extends AbstractProvider
                 suggestions.push
                     text: word,
                     type: 'class',
-                    className: if classInfo.class.deprecated then 'php-atom-autocomplete-strike' else ''
+                    className: if classInfo.class.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
                     data:
                         kind: 'static',
                         prefix: prefix,

@@ -50,7 +50,7 @@ class FunctionProvider extends AbstractProvider
                     type: 'function',
                     description: 'Built-in PHP function.' # Needed or the 'More' button won't show up.
                     descriptionMoreURL: @config.get('php_documentation_base_urls').functions + word
-                    className: if element.args.deprecated then 'php-atom-autocomplete-strike' else ''
+                    className: if element.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
                     snippet: if insertParameterList then @getFunctionSnippet(word, element.args) else null
                     displayText: @getFunctionSignature(word, element.args)
                     replacementPrefix: prefix

@@ -114,6 +114,6 @@ class MemberProvider extends AbstractProvider
                     displayText : displayText
                     leftLabel   : returnValue
                     description : if ele.args.descriptions.short? then ele.args.descriptions.short else ''
-                    className   : if ele.args.deprecated then 'php-atom-autocomplete-strike' else ''
+                    className   : if ele.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
 
         return suggestions
