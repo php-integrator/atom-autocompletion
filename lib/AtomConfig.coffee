@@ -23,11 +23,11 @@ class AtomConfig extends Config
      * @inheritdoc
     ###
     load: () ->
-        @set('insertNewlinesForUseStatements', atom.config.get('#{@packageName}.insertNewlinesForUseStatements'))
+        @set('insertNewlinesForUseStatements', atom.config.get("#{@packageName}.insertNewlinesForUseStatements"))
 
     ###*
      * Attaches listeners to listen to Atom configuration changes.
     ###
     attachListeners: () ->
-        atom.config.onDidChange '#{@packageName}.insertNewlinesForUseStatements', () =>
-            @set('insertNewlinesForUseStatements', atom.config.get('#{@packageName}.insertNewlinesForUseStatements'))
+        atom.config.onDidChange "#{@packageName}.insertNewlinesForUseStatements", () =>
+            @set('insertNewlinesForUseStatements', atom.config.get("#{@packageName}.insertNewlinesForUseStatements"))
