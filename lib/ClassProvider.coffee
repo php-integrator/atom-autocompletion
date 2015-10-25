@@ -120,7 +120,7 @@ class ClassProvider extends AbstractProvider
 
         if suggestion.data.kind == 'instantiation' or suggestion.data.kind == 'static'
             editor.transact () =>
-                linesAdded = Utility.addUseClass(editor, suggestion.text, atom.config.get('php-integrator-autocomplete-plus:insertNewlinesForUseStatements'))
+                linesAdded = Utility.addUseClass(editor, suggestion.text, @config.get('insertNewlinesForUseStatements'))
 
                 # Removes namespace from classname
                 if linesAdded != null

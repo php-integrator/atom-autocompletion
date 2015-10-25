@@ -1,6 +1,16 @@
 
 module.exports =
     ###*
+     * Regular expression that will search for a structure (class, interface, trait, ...).
+    ###
+    structureStartRegex : /(?:abstract class|class|trait|interface)\s+(\w+)/
+
+    ###*
+     * Regular expression that will search for a use statement.
+    ###
+    useStatementRegex   : /(?:use)(?:[^\w\\])([\w\\]+)(?![\w\\])(?:(?:[ ]+as[ ]+)(\w+))?(?:;)/
+
+    ###*
      * Add the use for the given class if not already added.
      *
      * @param {TextEditor} editor                  Atom text editor.
