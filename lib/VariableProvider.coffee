@@ -11,7 +11,7 @@ class VariableProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
+    fetchSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         # "new" keyword or word starting with capital letter
         @regex = /(\$[a-zA-Z_]*)/g
 

@@ -11,7 +11,7 @@ class ConstantProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
+    fetchSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         # not preceded by a > (arrow operator), a $ (variable start), ...
         @regex = /(?:(?:^|[^\w\$_\>]))([A-Z_]+)(?![\w\$_\>])/g
 

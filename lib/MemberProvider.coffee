@@ -11,7 +11,7 @@ class MemberProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
+    fetchSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         # Autocompletion for class members, i.e. after a ::, ->, ...
         @regex = /(?:(?:[a-zA-Z0-9_]*)\s*(?:\(.*\))?\s*(?:->|::)\s*)+([a-zA-Z0-9_]*)/g
 
