@@ -26,7 +26,7 @@ class ClassProvider extends AbstractProvider
 
         classes = @service.getClassList()
 
-        return unless classes?.autocomplete?
+        return unless classes
 
         characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
         insertParameterList = if characterAfterPrefix == '(' then false else true
@@ -56,7 +56,7 @@ class ClassProvider extends AbstractProvider
         else if prefix.indexOf("new ") != -1
             instantiation = true
             prefix = prefix.replace /new /, ''
-            
+
         else if prefix.indexOf("use ") != -1
             use = true
             prefix = prefix.replace /use /, ''
@@ -64,25 +64,23 @@ class ClassProvider extends AbstractProvider
         if prefix.indexOf("\\") == 0
             prefix = prefix.substring(1, prefix.length)
 
-        # Filter the words using fuzzaldrin
-        words = fuzzaldrin.filter(classes.autocomplete, prefix)
+        flatList = (obj for name,obj of classes)
 
-        # Builds suggestions for the words
+        matches = fuzzaldrin.filter(flatList, prefix, key: 'name')
+
         suggestions = []
 
-        for word in words when word isnt prefix
-            classInfo = classes.mapping[word]
-
+        for match in matches when match.name
             # Just print classes with constructors with "new"
-            if instantiation and classes.mapping[word].methods.constructor.has
-                args = classInfo.methods.constructor.args
+            if instantiation and match.methods.constructor.has
+                args = match.methods.constructor.args
 
                 suggestions.push
-                    text: word,
+                    text: match.name,
                     type: 'class',
-                    className: if classInfo.class.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
-                    snippet: if insertParameterList then @getFunctionSnippet(word, args) else null
-                    displayText: @getFunctionSignature(word, args)
+                    className: if match.class.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                    snippet: if insertParameterList then @getFunctionSnippet(match.name, args) else null
+                    displayText: @getFunctionSignature(match.name, args)
                     data:
                         kind: 'instantiation',
                         prefix: prefix,
@@ -90,10 +88,10 @@ class ClassProvider extends AbstractProvider
 
             else if use
                 suggestions.push
-                    text: word,
+                    text: match.name,
                     type: 'class',
                     prefix: prefix,
-                    className: if classInfo.class.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                    className: if match.class.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
                     replacementPrefix: prefix,
                     data:
                         kind: 'use'
@@ -101,9 +99,9 @@ class ClassProvider extends AbstractProvider
             # Not instantiation => not printing constructor params
             else
                 suggestions.push
-                    text: word,
+                    text: match.name,
                     type: 'class',
-                    className: if classInfo.class.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                    className: if match.class.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
                     data:
                         kind: 'static',
                         prefix: prefix,
