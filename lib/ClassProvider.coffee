@@ -52,9 +52,11 @@ class ClassProvider extends AbstractProvider
         if prefix.indexOf("new \\") != -1
             instantiation = true
             prefix = prefix.replace /new \\/, ''
+
         else if prefix.indexOf("new ") != -1
             instantiation = true
             prefix = prefix.replace /new /, ''
+            
         else if prefix.indexOf("use ") != -1
             use = true
             prefix = prefix.replace /use /, ''
