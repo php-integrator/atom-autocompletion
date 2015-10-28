@@ -20,7 +20,7 @@ class ConstantProvider extends AbstractProvider
 
         constants = @service.getGlobalConstants()
 
-        return unless constants.names?
+        return unless constants
 
         suggestions = @findSuggestionsForPrefix(constants, prefix.trim())
         return unless suggestions.length
@@ -35,15 +35,16 @@ class ConstantProvider extends AbstractProvider
      * @return {array}
     ###
     findSuggestionsForPrefix: (constants, prefix) ->
-        words = fuzzaldrin.filter constants.names, prefix
+        flatList = (obj for name,obj of constants)
+
+        matches = fuzzaldrin.filter(flatList, prefix, key: 'name')
 
         suggestions = []
 
-        for word in words
-            for element in constants.values[word]
-                suggestions.push
-                    text: word,
-                    type: 'constant',
-                    description: 'Built-in PHP constant.'
+        for match in matches
+            suggestions.push
+                text: match.name,
+                type: 'constant',
+                description: 'Built-in PHP constant.'
 
         return suggestions

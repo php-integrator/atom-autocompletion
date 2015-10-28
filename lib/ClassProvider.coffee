@@ -63,7 +63,7 @@ class ClassProvider extends AbstractProvider
             prefix = prefix.substring(1, prefix.length)
 
         # Filter the words using fuzzaldrin
-        words = fuzzaldrin.filter classes.autocomplete, prefix
+        words = fuzzaldrin.filter(classes.autocomplete, prefix)
 
         # Builds suggestions for the words
         suggestions = []

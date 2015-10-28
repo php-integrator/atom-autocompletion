@@ -69,51 +69,49 @@ class MemberProvider extends AbstractProvider
      * @return {array}
     ###
     findSuggestionsForPrefix: (className, prefix, filterCallback, insertParameterList = true) ->
-        members = @service.getClassInfo(className)
+        classInfo = @service.getClassInfo(className)
 
-        if not members?.names
-            return []
+        return [] if not classInfo
 
-        # Filter the words using fuzzaldrin
-        words = fuzzaldrin.filter(members.names, prefix)
+        members = [];
 
-        # Builds suggestions for the words
+        # Ensure we have one big pool so we can optimally match using fuzzaldrin.
+        members.push(obj) for name,obj of classInfo.methods
+        members.push(obj) for name,obj of classInfo.constants
+        members.push(obj) for name,obj of classInfo.properties
+
+        matches = fuzzaldrin.filter(members, prefix, key: 'name')
+
         suggestions = []
 
-        for word in words
-            element = members.values[word]
+        for match in matches
+            if filterCallback and not filterCallback(match)
+                continue
 
-            if element not instanceof Array
-                element = [element]
+            # Ensure we don't get very long return types by just showing the last part.
+            snippet = null
+            displayText = match.name
+            returnValueParts = if match.args.return?.type then match.args.return.type.split('\\') else []
+            returnValue = returnValueParts[returnValueParts.length - 1]
 
-            for ele in element
-                if filterCallback and not filterCallback(ele)
-                    continue
+            if match.isMethod
+                type = 'method'
+                snippet = if insertParameterList then @getFunctionSnippet(match.name, match.args) else null
+                displayText = @getFunctionSignature(match.name, match.args)
 
-                # Ensure we don't get very long return types by just showing the last part.
-                snippet = null
-                displayText = word
-                returnValueParts = if ele.args.return?.type then ele.args.return.type.split('\\') else []
-                returnValue = returnValueParts[returnValueParts.length - 1]
+            else if match.isProperty
+                type = 'property'
 
-                if ele.isMethod
-                    type = 'method'
-                    snippet = if insertParameterList then @getFunctionSnippet(word, ele.args) else null
-                    displayText = @getFunctionSignature(word, ele.args)
+            else
+                type = 'constant'
 
-                else if ele.isProperty
-                    type = 'property'
-
-                else
-                    type = 'constant'
-
-                suggestions.push
-                    text        : word,
-                    type        : type
-                    snippet     : snippet
-                    displayText : displayText
-                    leftLabel   : returnValue
-                    description : if ele.args.descriptions.short? then ele.args.descriptions.short else ''
-                    className   : if ele.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+            suggestions.push
+                text        : match.name,
+                type        : type
+                snippet     : snippet
+                displayText : displayText
+                leftLabel   : returnValue
+                description : if match.args.descriptions.short? then match.args.descriptions.short else ''
+                className   : if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
 
         return suggestions

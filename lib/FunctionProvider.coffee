@@ -20,7 +20,7 @@ class FunctionProvider extends AbstractProvider
 
         functions = @service.getGlobalFunctions()
 
-        return unless functions.names?
+        return unless functions
 
         characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
         insertParameterList = if characterAfterPrefix == '(' then false else true
@@ -39,20 +39,21 @@ class FunctionProvider extends AbstractProvider
      * @return {Array}
     ###
     findSuggestionsForPrefix: (functions, prefix, insertParameterList = true) ->
-        words = fuzzaldrin.filter functions.names, prefix
+        flatList = (obj for name,obj of functions)
+
+        matches = fuzzaldrin.filter(flatList, prefix, key: 'name')
 
         suggestions = []
 
-        for word in words
-            for element in functions.values[word]
-                suggestions.push
-                    text: word,
-                    type: 'function',
-                    description: 'Built-in PHP function.' # Needed or the 'More' button won't show up.
-                    descriptionMoreURL: @config.get('php_documentation_base_urls').functions + word
-                    className: if element.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
-                    snippet: if insertParameterList then @getFunctionSnippet(word, element.args) else null
-                    displayText: @getFunctionSignature(word, element.args)
-                    replacementPrefix: prefix
+        for match in matches
+            suggestions.push
+                text: match,
+                type: 'function',
+                description: 'Built-in PHP function.' # Needed or the 'More' button won't show up.
+                descriptionMoreURL: @config.get('php_documentation_base_urls').functions + match.name
+                className: if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                snippet: if insertParameterList then @getFunctionSnippet(match.name, match.args) else null
+                displayText: @getFunctionSignature(match.name, match.args)
+                replacementPrefix: prefix
 
         return suggestions
