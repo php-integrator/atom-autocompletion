@@ -8,23 +8,27 @@ class Config
     ###*
      * Raw configuration object.
     ###
-    data:
-        insertNewlinesForUseStatements: false
-
-        # See also https://secure.php.net/urlhowto.php .
-        php_documentation_base_urls : {
-            functions: 'https://secure.php.net/function.'
-        }
+    data: null
 
     ###*
      * Array of change listeners.
     ###
-    listeners: {}
+    listeners: null
 
     ###*
      * Constructor.
     ###
     constructor: () ->
+        @listeners = {}
+
+        @data =
+            insertNewlinesForUseStatements: false
+
+            # See also https://secure.php.net/urlhowto.php .
+            php_documentation_base_urls : {
+                functions: 'https://secure.php.net/function.'
+            }
+
         @load()
 
     ###*
@@ -59,6 +63,6 @@ class Config
     set: (name, value) ->
         @data[name] = value
 
-        if name in @listeners
+        if name of @listeners
             for listener in @listeners[name]
                 listener(value, name)
