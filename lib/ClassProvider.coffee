@@ -72,13 +72,13 @@ class ClassProvider extends AbstractProvider
 
         for match in matches when match.name
             # Just print classes with constructors with "new"
-            if instantiation and match.methods.constructor.has
-                args = match.methods.constructor.args
+            if instantiation and ("__construct" of match.methods)
+                args = match.methods.__construct.args
 
                 suggestions.push
                     text: match.name,
                     type: 'class',
-                    className: if match.class.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                    className: if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
                     snippet: if insertParameterList then @getFunctionSnippet(match.name, args) else null
                     displayText: @getFunctionSignature(match.name, args)
                     data:
@@ -91,7 +91,7 @@ class ClassProvider extends AbstractProvider
                     text: match.name,
                     type: 'class',
                     prefix: prefix,
-                    className: if match.class.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                    className: if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
                     replacementPrefix: prefix,
                     data:
                         kind: 'use'
@@ -101,7 +101,7 @@ class ClassProvider extends AbstractProvider
                 suggestions.push
                     text: match.name,
                     type: 'class',
-                    className: if match.class.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                    className: if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
                     data:
                         kind: 'static',
                         prefix: prefix,
