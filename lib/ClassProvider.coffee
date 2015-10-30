@@ -72,7 +72,7 @@ class ClassProvider extends AbstractProvider
 
         for match in matches when match.name
             # Just print classes with constructors with "new"
-            if instantiation and ("__construct" of match.methods)
+            if instantiation and match.methods and ("__construct" of match.methods)
                 args = match.methods.__construct.args
 
                 suggestions.push
