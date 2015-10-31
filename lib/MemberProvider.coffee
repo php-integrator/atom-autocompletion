@@ -43,7 +43,7 @@ class MemberProvider extends AbstractProvider
         insertParameterList = if characterAfterPrefix == '(' then false else true
 
         suggestions = @findSuggestionsForPrefix(className, elements[elements.length-1].trim(), (element) =>
-            # See also ticket #127.
+            # See also atom-autocomplete-php ticket #127.
             return false if mustBeStatic and not element.isStatic
             return false if element.isPrivate and element.declaringClass.name != currentClass
             return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in currentClassParents
