@@ -11,51 +11,47 @@ class MemberProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    fetchSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
+    getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         # Autocompletion for class members, i.e. after a ::, ->, ...
         @regex = /(?:(?:[a-zA-Z0-9_]*)\s*(?:\(.*\))?\s*(?:->|::)\s*)+([a-zA-Z0-9_]*)/g
 
         prefix = @getPrefix(editor, bufferPosition)
-        return unless prefix.length
+        return [] unless prefix.length
 
         className = @service.getCalledClass(editor, bufferPosition)
-        return unless className
-
-        elements = prefix.split(/(->|::)/)
+        return [] unless className
 
         # We only autocomplete after splitters, so there must be at least one word, one splitter, and another word
         # (the latter which could be empty).
-        return unless elements.length > 2
+        elements = prefix.split(/(->|::)/)
+        return [] unless elements.length > 2
 
         currentClass = @service.determineFullClassName(editor)
-        currentClassParents = []
 
-        if currentClass
-            classInfo = @service.getClassInfo(currentClass)
-            currentClassParents = if classInfo?.parents then classInfo?.parents else []
+        return [] if not currentClass
 
-        mustBeStatic = false
+        return @service.getClassInfo(currentClass, true).then (classInfo) =>
+            return [] if not classInfo or not classInfo.wasFound
 
-        if elements[elements.length - 2] == '::' and elements[elements.length - 3].trim() != 'parent'
-            mustBeStatic = true
+            mustBeStatic = false
 
-        characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
-        insertParameterList = if characterAfterPrefix == '(' then false else true
+            if elements[elements.length - 2] == '::' and elements[elements.length - 3].trim() != 'parent'
+                mustBeStatic = true
 
-        suggestions = @findSuggestionsForPrefix(className, elements[elements.length-1].trim(), (element) =>
-            # See also atom-autocomplete-php ticket #127.
-            return false if mustBeStatic and not element.isStatic
-            return false if element.isPrivate and element.declaringClass.name != currentClass
-            return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in currentClassParents
+            characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
+            insertParameterList = if characterAfterPrefix == '(' then false else true
 
-            # Constants are only available when statically accessed.
-            return false if not element.isMethod and not element.isProperty and not mustBeStatic
+            return @findSuggestionsForPrefix(className, elements[elements.length-1].trim(), (element) =>
+                # See also atom-autocomplete-php ticket #127.
+                return false if mustBeStatic and not element.isStatic
+                return false if element.isPrivate and element.declaringClass.name != currentClass
+                return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in classInfo.parents
 
-            return true
-        , insertParameterList)
+                # Constants are only available when statically accessed.
+                return false if not element.isMethod and not element.isProperty and not mustBeStatic
 
-        return unless suggestions.length
-        return suggestions
+                return true
+            , insertParameterList)
 
     ###*
      * Returns suggestions available matching the given prefix.

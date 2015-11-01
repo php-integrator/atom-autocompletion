@@ -11,25 +11,22 @@ class FunctionProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    fetchSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
+    getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         # These can appear pretty much everywhere, but not in variable names or as class members. We just use the regex
         # here to validate, but not to filter out the correct bits, as autocomplete-plus already seems to do this
         # correctly.
         @regex = /(?:^|[^\$:>\w])([a-z_]+)/g
 
         tmpPrefix = @getPrefix(editor, bufferPosition)
-        return unless tmpPrefix.length
+        return [] unless tmpPrefix.length
 
-        functions = @service.getGlobalFunctions()
+        return @service.getGlobalFunctions(true).then (functions) =>
+            return [] unless functions
 
-        return unless functions
+            characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
+            insertParameterList = if characterAfterPrefix == '(' then false else true
 
-        characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
-        insertParameterList = if characterAfterPrefix == '(' then false else true
-
-        suggestions = @findSuggestionsForPrefix(functions, prefix.trim(), insertParameterList)
-        return unless suggestions.length
-        return suggestions
+            return @findSuggestionsForPrefix(functions, prefix.trim(), insertParameterList)
 
     ###*
      * Returns suggestions available matching the given prefix.
@@ -38,7 +35,7 @@ class FunctionProvider extends AbstractProvider
      * @param {string} prefix
      * @param {bool}   insertParameterList Whether to insert a list of parameters or not.
      *
-     * @return {Array}
+     * @return {array}
     ###
     findSuggestionsForPrefix: (functions, prefix, insertParameterList = true) ->
         flatList = (obj for name,obj of functions)

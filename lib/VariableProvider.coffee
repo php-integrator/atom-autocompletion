@@ -11,19 +11,21 @@ class VariableProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    fetchSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
+    getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         # "new" keyword or word starting with capital letter
         @regex = /(\$[a-zA-Z_]*)/g
 
         prefix = @getPrefix(editor, bufferPosition)
-        return unless prefix.length
+        return [] unless prefix.length
 
         variables = @service.getAvailableVariables(editor, bufferPosition)
-        return unless variables.length
+        return [] unless variables.length
 
         suggestions = @findSuggestionsForPrefix(variables, prefix.trim())
-        return unless suggestions.length
-        return suggestions
+
+        return new Promise (resolve, reject) =>
+            resolve(suggestions)
+
 
     ###*
      * Returns suggestions available matching the given prefix.

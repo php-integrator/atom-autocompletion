@@ -17,23 +17,20 @@ class ClassProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    fetchSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
+    getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         # "new" keyword or word starting with capital letter
         @regex = /((?:new|use)?(?:[^a-z0-9_])\\?(?:[A-Z][a-zA-Z_\\]*)+)/g
 
         prefix = @getPrefix(editor, bufferPosition)
-        return unless prefix.length
+        return [] unless prefix.length
 
-        classes = @service.getClassList()
+        classes = @service.getClassList(true).then (classes) =>
+            return [] unless classes
 
-        return unless classes
+            characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
+            insertParameterList = if characterAfterPrefix == '(' then false else true
 
-        characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
-        insertParameterList = if characterAfterPrefix == '(' then false else true
-
-        suggestions = @findSuggestionsForPrefix(classes, prefix.trim(), insertParameterList)
-        return unless suggestions.length
-        return suggestions
+            return @findSuggestionsForPrefix(classes, prefix.trim(), insertParameterList)
 
     ###*
      * Returns suggestions available matching the given prefix

@@ -65,26 +65,7 @@ class AbstractProvider
      *
      * @return {Promise|array}
     ###
-    getSuggestions: (options) ->
-        return new Promise (resolve) =>
-            suggestions = @fetchSuggestions(options)
-
-            if not suggestions
-                suggestions = []
-
-            resolve(suggestions)
-
-    ###*
-     * Retrieves autocompletion suggestions.
-     *
-     * @param {TextEditor} editor
-     * @param {Point}      bufferPosition
-     * @param {string}     scopeDescriptor
-     * @param {string}     prefix
-     *
-     * @return {array}
-    ###
-    fetchSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
+    getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         throw new Error("This method is abstract and must be implemented!")
 
     ###*
