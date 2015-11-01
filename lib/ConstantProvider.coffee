@@ -12,11 +12,13 @@ class ConstantProvider extends AbstractProvider
      * @inheritdoc
     ###
     fetchSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
-        # not preceded by a > (arrow operator), a $ (variable start), ...
-        @regex = /(?:(?:^|[^\w\$_\>]))([A-Z_]+)(?![\w\$_\>])/g
+        # These can appear pretty much everywhere, but not in variable names or as class members. We just use the regex
+        # here to validate, but not to filter out the correct bits, as autocomplete-plus already seems to do this
+        # correctly.
+        @regex = /(?:^|[^\$:>\w])([A-Z_]+)/g
 
-        prefix = @getPrefix(editor, bufferPosition)
-        return unless prefix.length
+        tmpPrefix = @getPrefix(editor, bufferPosition)
+        return unless tmpPrefix.length
 
         constants = @service.getGlobalConstants()
 
