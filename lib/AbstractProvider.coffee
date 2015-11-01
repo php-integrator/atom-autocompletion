@@ -63,7 +63,7 @@ class AbstractProvider
      * @param {string}     scopeDescriptor
      * @param {string}     prefix
      *
-     * @return {array}
+     * @return {Promise|array}
     ###
     getSuggestions: (options) ->
         return new Promise (resolve) =>
