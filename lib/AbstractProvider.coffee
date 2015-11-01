@@ -56,7 +56,7 @@ class AbstractProvider
     deactivate: () ->
 
     ###*
-     * Entry point for all request from autocomplete-plus.
+     * Entry point for all requests from autocomplete-plus.
      *
      * @param {TextEditor} editor
      * @param {Point}      bufferPosition
