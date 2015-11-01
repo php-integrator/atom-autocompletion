@@ -13,7 +13,8 @@ class FunctionProvider extends AbstractProvider
     ###
     fetchSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         # These can appear pretty much everywhere, but not in variable names or as class members. We just use the regex
-        # here to validate, but not to filter out the correct bits, as autocomplete-plus already does this correctly.
+        # here to validate, but not to filter out the correct bits, as autocomplete-plus already seems to do this
+        # correctly.
         @regex = /(?:^|[^\$:>\w])([a-z_]+)/g
 
         tmpPrefix = @getPrefix(editor, bufferPosition)
