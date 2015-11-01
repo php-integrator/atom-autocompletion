@@ -75,7 +75,7 @@ class AbstractProvider
             resolve(suggestions)
 
     ###*
-     * Entry point for all request from autocomplete-plus.
+     * Retrieves autocompletion suggestions.
      *
      * @param {TextEditor} editor
      * @param {Point}      bufferPosition
