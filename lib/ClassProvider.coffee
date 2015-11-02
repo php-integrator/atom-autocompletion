@@ -12,11 +12,6 @@ class ClassProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    disableForSelector: '.source.php .string'
-
-    ###*
-     * @inheritdoc
-    ###
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         # "new" keyword or word starting with capital letter
         @regex = /((?:new|use)?(?:[^a-z0-9_])\\?(?:[A-Z][a-zA-Z_\\]*)+)/g
