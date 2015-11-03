@@ -30,12 +30,11 @@ class MemberProvider extends AbstractProvider
         elements = prefix.split(/(->|::)/)
         return [] unless elements.length > 2
 
-        currentClass = @service.determineFullClassName(editor)
+        callback = (currentClassInfo) =>
+            currentClassParents = []
 
-        return [] if not currentClass
-
-        return @service.getClassInfo(currentClass, true).then (classInfo) =>
-            return [] if not classInfo or not classInfo.wasFound
+            if currentClassInfo
+                currentClassParents = currentClassInfo.parents
 
             mustBeStatic = false
 
@@ -49,13 +48,23 @@ class MemberProvider extends AbstractProvider
                 # See also atom-autocomplete-php ticket #127.
                 return false if mustBeStatic and not element.isStatic
                 return false if element.isPrivate and element.declaringClass.name != currentClass
-                return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in classInfo.parents
+                return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in currentClassParents
 
                 # Constants are only available when statically accessed.
                 return false if not element.isMethod and not element.isProperty and not mustBeStatic
 
                 return true
             , insertParameterList)
+
+        currentClass = @service.determineFullClassName(editor)
+
+        if not currentClass
+            # There is no need to load the current class' information, return results immediately.
+            return callback(null)
+
+        else
+            # We need to fetch information about the current class, do it asynchronously (using promises).
+            return @service.getClassInfo(currentClass, true).then(callback)
 
     ###*
      * Returns suggestions available matching the given prefix.
