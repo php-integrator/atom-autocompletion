@@ -10,12 +10,18 @@ module.exports =
 class ConstantProvider extends AbstractProvider
     ###*
      * @inheritdoc
+     *
+     * These can appear pretty much everywhere, but not in variable names or as class members. We just use the regex
+     * here to validate, but not to filter out the correct bits, as autocomplete-plus already seems to do this
+     * correctly.
+    ###
+    regex: /(?:^|[^\$:>\w])([A-Z_]+)/g
+
+    ###*
+     * @inheritdoc
     ###
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
-        # These can appear pretty much everywhere, but not in variable names or as class members. We just use the regex
-        # here to validate, but not to filter out the correct bits, as autocomplete-plus already seems to do this
-        # correctly.
-        @regex = /(?:^|[^\$:>\w])([A-Z_]+)/g
+        @regex =
 
         tmpPrefix = @getPrefix(editor, bufferPosition)
         return [] unless tmpPrefix.length

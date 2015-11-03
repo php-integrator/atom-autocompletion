@@ -10,11 +10,15 @@ module.exports =
 class VariableProvider extends AbstractProvider
     ###*
      * @inheritdoc
+     *
+     * "new" keyword or word starting with capital letter
+    ###
+    regex: /(\$[a-zA-Z_]*)/g
+
+    ###*
+     * @inheritdoc
     ###
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
-        # "new" keyword or word starting with capital letter
-        @regex = /(\$[a-zA-Z_]*)/g
-
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix.length
 
