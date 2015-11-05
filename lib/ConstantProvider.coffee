@@ -21,8 +21,6 @@ class ConstantProvider extends AbstractProvider
      * @inheritdoc
     ###
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
-        @regex =
-
         tmpPrefix = @getPrefix(editor, bufferPosition)
         return [] unless tmpPrefix.length
 
