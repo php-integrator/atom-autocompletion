@@ -48,14 +48,22 @@ class VariableProvider extends AbstractProvider
      * @return array
     ###
     findSuggestionsForPrefix: (variables, prefix) ->
-        words = fuzzaldrin.filter(variables, prefix)
+        variables = fuzzaldrin.filter(variables, prefix, key: 'name')
 
         suggestions = []
 
-        for word in words
+        for variable in variables
+            type = null
+
+            # Just show the last part of a class name with a namespace.
+            if variable.type
+                parts = variable.type.split('\\')
+                type = parts.pop()
+
             suggestions.push
-                text: word,
-                type: 'variable',
-                replacementPrefix: prefix
+                type              : 'variable'
+                text              : variable.name
+                leftLabel         : type
+                replacementPrefix : prefix
 
         return suggestions
