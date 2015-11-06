@@ -4,6 +4,7 @@
 * Variable names and members will now be completed inside double quoted strings `[1]`.
 * The type of variables is now displayed, if possilbe, when autocompleting variable names.
 * Where possible, autocompletion is now performed asynchronously using promises instead of blocking for a process, improving performance.
+* The right label of the items in the autocompletion window will now display the originating structure (i.e. class, interface or trait) when autocompleting members.
 * Restrictions for function and constant autocompletion is now more relaxed, i.e. after "if (!" you will now receive autocompletion for built-in PHP functions and constants.
 
 `[1]` This might also complete in a few rare erroneous cases as well (e.g. `{SomeClass::test}` instead of `{${SomeClass::test}}`), but it's better to have autocompletion for common used cases and in a few rare erroneous cases than no autocompletion at all.

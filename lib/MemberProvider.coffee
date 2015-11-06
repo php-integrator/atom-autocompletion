@@ -125,12 +125,31 @@ class MemberProvider extends AbstractProvider
             else
                 type = 'constant'
 
+            # Determine the short name of the location where this member is defined.
+            declaringStructureShortName = null
+
+            if match.declaringStructure.name
+                declaringStructure = null
+
+                if match.override
+                    declaringStructure = match.override.declaringStructure
+
+                else if match.implementation
+                    declaringStructure = match.implementation.declaringStructure
+
+                else
+                    declaringStructure = match.declaringStructure
+
+                parts = declaringStructure.name.split('\\')
+                declaringStructureShortName = parts.pop()
+
             suggestions.push
                 text        : match.name,
                 type        : type
                 snippet     : snippet
                 displayText : displayText
                 leftLabel   : returnValue
+                rightLabel  : declaringStructureShortName
                 description : if match.args.descriptions.short? then match.args.descriptions.short else ''
                 className   : if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
 
