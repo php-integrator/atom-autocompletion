@@ -1,4 +1,5 @@
 ## 0.2.0
+* Variable names will now be completed inside double quoted strings.
 * Autocompletion of class names inside comments will now no longer work.
 * Class autocompletion will now work when the cursor is at the start of a line.
 * Where possible, autocompletion is now performed asynchronously using promises instead of blocking for a process,
