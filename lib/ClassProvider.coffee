@@ -23,13 +23,19 @@ class ClassProvider extends AbstractProvider
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix.length
 
-        classes = @service.getClassList(true).then (classes) =>
+        successHandler = (classes) =>
             return [] unless classes
 
             characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
             insertParameterList = if characterAfterPrefix == '(' then false else true
 
             return @findSuggestionsForPrefix(classes, prefix.trim(), insertParameterList)
+
+        failureHandler = () =>
+            # Just return no results.
+            return []
+
+        return @service.getClassList(true).then(successHandler, failureHandler)
 
     ###*
      * Returns suggestions available matching the given prefix

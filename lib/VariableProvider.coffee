@@ -33,10 +33,7 @@ class VariableProvider extends AbstractProvider
         variables = @service.getAvailableVariables(editor, bufferPosition)
         return [] unless variables.length
 
-        suggestions = @findSuggestionsForPrefix(variables, prefix.trim())
-
-        return new Promise (resolve, reject) =>
-            resolve(suggestions)
+        return @findSuggestionsForPrefix(variables, prefix.trim())
 
 
     ###*

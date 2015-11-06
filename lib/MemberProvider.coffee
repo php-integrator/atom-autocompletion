@@ -41,7 +41,7 @@ class MemberProvider extends AbstractProvider
         elements = prefix.split(/(->|::)/)
         return [] unless elements.length > 2
 
-        callback = (currentClassInfo) =>
+        successHandler = (currentClassInfo) =>
             currentClassParents = []
 
             if currentClassInfo
@@ -55,7 +55,7 @@ class MemberProvider extends AbstractProvider
             characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
             insertParameterList = if characterAfterPrefix == '(' then false else true
 
-            return @findSuggestionsForPrefix(className, elements[elements.length-1].trim(), (element) =>
+            return @findSuggestionsForPrefix(className, elements[elements.length - 1].trim(), (element) =>
                 # See also atom-autocomplete-php ticket #127.
                 return false if mustBeStatic and not element.isStatic
                 return false if element.isPrivate and element.declaringClass.name != currentClass
@@ -71,11 +71,14 @@ class MemberProvider extends AbstractProvider
 
         if not currentClass
             # There is no need to load the current class' information, return results immediately.
-            return callback(null)
+            return successHandler(null)
 
-        else
-            # We need to fetch information about the current class, do it asynchronously (using promises).
-            return @service.getClassInfo(currentClass, true).then(callback)
+        failureHandler = () =>
+            # Just return no results.
+            return []
+
+        # We need to fetch information about the current class, do it asynchronously (using promises).
+        return @service.getClassInfo(currentClass, true).then(successHandler, failureHandler)
 
     ###*
      * Returns suggestions available matching the given prefix.
