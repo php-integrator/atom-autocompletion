@@ -114,8 +114,7 @@ class MemberProvider extends AbstractProvider
             # Ensure we don't get very long return types by just showing the last part.
             snippet = null
             displayText = match.name
-            returnValueParts = if match.args.return?.type then match.args.return.type.split('\\') else []
-            returnValue = returnValueParts[returnValueParts.length - 1]
+            returnValue = @getClassShortName(match.args.return?.type)
 
             if match.isMethod
                 type = 'method'
@@ -143,9 +142,8 @@ class MemberProvider extends AbstractProvider
                 else
                     declaringStructure = match.declaringStructure
 
-                parts = declaringStructure.name.split('\\')
-                declaringStructureShortName = parts.pop()
-
+                declaringStructureShortName = @getClassShortName(declaringStructure.name)
+                
             suggestions.push
                 text        : match.name,
                 type        : type

@@ -46,8 +46,8 @@ class ConstantProvider extends AbstractProvider
 
         for match in matches
             suggestions.push
-                text: match.name,
-                type: 'constant',
-                description: 'Built-in PHP constant.'
+                text        : match.name,
+                type        : 'constant',
+                description : if match.isBuiltin then 'Built-in PHP constant.' else 'Global PHP constant.'
 
         return suggestions

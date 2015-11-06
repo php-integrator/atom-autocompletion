@@ -49,14 +49,18 @@ class FunctionProvider extends AbstractProvider
         suggestions = []
 
         for match in matches
+            returnValue = @getClassShortName(match.args.return?.type)
+
+            # NOTE: The description must not be empty for the 'More' button to show up.
             suggestions.push
-                text: match,
-                type: 'function',
-                description: 'Built-in PHP function.' # Needed or the 'More' button won't show up.
-                descriptionMoreURL: @config.get('php_documentation_base_urls').functions + match.name
-                className: if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
-                snippet: if insertParameterList then @getFunctionSnippet(match.name, match.args) else null
-                displayText: @getFunctionSignature(match.name, match.args)
-                replacementPrefix: prefix
+                text                : match,
+                type                : 'function',
+                description         : if match.args.descriptions.short? then match.args.descriptions.short else 'Built-in PHP function.'
+                leftLabel           : returnValue
+                descriptionMoreURL  : @config.get('php_documentation_base_urls').functions + match.name
+                className           : if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                snippet             : if insertParameterList then @getFunctionSnippet(match.name, match.args) else null
+                displayText         : @getFunctionSignature(match.name, match.args)
+                replacementPrefix   : prefix
 
         return suggestions

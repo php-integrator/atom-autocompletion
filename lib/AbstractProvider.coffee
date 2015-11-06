@@ -123,6 +123,19 @@ class AbstractProvider
         return signature[0 .. -3]
 
     ###*
+     * Retrieves the short name for the specified class name (i.e. the last segment, without the class namespace).
+     *
+     * @param {string} className
+     *
+     * @return {string}
+    ###
+    getClassShortName: (className) ->
+        return null if not className
+
+        parts = className.split('\\')
+        return parts.pop()
+
+    ###*
      * Retrieves the prefix using the specified buffer position and the current class' configured regular expression.
      *
      * @param {TextEditor} editor
