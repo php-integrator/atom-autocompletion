@@ -11,6 +11,17 @@ class MemberProvider extends AbstractProvider
     ###*
      * @inheritdoc
      *
+     * Member autocompletion is allowed inside double quoted strings (see also
+     * {@link https://secure.php.net/manual/en/language.types.string.php#language.types.string.parsing}). Static class
+     * name access must always be wrapped as {${Class::staticAccess}}, our autocompletion will also autocomplete without
+     * the extra curly brackets, but it's better to have some autocompletion in a few rare erroneous cases than no
+     * autocompletion at all in the most used cases.
+    ###
+    disableForSelector: '.source.php .comment, .source.php .string.quoted.single'
+
+    ###*
+     * @inheritdoc
+     *
      * Autocompletion for class members, i.e. after a ::, ->, ...
     ###
     regex: /(?:(?:[a-zA-Z0-9_]*)\s*(?:\(.*\))?\s*(?:->|::)\s*)+([a-zA-Z0-9_]*)/g
