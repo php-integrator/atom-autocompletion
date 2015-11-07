@@ -48,19 +48,19 @@ class ClassProvider extends AbstractProvider
     ###
     findSuggestionsForPrefix: (classes, prefix, insertParameterList = true) ->
         # Get rid of the leading "new" or "use" keyword
-        instantiation = false
+        isInstantiation = false
         use = false
 
         if prefix.indexOf("new \\") != -1
-            instantiation = true
+            isInstantiation = true
             prefix = prefix.replace /new \\/, ''
 
         else if prefix.indexOf("new ") != -1
-            instantiation = true
+            isInstantiation = true
             prefix = prefix.replace /new /, ''
 
         else if prefix.indexOf("use ") != -1
-            use = true
+            isUse = true
             prefix = prefix.replace /use /, ''
 
         if prefix.indexOf("\\") == 0
@@ -73,73 +73,65 @@ class ClassProvider extends AbstractProvider
         suggestions = []
 
         for match in matches when match.name
-            # Just print classes with constructors with "new"
-            if instantiation and match.methods and ("__construct" of match.methods)
-                args = match.methods.__construct.args
+            prefixParts = prefix.split('\\')
+            suggestionParts = match.name.split('\\')
 
-                suggestions.push
-                    text: match.name,
-                    type: 'class',
-                    className: if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
-                    snippet: if insertParameterList then @getFunctionSnippet(match.name, args) else null
-                    displayText: @getFunctionSignature(match.name, args)
-                    data:
-                        kind: 'instantiation',
-                        prefix: prefix,
-                        replacementPrefix: prefix
+            # We try to add an import that has only as many parts of the namespace as needed, for example, if the user
+            # types 'Foo\Class' and confirms the suggestion 'My\Foo\Class', we add an import for 'My\Foo' and leave the
+            # user's code at 'Foo\Class' as a relative import. We only add the full 'My\Foo\Class' if the user were to
+            # type just 'Class' and then select 'My\Foo\Class' (i.e. we remove as many segments from the suggestion
+            # as the user already has in his code).
+            nameToUseParts = suggestionParts.slice(-1)
+            nameToImportParts = suggestionParts
 
-            else if use
-                suggestions.push
-                    text: match.name,
-                    type: 'class',
-                    prefix: prefix,
-                    className: if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
-                    replacementPrefix: prefix,
-                    data:
-                        kind: 'use'
+            if prefixParts.length > 1
+                partsToSlice = (prefixParts.length - 1)
 
-            # Not instantiation => not printing constructor params
+                nameToUseParts = suggestionParts.slice(-partsToSlice - 1)
+                nameToImportParts = suggestionParts.slice(0, -partsToSlice)
+
+            nameToUse = nameToUseParts.join('\\')
+            nameToImport = nameToImportParts.join('\\')
+
+            suggestionData =
+                text              : nameToUse
+                type              : 'class'
+                className         : if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                replacementPrefix : prefix
+                displayText       : match.name
+
+            # User is trying to do an instantiation? Print a list of class names that have a constructor.
+            if not isUse
+                if isInstantiation and match.methods and ("__construct" of match.methods)
+                    args = match.methods.__construct.args
+
+                    # If we don't escape the slashes, they will not show up in the autocompleted text. See also
+                    # https://github.com/atom/autocomplete-plus/issues/577
+                    nameToUseEscaped = nameToUse.replace('\\', '\\\\')
+
+                    suggestionData.snippet     = if insertParameterList then @getFunctionSnippet(nameToUseEscaped, args) else null
+                    suggestionData.displayText = @getFunctionSignature(match.name, args)
+
+                suggestionData.data =
+                    nameToImport: nameToImport
+
             else
-                suggestions.push
-                    text: match.name,
-                    type: 'class',
-                    className: if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
-                    data:
-                        kind: 'static',
-                        prefix: prefix,
-                        replacementPrefix: prefix
+                # Use statements always get the full class name as completion.
+                suggestionData.text = match.name
+
+            suggestions.push suggestionData
 
         return suggestions
 
     ###*
-     * Adds the missing use if needed
+     * Called when the user confirms an autocompletion suggestion.
+     *
      * @param {TextEditor} editor
      * @param {Position}   triggerPosition
      * @param {object}     suggestion
     ###
     onDidInsertSuggestion: ({editor, triggerPosition, suggestion}) ->
-        return unless suggestion.data?.kind
+        return unless suggestion.data?.nameToImport
 
-        if suggestion.data.kind == 'instantiation' or suggestion.data.kind == 'static'
-            editor.transact () =>
-                linesAdded = Utility.addUseClass(editor, suggestion.text, @config.get('insertNewlinesForUseStatements'))
-
-                # Removes namespace from classname
-                if linesAdded != null
-                    name = suggestion.text
-                    splits = name.split('\\')
-
-                    nameLength = splits[splits.length-1].length
-                    startColumn = triggerPosition.column - suggestion.data.prefix.length
-                    row = triggerPosition.row + linesAdded
-
-                    if suggestion.data.kind == 'instantiation'
-                        endColumn = startColumn + name.length - nameLength - splits.length + 1
-
-                    else
-                        endColumn = startColumn + name.length - nameLength
-
-                    editor.setTextInBufferRange([
-                        [row, startColumn],
-                        [row, endColumn] # Because when selected there's not \ (why?)
-                    ], "")
+        editor.transact () =>
+            linesAdded = Utility.addUseClass(editor, suggestion.data.nameToImport, @config.get('insertNewlinesForUseStatements'))

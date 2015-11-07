@@ -71,13 +71,13 @@ class AbstractProvider
     ###*
      * Builds the snippet for a PHP function or method.
      *
-     * @param {string} word     The name of the function or method.
+     * @param {string} name     The name of the function or method.
      * @param {array}  elements The (optional and required) parameters.
      *
      * @return {string}
     ###
-    getFunctionSnippet: (word, elements) ->
-        body = word + "("
+    getFunctionSnippet: (name, elements) ->
+        body = name + "("
         lastIndex = 0
 
         # Non optional elements
