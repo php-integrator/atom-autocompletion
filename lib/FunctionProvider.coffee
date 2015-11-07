@@ -55,9 +55,9 @@ class FunctionProvider extends AbstractProvider
             suggestions.push
                 text                : match,
                 type                : 'function',
-                description         : if match.args.descriptions.short? then match.args.descriptions.short else 'Built-in PHP function.'
+                description         : if match.isBuiltin then 'Built-in PHP function.' else match.args.descriptions.short
                 leftLabel           : returnValue
-                descriptionMoreURL  : @config.get('php_documentation_base_urls').functions + match.name
+                descriptionMoreURL  : if match.isBuiltin then @config.get('php_documentation_base_urls').functions + match.name else null
                 className           : if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
                 snippet             : if insertParameterList then @getFunctionSnippet(match.name, match.args) else null
                 displayText         : @getFunctionSignature(match.name, match.args)
