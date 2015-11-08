@@ -33,7 +33,12 @@ class MemberProvider extends AbstractProvider
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix.length
 
-        className = @service.getResultingTypeAt(editor, bufferPosition, true)
+        try
+            className = @service.getResultingTypeAt(editor, bufferPosition, true)
+
+        catch error
+            return []
+
         return [] unless className
 
         # We only autocomplete after splitters, so there must be at least one word, one splitter, and another word
