@@ -22,7 +22,7 @@ module.exports =
      #                  This could be zero if a use statement was already present.
     ###
     addUseClass: (editor, className, allowAdditionalNewlines) ->
-        if className.split('\\').length == 1 or className.indexOf('\\') == 0
+        if className.indexOf('\\') == 0
             return null
 
         bestUse = 0
