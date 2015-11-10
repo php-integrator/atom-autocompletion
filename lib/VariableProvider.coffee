@@ -31,7 +31,6 @@ class VariableProvider extends AbstractProvider
         return [] unless prefix.length
 
         variables = @service.getAvailableVariables(editor, bufferPosition)
-        return [] unless variables.length
 
         return @findSuggestionsForPrefix(variables, prefix.trim())
 
@@ -45,7 +44,9 @@ class VariableProvider extends AbstractProvider
      * @return array
     ###
     findSuggestionsForPrefix: (variables, prefix) ->
-        matches = fuzzaldrin.filter(variables, prefix, key: 'name')
+        flatList = (obj for name,obj of variables)
+
+        matches = fuzzaldrin.filter(flatList, prefix, key: 'name')
 
         suggestions = []
 
