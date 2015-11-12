@@ -15,7 +15,7 @@ class ConstantProvider extends AbstractProvider
      * here to validate, but not to filter out the correct bits, as autocomplete-plus already seems to do this
      * correctly.
     ###
-    regex: /(?:^|[^\$:>\w])([A-Z_]+)/g
+    regex: /(?:^|[^\$:>\w])([A-Z_]+)$/
 
     ###*
      * @inheritdoc

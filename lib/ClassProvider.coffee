@@ -14,7 +14,7 @@ class ClassProvider extends AbstractProvider
      *
      * "new" keyword or word starting with capital letter
     ###
-    regex: /((?:new|use)?(?:[^a-z0-9_]|^)\\?(?:[A-Z][a-zA-Z_\\]*)+)/g
+    regex: /(?:^|[^\$:>\w])((?:(?:new|use)\s+)?\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*)$/
 
     ###*
      * @inheritdoc

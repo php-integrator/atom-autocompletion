@@ -21,7 +21,7 @@ class VariableProvider extends AbstractProvider
      *
      * "new" keyword or word starting with capital letter
     ###
-    regex: /(\$[a-zA-Z_]*)/g
+    regex: /(\$[a-zA-Z_]*)$/
 
     ###*
      * @inheritdoc

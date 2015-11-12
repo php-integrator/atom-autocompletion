@@ -15,7 +15,7 @@ class FunctionProvider extends AbstractProvider
      * here to validate, but not to filter out the correct bits, as autocomplete-plus already seems to do this
      * correctly.
     ###
-    regex: /(?:^|[^\$:>\w])([a-z_]+)/g
+    regex: /(?:^|[^\$:>\w])([a-z_]+)$/
 
     ###*
      * @inheritdoc
