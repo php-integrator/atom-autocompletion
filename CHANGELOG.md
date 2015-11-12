@@ -1,7 +1,7 @@
 ## 0.3.0
 * Added a new configuration option that disables the built-in PHP autocompletion provider. `[1]`
 
-`[1]` This will solve the problem where built-in functions such as array_walk were showing up twice, once from this package and once from Atom's PHP support itself.
+`[1]` This will solve the problem where built-in functions such as `array_walk` were showing up twice, once from this package and once from Atom's PHP support itself.
 
 ## 0.2.0
 ### Features and enhancements
