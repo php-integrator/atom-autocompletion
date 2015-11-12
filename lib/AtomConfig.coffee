@@ -23,11 +23,15 @@ class AtomConfig extends Config
      * @inheritdoc
     ###
     load: () ->
+        @set('disableBuiltinAutocompletion', atom.config.get("#{@packageName}.disableBuiltinAutocompletion"))
         @set('insertNewlinesForUseStatements', atom.config.get("#{@packageName}.insertNewlinesForUseStatements"))
 
     ###*
      * Attaches listeners to listen to Atom configuration changes.
     ###
     attachListeners: () ->
+        atom.config.onDidChange "#{@packageName}.disableBuiltinAutocompletion", () =>
+            @set('disableBuiltinAutocompletion', atom.config.get("#{@packageName}.disableBuiltinAutocompletion"))
+
         atom.config.onDidChange "#{@packageName}.insertNewlinesForUseStatements", () =>
             @set('insertNewlinesForUseStatements', atom.config.get("#{@packageName}.insertNewlinesForUseStatements"))

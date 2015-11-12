@@ -22,7 +22,8 @@ class Config
         @listeners = {}
 
         @data =
-            insertNewlinesForUseStatements: false
+            disableBuiltinAutocompletion   : true
+            insertNewlinesForUseStatements : false
 
             # See also https://secure.php.net/urlhowto.php .
             php_documentation_base_urls : {

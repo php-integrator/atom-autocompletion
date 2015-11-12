@@ -42,6 +42,10 @@ class AbstractProvider
      * @param {Config} config
     ###
     constructor: (@config) ->
+        @excludeLowerPriority = @config.get('disableBuiltinAutocompletion')
+
+        @config.onDidChange 'disableBuiltinAutocompletion', (newValue) =>
+            @excludeLowerPriority = newValue
 
     ###*
      * Initializes this provider.

@@ -12,6 +12,16 @@ module.exports =
      * Configuration settings.
     ###
     config:
+        disableBuiltinAutocompletion:
+            title       : 'Disable built-in PHP autocompletion from Atom.'
+            description : 'Atom also provides some default autocompletion for PHP, which includes function names for
+                           some common PHP functions, but without their parameters (just their names). If this is
+                           checked, these will be surpressed and not show up in autocompletion. If you uncheck this,
+                           function names may show up twice: once from this package and once from Atom itself.'
+            type        : 'boolean'
+            default     : true
+            order       : 1
+
         insertNewlinesForUseStatements:
             title       : 'Insert newlines for use statements'
             description : 'When enabled, the plugin will add additional newlines before or after an automatically added
@@ -19,7 +29,7 @@ module.exports =
                            cleanly separated use statements but will create additional vertical whitespace.'
             type        : 'boolean'
             default     : false
-            order       : 1
+            order       : 2
 
     ###*
      * The name of the package.
