@@ -52,7 +52,7 @@ module.exports =
             matches = @useStatementRegex.exec(line)
 
             if matches? and matches[1]?
-                if matches[1] == className
+                if matches[1] == className or (matches[1][0] == '\\' and matches[1].substr(1) == className)
                     return 0
 
                 score = @scoreClassName(className, matches[1])
