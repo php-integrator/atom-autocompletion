@@ -5,6 +5,7 @@
 `[1]` This will solve the problem where built-in functions such as `array_walk` were showing up twice, once from this package and once from Atom's PHP support itself.
 
 ### Bugs fixed
+* Global functions inside namespaces were not being autocompleted properly.
 * Class names that start with a lower case letter will now also be autocompleted.
 * Class names were not being completed in some locations such as inside if statements.
 

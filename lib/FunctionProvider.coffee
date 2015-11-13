@@ -11,18 +11,17 @@ class FunctionProvider extends AbstractProvider
     ###*
      * @inheritdoc
      *
-     * These can appear pretty much everywhere, but not in variable names or as class members. We just use the regex
-     * here to validate, but not to filter out the correct bits, as autocomplete-plus already seems to do this
-     * correctly.
+     * These can appear pretty much everywhere, but not in variable names or as class members. Note that functions can
+     * also appear inside namespaces, hence the middle part.
     ###
-    regex: /(?:^|[^\$:>\w])([a-z_]+)$/
+    regex: /(?:^|[^\$:>\w])((?:[a-zA-Z_][a-zA-Z0-9_]*\\)*[a-z_]+)$/
 
     ###*
      * @inheritdoc
     ###
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
-        tmpPrefix = @getPrefix(editor, bufferPosition)
-        return [] unless tmpPrefix.length
+        prefix = @getPrefix(editor, bufferPosition)
+        return [] unless prefix.length
 
         return @service.getGlobalFunctions(true).then (functions) =>
             return [] unless functions
@@ -51,6 +50,10 @@ class FunctionProvider extends AbstractProvider
         for match in matches
             returnValue = @getClassShortName(match.args.return?.type)
 
+            # If we don't escape the slashes, they will not show up in the autocompleted text. See also
+            # https://github.com/atom/autocomplete-plus/issues/577
+            nameToUseEscaped = match.name.replace('\\', '\\\\')
+
             # NOTE: The description must not be empty for the 'More' button to show up.
             suggestions.push
                 text                : match,
@@ -59,7 +62,7 @@ class FunctionProvider extends AbstractProvider
                 leftLabel           : returnValue
                 descriptionMoreURL  : if match.isBuiltin then @config.get('php_documentation_base_urls').functions + match.name else null
                 className           : if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
-                snippet             : if insertParameterList then @getFunctionSnippet(match.name, match.args) else null
+                snippet             : if insertParameterList then @getFunctionSnippet(nameToUseEscaped, match.args) else null
                 displayText         : @getFunctionSignature(match.name, match.args)
                 replacementPrefix   : prefix
 
