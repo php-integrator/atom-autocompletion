@@ -3,7 +3,7 @@
 * Documentation for classes will now be shown during autocompletion.
 
 ### Bugs fixed
-# Use statements were still added if one was already present with a leading slash.
+* Use statements were still added if one was already present with a leading slash.
 
 ## 0.2.1
 ### Bugs fixed
