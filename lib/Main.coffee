@@ -13,7 +13,7 @@ module.exports =
     ###
     config:
         disableBuiltinAutocompletion:
-            title       : 'Disable built-in PHP autocompletion from Atom.'
+            title       : 'Disable built-in PHP autocompletion from Atom'
             description : 'Atom also provides some default autocompletion for PHP, which includes function names for
                            some common PHP functions, but without their parameters (just their names). If this is
                            checked, these will be surpressed and not show up in autocompletion. If you uncheck this,
