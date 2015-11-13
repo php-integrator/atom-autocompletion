@@ -1,3 +1,7 @@
+## 0.3.0
+### Features and enhancements
+* Documentation for classes will now be shown during autocompletion.
+
 ## 0.2.1
 ### Bugs fixed
 * Global functions inside namespaces were not being autocompleted properly.

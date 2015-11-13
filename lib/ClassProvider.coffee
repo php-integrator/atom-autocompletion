@@ -96,6 +96,7 @@ class ClassProvider extends AbstractProvider
             suggestionData =
                 text              : nameToUse
                 type              : 'class'
+                description       : match.args.descriptions.short
                 className         : if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
                 replacementPrefix : prefix
                 displayText       : match.name
