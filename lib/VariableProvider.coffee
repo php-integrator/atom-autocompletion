@@ -21,7 +21,7 @@ class VariableProvider extends AbstractProvider
      *
      * "new" keyword or word starting with capital letter
     ###
-    regex: /(\$[a-zA-Z_]*)$/
+    regex: /(\$(?:[a-zA-Z_][a-zA-Z0-9_]*)?)$/
 
     ###*
      * @inheritdoc
@@ -33,7 +33,6 @@ class VariableProvider extends AbstractProvider
         variables = @service.getAvailableVariables(editor, bufferPosition)
 
         return @findSuggestionsForPrefix(variables, prefix.trim())
-
 
     ###*
      * Returns suggestions available matching the given prefix.
