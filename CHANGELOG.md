@@ -5,6 +5,7 @@
 ### Bugs fixed
 * Fixed variables containing numbers not being suggested.
 * Use statements were still added if one was already present with a leading slash.
+* The partial name of the variable being autocompleted is now no longer included in the suggestions.
 
 ## 0.2.1
 ### Bugs fixed
