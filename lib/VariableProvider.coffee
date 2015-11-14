@@ -1,3 +1,5 @@
+{Point} = require 'atom'
+
 fuzzaldrin = require 'fuzzaldrin'
 
 AbstractProvider = require "./AbstractProvider"
@@ -30,7 +32,10 @@ class VariableProvider extends AbstractProvider
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix.length
 
-        variables = @service.getAvailableVariables(editor, bufferPosition)
+        # Don't include the variable we're completing.
+        newBufferPosition = new Point(bufferPosition.row, bufferPosition.column - prefix.length)
+
+        variables = @service.getAvailableVariables(editor, newBufferPosition)
 
         return @findSuggestionsForPrefix(variables, prefix.trim())
 
