@@ -119,12 +119,12 @@ class MemberProvider extends AbstractProvider
             # Ensure we don't get very long return types by just showing the last part.
             snippet = null
             displayText = match.name
-            returnValue = @getClassShortName(match.args.return?.type)
+            returnValue = @getClassShortName(match.return?.type)
 
             if match.isMethod
                 type = 'method'
-                snippet = if insertParameterList then @getFunctionSnippet(match.name, match.args) else null
-                displayText = @getFunctionSignature(match.name, match.args)
+                snippet = if insertParameterList then @getFunctionSnippet(match.name, match) else null
+                displayText = @getFunctionSignature(match.name, match)
 
             else if match.isProperty
                 type = 'property'
@@ -156,7 +156,7 @@ class MemberProvider extends AbstractProvider
                 displayText : displayText
                 leftLabel   : returnValue
                 rightLabel  : declaringStructureShortName
-                description : if match.args.descriptions.short? then match.args.descriptions.short else ''
-                className   : if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                description : if match.descriptions.short? then match.descriptions.short else ''
+                className   : if match.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
 
         return suggestions

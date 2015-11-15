@@ -96,15 +96,15 @@ class ClassProvider extends AbstractProvider
             suggestionData =
                 text              : nameToUse
                 type              : 'class'
-                description       : match.args.descriptions.short
-                className         : if match.args.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                description       : match.descriptions.short
+                className         : if match.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
                 replacementPrefix : prefix
                 displayText       : match.name
 
             # User is trying to do an instantiation? Print a list of class names that have a constructor.
             if not isUse
                 if isInstantiation and match.methods and ("__construct" of match.methods)
-                    args = match.methods.__construct.args
+                    args = match.methods.__construct
 
                     # If we don't escape the slashes, they will not show up in the autocompleted text. See also
                     # https://github.com/atom/autocomplete-plus/issues/577
