@@ -46,6 +46,8 @@ class MemberProvider extends AbstractProvider
         elements = prefix.split(/(->|::)/)
         return [] unless elements.length > 2
 
+        return [] if @service.isBasicType(className)
+
         successHandler = (currentClassInfo) =>
             currentClassParents = []
 
