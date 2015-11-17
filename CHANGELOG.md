@@ -5,6 +5,7 @@
 ### Bugs fixed
 * Fixed variables containing numbers not being suggested.
 * Use statements were still added if one was already present with a leading slash.
+* An error would sometimes be shown when trying to autocomplete a class that did not exist.
 * The partial name of the variable being autocompleted is now no longer included in the suggestions.
 
 ## 0.2.1

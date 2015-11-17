@@ -60,17 +60,23 @@ class MemberProvider extends AbstractProvider
             characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
             insertParameterList = if characterAfterPrefix == '(' then false else true
 
-            return @findSuggestionsForPrefix(className, elements[elements.length - 1].trim(), (element) =>
-                # See also atom-autocomplete-php ticket #127.
-                return false if mustBeStatic and not element.isStatic
-                return false if element.isPrivate and element.declaringClass.name != currentClass
-                return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in currentClassParents
+            nestedSuccessHandler = (classInfo) =>
+                return @findSuggestionsForPrefix(classInfo, elements[elements.length - 1].trim(), (element) =>
+                    # See also atom-autocomplete-php ticket #127.
+                    return false if mustBeStatic and not element.isStatic
+                    return false if element.isPrivate and element.declaringClass.name != currentClass
+                    return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in currentClassParents
 
-                # Constants are only available when statically accessed.
-                return false if not element.isMethod and not element.isProperty and not mustBeStatic
+                    # Constants are only available when statically accessed.
+                    return false if not element.isMethod and not element.isProperty and not mustBeStatic
 
-                return true
-            , insertParameterList)
+                    return true
+                , insertParameterList)
+
+            nestedFailureHandler = () =>
+                return []
+
+            return @service.getClassInfo(className, true).then(nestedSuccessHandler, nestedFailureHandler)
 
         currentClass = @service.determineFullClassName(editor)
 
@@ -88,7 +94,7 @@ class MemberProvider extends AbstractProvider
     ###*
      * Returns suggestions available matching the given prefix.
      *
-     * @param {string}   className           The name of the class to show members of.
+     * @param {Object}   classInfo           Info about the class to show members of.
      * @param {string}   prefix              Prefix to match (may be left empty to list all members).
      * @param {callback} filterCallback      A callback that should return true if the item should be added to the
      *                                       suggestions list.
@@ -96,11 +102,7 @@ class MemberProvider extends AbstractProvider
      *
      * @return {array}
     ###
-    findSuggestionsForPrefix: (className, prefix, filterCallback, insertParameterList = true) ->
-        classInfo = @service.getClassInfo(className)
-
-        return [] if not classInfo
-
+    findSuggestionsForPrefix: (classInfo, prefix, filterCallback, insertParameterList = true) ->
         members = [];
 
         # Ensure we have one big pool so we can optimally match using fuzzaldrin.
