@@ -1,3 +1,7 @@
+## 0.4.0
+### Features and enhancements
+* Added a new command that sorts use statements according to the same algorithm that manages adding them.
+
 ## 0.3.0
 ### Features and enhancements
 * Documentation for classes will now be shown during autocompletion.

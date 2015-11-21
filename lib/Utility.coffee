@@ -147,3 +147,46 @@ module.exports =
                 totalScore -= 0.001 * Math.abs(secondClassName.length - firstClassName.length)
 
         return totalScore
+
+
+    ###*
+     * Sorts the use statements in the specified file according to the same algorithm used by 'addUseClass'.
+     *
+     * @param {TextEditor} firstClassName
+     * @param {boolean}    allowAdditionalNewlines See also addUseClass for a description.
+    ###
+    sortUseStatements: (editor, allowAdditionalNewlines) ->
+        endLine = null
+        startLine = null
+        useStatements = []
+
+        for i in [0 .. editor.getLineCount()]
+            lineText = editor.lineTextForBufferRow(i)
+
+            endLine = i
+
+            if (matches = @useStatementRegex.exec(lineText))
+                if not startLine
+                    startLine = i
+
+                text = matches[1]
+
+                if matches[2]?
+                    text += ' as ' + matches[2]
+
+                useStatements.push(text);
+
+            else if lineText.trim() == ''
+                continue
+
+            # We still do the regex check here to prevent continuing when there are no use statements at all.
+            else if startLine or @structureStartRegex.test(lineText)
+                break
+
+        return if useStatements.length == 0
+
+        editor.transact () =>
+            editor.setTextInBufferRange([[startLine, 0], [endLine, 0]], '')
+
+            for useStatement in useStatements
+                @addUseClass(editor, useStatement, allowAdditionalNewlines)

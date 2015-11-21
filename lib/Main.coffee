@@ -1,5 +1,6 @@
 {Disposable} = require 'atom'
 
+Utility          = require './Utility'
 AtomConfig       = require './AtomConfig'
 ClassProvider    = require './ClassProvider'
 MemberProvider   = require './MemberProvider'
@@ -47,10 +48,23 @@ module.exports =
     providers: []
 
     ###*
+     * Registers any commands that are available to the user.
+    ###
+    registerCommands: () ->
+        atom.commands.add 'atom-workspace', "php-integrator-autocomplete-plus:sort-use-statements": =>
+            activeTextEditor = atom.workspace.getActiveTextEditor()
+
+            return if not activeTextEditor
+
+            Utility.sortUseStatements(activeTextEditor, @configuration.get('insertNewlinesForUseStatements'))
+
+    ###*
      * Activates the package.
     ###
     activate: ->
         @configuration = new AtomConfig(@packageName)
+
+        @registerCommands()
 
         @providers.push(new ConstantProvider(@configuration))
         @providers.push(new VariableProvider(@configuration))
