@@ -22,9 +22,6 @@ module.exports =
      #                  This could be zero if a use statement was already present.
     ###
     addUseClass: (editor, className, allowAdditionalNewlines) ->
-        if className.indexOf('\\') == 0
-            return null
-
         bestUse = 0
         bestScore = 0
         placeBelow = true
@@ -133,7 +130,8 @@ module.exports =
 
         totalScore = 0
 
-        # NOTE: We don't score the last part.
+        # NOTE: We don't add bonus scores for the last part (short class name), so we can optimally group items with the
+        # same namespace.
         for i in [0 .. maxLength - 2]
             if firstClassNameParts[i] == secondClassNameParts[i]
                 totalScore += 2
@@ -147,7 +145,6 @@ module.exports =
                 totalScore -= 0.001 * Math.abs(secondClassName.length - firstClassName.length)
 
         return totalScore
-
 
     ###*
      * Sorts the use statements in the specified file according to the same algorithm used by 'addUseClass'.
