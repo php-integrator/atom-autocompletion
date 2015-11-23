@@ -134,5 +134,7 @@ class ClassProvider extends AbstractProvider
     onDidInsertSuggestion: ({editor, triggerPosition, suggestion}) ->
         return unless suggestion.data?.nameToImport
 
+        return if suggestion.data.nameToImport == @service.determineFullClassName(editor)
+
         editor.transact () =>
             linesAdded = Utility.addUseClass(editor, suggestion.data.nameToImport, @config.get('insertNewlinesForUseStatements'))
