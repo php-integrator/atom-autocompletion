@@ -11,5 +11,6 @@ What is included?
   * Autocompletion for class, interface and trait members.
   * Autocompletion of class, interface and trait names as well as their constructors.
   * Automatic adding of use statements when class names are autocompleted (with a somewhat intelligent positioning).
+    * Included is a command to sort the current use statements.
 
 ![GPLv3 Logo](http://gplv3.fsf.org/gplv3-127x51.png)
