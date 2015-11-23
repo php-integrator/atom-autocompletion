@@ -1,5 +1,6 @@
 ## 0.4.0
 ### Features and enhancements
+* The placement of use statements has been improved.
 * Added a new command that sorts use statements according to the same algorithm that manages adding them.
 
 ## 0.3.0
