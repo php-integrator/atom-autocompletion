@@ -130,9 +130,10 @@ module.exports =
 
         maxLength = Math.min(firstClassNameParts.length, secondClassNameParts.length)
 
-        for i in [0 .. maxLength - 2]
-            if firstClassNameParts[i] != secondClassNameParts[i]
-                return (firstClassNameParts[i].localeCompare(secondClassNameParts[i]))
+        if maxLength >= 2
+            for i in [0 .. maxLength - 2]
+                if firstClassNameParts[i] != secondClassNameParts[i]
+                    return (firstClassNameParts[i].localeCompare(secondClassNameParts[i]))
 
         if firstClassNameParts.length > secondClassNameParts.length
             # Both items have part of their namespace in common, e.g. A\B and A\B\C\D, make sure the longest one ends up
