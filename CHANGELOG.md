@@ -3,6 +3,9 @@
 * The placement of use statements has been improved.
 * Added a new command that sorts use statements according to the same algorithm that manages adding them.
 
+### Bugs fixed
+* Fixed an unnecessary use statement being added when selecting the current class name during autocompletion.
+
 ## 0.3.0
 ### Features and enhancements
 * Documentation for classes will now be shown during autocompletion.
