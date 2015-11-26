@@ -25,6 +25,12 @@ class Config
             disableBuiltinAutocompletion   : true
             insertNewlinesForUseStatements : false
 
+            # See also http://www.phpdoc.org/docs/latest/index.html .
+            phpdoc_base_url : {
+                prefix: 'http://www.phpdoc.org/docs/latest/references/phpdoc/tags/'
+                suffix: '.html'
+            }
+
             # See also https://secure.php.net/urlhowto.php .
             php_documentation_base_urls : {
                 functions: 'https://secure.php.net/function.'

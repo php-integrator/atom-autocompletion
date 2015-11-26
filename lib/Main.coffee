@@ -7,6 +7,7 @@ MemberProvider   = require './MemberProvider'
 ConstantProvider = require './ConstantProvider'
 VariableProvider = require './VariableProvider'
 FunctionProvider = require './FunctionProvider'
+DocBlockProvider = require './DocBlockProvider'
 
 module.exports =
     ###*
@@ -71,6 +72,7 @@ module.exports =
         @providers.push(new FunctionProvider(@configuration))
         @providers.push(new ClassProvider(@configuration))
         @providers.push(new MemberProvider(@configuration))
+        @providers.push(new DocBlockProvider(@configuration))
 
     ###*
      * Deactivates the package.

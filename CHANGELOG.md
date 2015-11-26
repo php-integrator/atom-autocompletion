@@ -1,6 +1,7 @@
 ## 0.4.0
 ### Features and enhancements
 * The placement of use statements has been improved.
+* Added a new autocompletion provider that will provide snippets for tags in docblocks.
 * Added a new command that sorts use statements according to the same algorithm that manages adding them.
 
 ### Bugs fixed

@@ -7,6 +7,7 @@ This package provides autocompletion for your PHP source code using [PHP Integra
 What is included?
   * Autocompletion for local variable names.
   * Autocompletion for global functions and constants.
+  * Autocompletion (snippets) for tag names in docblocks.
   * Autocompletion for class, interface and trait members.
   * Autocompletion for class, interface and trait names as well as their constructors.
   * Automatic adding of use statements when class names are autocompleted (with a somewhat intelligent positioning).
