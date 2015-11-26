@@ -5,6 +5,7 @@
 * Added a new command that sorts use statements according to the same algorithm that manages adding them.
 
 ### Bugs fixed
+* Fixed a use statement still being added when starting a class name with a leading slash.
 * Fixed an unnecessary use statement being added when selecting the current class name during autocompletion.
 
 ## 0.3.0

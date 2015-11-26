@@ -48,8 +48,9 @@ class ClassProvider extends AbstractProvider
     ###
     findSuggestionsForPrefix: (classes, prefix, insertParameterList = true) ->
         # Get rid of the leading "new" or "use" keyword
-        isInstantiation = false
         use = false
+        hasLeadingSlash = false
+        isInstantiation = false
 
         if prefix.indexOf("new \\") != -1
             isInstantiation = true
@@ -64,6 +65,7 @@ class ClassProvider extends AbstractProvider
             prefix = prefix.replace /use /, ''
 
         if prefix.indexOf("\\") == 0
+            hasLeadingSlash = true
             prefix = prefix.substring(1, prefix.length)
 
         flatList = (obj for name,obj of classes)
@@ -92,6 +94,11 @@ class ClassProvider extends AbstractProvider
 
             nameToUse = nameToUseParts.join('\\')
             nameToImport = nameToImportParts.join('\\')
+
+            if hasLeadingSlash
+                # Don't try to add use statements for class names that the user wants to make absolute by adding a
+                # leading slash.
+                nameToImport = null
 
             suggestionData =
                 text              : nameToUse
