@@ -20,6 +20,8 @@ class FunctionProvider extends AbstractProvider
      * @inheritdoc
     ###
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
+        return [] if not @service
+        
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix.length
 
