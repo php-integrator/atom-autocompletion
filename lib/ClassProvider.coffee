@@ -54,11 +54,7 @@ class ClassProvider extends AbstractProvider
         hasLeadingSlash = false
         isInstantiation = false
 
-        if prefix.indexOf("new \\") != -1
-            isInstantiation = true
-            prefix = prefix.replace /new \\/, ''
-
-        else if prefix.indexOf("new ") != -1
+        if prefix.indexOf("new ") != -1
             isInstantiation = true
             prefix = prefix.replace /new /, ''
 
