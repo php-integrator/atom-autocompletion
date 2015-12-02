@@ -31,7 +31,7 @@ class DocBlockProvider extends AbstractProvider
     ###
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         return [] if not @service
-        
+
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix.length
 
@@ -89,7 +89,7 @@ class DocBlockProvider extends AbstractProvider
             {name: '@link',           documentationName : 'link',           snippet : '@link ${1:uri} ${2:[description]}$0'}
             {name: '@method',         documentationName : 'method',         snippet : '@method ${1:type} ${2:name}(${3:[parameter list]})$0'}
             {name: '@package',        documentationName : 'package',        snippet : '@package ${1:package name}$0'}
-            {name: '@param',          documentationName : 'param',          snippet : '@param ${1:mixed} ${2:\$parameter} ${3:[description]}$0'}
+            {name: '@param',          documentationName : 'param',          snippet : '@param ${1:mixed} \$${2:parameter} ${3:[description]}$0'}
             {name: '@property',       documentationName : 'property',       snippet : '@property ${1:type} ${2:name} ${3:[description]}$0'}
             {name: '@property-read',  documentationName : 'property-read',  snippet : '@property-read ${1:type} ${2:name} ${3:[description]}$0'}
             {name: '@property-write', documentationName : 'property-write', snippet : '@property-write ${1:type} ${2:name} ${3:[description]}$0'}
@@ -100,6 +100,6 @@ class DocBlockProvider extends AbstractProvider
             {name: '@throws',         documentationName : 'throws',         snippet : '@throws ${1:exception type} ${2:[description]}$0'}
             {name: '@todo',           documentationName : 'todo',           snippet : '@todo ${1:description}$0'}
             {name: '@uses',           documentationName : 'uses',           snippet : '@uses ${1:FQSEN} ${2:[description]}$0'}
-            {name: '@var',            documentationName : 'var',            snippet : '@var ${1:type} ${2:${3:[\$property]} ${4:[description]}}$0'}
+            {name: '@var',            documentationName : 'var',            snippet : '@var ${1:type} ${2:\$${3:[property]} ${4:[description]}}$0'}
             {name: '@version',        documentationName : 'version',        snippet : '@version ${1:vector} ${2:[description]}$0'}
         ]
