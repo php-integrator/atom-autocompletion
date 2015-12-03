@@ -31,7 +31,7 @@ class MemberProvider extends AbstractProvider
     ###
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         return [] if not @service
-        
+
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix.length
 
@@ -58,7 +58,9 @@ class MemberProvider extends AbstractProvider
 
             mustBeStatic = false
 
-            if elements[elements.length - 2] == '::' and elements[elements.length - 3].trim() != 'parent'
+            objectBeingCompleted = elements[elements.length - 3].trim();
+
+            if elements[elements.length - 2] == '::' and objectBeingCompleted != 'parent'
                 mustBeStatic = true
 
             characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
@@ -68,8 +70,13 @@ class MemberProvider extends AbstractProvider
                 return @findSuggestionsForPrefix(classInfo, elements[elements.length - 1].trim(), (element) =>
                     # See also atom-autocomplete-php ticket #127.
                     return false if mustBeStatic and not element.isStatic
-                    return false if element.isPrivate and element.declaringClass.name != currentClass
-                    return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in currentClassParents
+
+                    if objectBeingCompleted != '$this'
+                        # Explicitly checking for '$this' allows files that are being require-d inside classes to define
+                        # a type override annotation for $this and still be able to access private and protected members
+                        # there.
+                        return false if element.isPrivate and element.declaringClass.name != currentClass
+                        return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in currentClassParents
 
                     # Constants are only available when statically accessed.
                     return false if not element.isMethod and not element.isProperty and not mustBeStatic
