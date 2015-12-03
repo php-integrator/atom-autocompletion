@@ -3,6 +3,7 @@
 * The placement of use statements has been improved.
 * Added a new autocompletion provider that will provide snippets for tags in docblocks.
 * Added a new command that sorts use statements according to the same algorithm that manages adding them.
+* $this will now always list private and protected members, which allows files that are being require-d inside classes to define a type override annotation for $this and still be able to access private and protected members there.
 
 ### Bugs fixed
 * Fixed a use statement still being added when starting a class name with a leading slash.
