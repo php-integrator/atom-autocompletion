@@ -80,7 +80,7 @@ class DocBlockProvider extends AbstractProvider
             {name: '@api',            documentationName : 'api',            snippet : '@api$0'}
             {name: '@author',         documentationName : 'author',         snippet : '@author ${1:name} ${2:[email]}$0'}
             {name: '@copyright',      documentationName : 'copyright',      snippet : '@copyright ${1:description}$0'}
-            {name: '@deprecated',     documentationName : 'deprecated',     snippet : '@deprecated$0'}
+            {name: '@deprecated',     documentationName : 'deprecated',     snippet : '@deprecated ${1:[vector]} ${2:[description]}$0'}
             {name: '@example',        documentationName : 'example',        snippet : '@example ${1:example}$0'}
             {name: '@filesource',     documentationName : 'filesource',     snippet : '@filesource$0'}
             {name: '@ignore',         documentationName : 'ignore',         snippet : '@ignore ${1:[description]}$0'}
