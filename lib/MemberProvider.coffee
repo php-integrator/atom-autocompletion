@@ -132,12 +132,12 @@ class MemberProvider extends AbstractProvider
             displayText = match.name
             returnValue = @getClassShortName(match.return?.type)
 
-            if match.isMethod
+            if match.name of classInfo.methods
                 type = 'method'
                 snippet = if insertParameterList then @getFunctionSnippet(match.name, match) else null
                 displayText = @getFunctionSignature(match.name, match)
 
-            else if match.isProperty
+            else if match.name of classInfo.properties
                 type = 'property'
 
             else
