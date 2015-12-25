@@ -21,7 +21,7 @@ class FunctionProvider extends AbstractProvider
     ###
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         return [] if not @service
-        
+
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix.length
 
@@ -63,7 +63,7 @@ class FunctionProvider extends AbstractProvider
                 description         : if match.isBuiltin then 'Built-in PHP function.' else match.descriptions.short
                 leftLabel           : returnValue
                 descriptionMoreURL  : if match.isBuiltin then @config.get('php_documentation_base_urls').functions + match.name else null
-                className           : if match.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                className           : if match.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
                 snippet             : if insertParameterList then @getFunctionSnippet(nameToUseEscaped, match) else null
                 displayText         : @getFunctionSignature(match.name, match)
                 replacementPrefix   : prefix

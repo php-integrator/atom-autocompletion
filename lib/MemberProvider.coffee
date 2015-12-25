@@ -168,6 +168,6 @@ class MemberProvider extends AbstractProvider
                 leftLabel   : returnValue
                 rightLabel  : declaringStructureShortName
                 description : if match.descriptions.short? then match.descriptions.short else ''
-                className   : if match.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                className   : if match.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
 
         return suggestions

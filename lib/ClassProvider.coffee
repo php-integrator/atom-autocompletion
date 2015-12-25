@@ -102,7 +102,7 @@ class ClassProvider extends AbstractProvider
                 text              : nameToUse
                 type              : 'class'
                 description       : match.descriptions.short
-                className         : if match.deprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                className         : if match.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
                 replacementPrefix : prefix
                 displayText       : match.name
 
