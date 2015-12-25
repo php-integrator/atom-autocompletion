@@ -68,7 +68,8 @@ class MemberProvider extends AbstractProvider
 
             nestedSuccessHandler = (classInfo) =>
                 return @findSuggestionsForPrefix(classInfo, elements[elements.length - 1].trim(), (element) =>
-                    # See also atom-autocomplete-php ticket #127.
+                    # Constants are only available when statically accessed (actually not entirely correct, they will
+                    # work in a non-static context as well, but it's not good practice).
                     return false if mustBeStatic and not element.isStatic
 
                     if objectBeingCompleted != '$this'
@@ -77,9 +78,6 @@ class MemberProvider extends AbstractProvider
                         # there.
                         return false if element.isPrivate and element.declaringClass.name != currentClass
                         return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in currentClassParents
-
-                    # Constants are only available when statically accessed.
-                    return false if not element.isMethod and not element.isProperty and not mustBeStatic
 
                     return true
                 , insertParameterList)
