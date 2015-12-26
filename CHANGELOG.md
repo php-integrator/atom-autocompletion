@@ -2,7 +2,9 @@
 ### Features and enhancements
 * The placement of use statements has been improved.
 * Added a new autocompletion provider that will provide snippets for tags in docblocks.
+* The class provider will now show a documentation URL for built-in classes, interfaces and traits.
 * Added a new command that sorts use statements according to the same algorithm that manages adding them.
+* The class provider will now show the type of the structural element (trait, interface or class) in the left label.
 * $this will now always list private and protected members, which allows files that are being require-d inside classes to define a type override annotation for $this and still be able to access private and protected members there.
 
 ### Bugs fixed

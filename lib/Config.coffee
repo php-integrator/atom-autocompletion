@@ -33,7 +33,8 @@ class Config
 
             # See also https://secure.php.net/urlhowto.php .
             php_documentation_base_urls : {
-                functions: 'https://secure.php.net/function.'
+                classes   : 'https://secure.php.net/'
+                functions : 'https://secure.php.net/function.'
             }
 
         @load()

@@ -99,12 +99,14 @@ class ClassProvider extends AbstractProvider
                 nameToImport = null
 
             suggestionData =
-                text              : nameToUse
-                type              : 'class'
-                description       : match.descriptions.short
-                className         : if match.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
-                replacementPrefix : prefix
-                displayText       : match.name
+                text               : nameToUse
+                type               : 'class'
+                description        : if match.isBuiltin then 'Built-in PHP structural element.' else match.descriptions.short
+                leftLabel          : match.type
+                descriptionMoreURL : if match.isBuiltin then @config.get('php_documentation_base_urls').classes + match.name else null
+                className          : if match.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                replacementPrefix  : prefix
+                displayText        : match.name
 
             # User is trying to do an instantiation? Print a list of class names that have a constructor.
             if not isUse
