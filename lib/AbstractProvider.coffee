@@ -75,33 +75,32 @@ class AbstractProvider
     ###*
      * Builds the snippet for a PHP function or method.
      *
-     * @param {string} name     The name of the function or method.
-     * @param {array}  elements The (optional and required) parameters.
+     * @param {string} name The name of the function or method.
+     * @param {array}  info Information about the function or method.
      *
      * @return {string}
     ###
-    getFunctionSnippet: (name, elements) ->
+    getFunctionSnippet: (name, info) ->
         body = name + "("
-        lastIndex = 0
 
-        # Non optional elements
-        for arg, index in elements.parameters
-            body += ", " if index != 0
-            body += "${" + (index+1) + ":" + arg + "}"
-            lastIndex = index+1
+        isInOptionalList = false
 
-        # Optional elements. One big same snippet
-        if elements.optionals.length > 0
-            body += "${" + (lastIndex + 1) + ":["
+        for param, index in info.parameters
+            description = ''
+            description += '${' + (index + 1) + ':[' if param.isOptional and not isInOptionalList
+            description += ', '  if index != 0
+            description += '&'   if param.isReference
+            description += '$' + param.name
+            description += '...' if param.isVariadic
+            description += ']}'   if param.isOptional and index == (info.parameters.length - 1)
 
-            body += ", " if lastIndex != 0
+            isInOptionalList = param.isOptional
 
-            lastIndex += 1
+            if not param.isOptional
+                body += '${' + (index + 1) + ':' + description + '}'
 
-            for arg, index in elements.optionals
-                body += ", " if index != 0
-                body += arg
-            body += "]}"
+            else
+                body += description
 
         body += ")"
 
