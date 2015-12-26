@@ -22,6 +22,12 @@ class AbstractProvider
     inclusionPriority: 1
 
     ###*
+     * Let base autocomplete-plus handle the actual filtering, that way we don't need to manually filter (e.g. using
+     * fuzzaldrin) ourselves and the user can configure filtering settings on the base package.
+    ###
+    filterSuggestions: true
+
+    ###*
      * The class selectors autocompletion is explicitly disabled for (overrules the {@see selector}).
     ###
     disableForSelector: '.source.php .comment, .source.php .string'

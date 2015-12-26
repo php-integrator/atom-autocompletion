@@ -1,5 +1,3 @@
-fuzzaldrin = require 'fuzzaldrin'
-
 AbstractProvider = require "./AbstractProvider"
 
 module.exports =
@@ -46,17 +44,15 @@ class DocBlockProvider extends AbstractProvider
      * @return {array}
     ###
     findSuggestionsForPrefix: (tagList, prefix) ->
-        matches = fuzzaldrin.filter(tagList, prefix, key: 'name')
-
         suggestions = []
 
-        for match in matches
+        for tag in tagList
             documentationUrl = null
 
-            if match.documentationName
+            if tag.documentationName
                 documentationUrl =
                     @config.get('phpdoc_base_url').prefix +
-                    match.documentationName +
+                    tag.documentationName +
                     @config.get('phpdoc_base_url').suffix
 
             # NOTE: The description must not be empty for the 'More' button to show up.
@@ -64,8 +60,8 @@ class DocBlockProvider extends AbstractProvider
                 type                : 'tag',
                 description         : 'PHP docblock tag.'
                 descriptionMoreURL  : documentationUrl
-                snippet             : match.snippet
-                displayText         : match.name
+                snippet             : tag.snippet
+                displayText         : tag.name
                 replacementPrefix   : prefix
 
         return suggestions

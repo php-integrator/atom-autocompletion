@@ -1,5 +1,3 @@
-fuzzaldrin = require 'fuzzaldrin'
-
 Utility = require './Utility'
 AbstractProvider = require './AbstractProvider'
 
@@ -66,15 +64,11 @@ class ClassProvider extends AbstractProvider
             hasLeadingSlash = true
             prefix = prefix.substring(1, prefix.length)
 
-        flatList = (obj for name,obj of classes)
-
-        matches = fuzzaldrin.filter(flatList, prefix, key: 'name')
-
         suggestions = []
 
-        for match in matches when match.name
+        for name, element of classes when element.name
             prefixParts = prefix.split('\\')
-            suggestionParts = match.name.split('\\')
+            suggestionParts = element.name.split('\\')
 
             # We try to add an import that has only as many parts of the namespace as needed, for example, if the user
             # types 'Foo\Class' and confirms the suggestion 'My\Foo\Class', we add an import for 'My\Foo' and leave the
@@ -101,31 +95,31 @@ class ClassProvider extends AbstractProvider
             suggestionData =
                 text               : nameToUse
                 type               : 'class'
-                description        : if match.isBuiltin then 'Built-in PHP structural element.' else match.descriptions.short
-                leftLabel          : match.type
-                descriptionMoreURL : if match.isBuiltin then @config.get('php_documentation_base_urls').classes + match.name else null
-                className          : if match.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                description        : if element.isBuiltin then 'Built-in PHP structural element.' else element.descriptions.short
+                leftLabel          : element.type
+                descriptionMoreURL : if element.isBuiltin then @config.get('php_documentation_base_urls').classes + element.name else null
+                className          : if element.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
                 replacementPrefix  : prefix
-                displayText        : match.name
+                displayText        : element.name
 
             # User is trying to do an instantiation? Print a list of class names that have a constructor.
             if not isUse
-                if isInstantiation and match.methods and ("__construct" of match.methods)
-                    args = match.methods.__construct
+                if isInstantiation and element.methods and ("__construct" of element.methods)
+                    args = element.methods.__construct
 
                     # If we don't escape the slashes, they will not show up in the autocompleted text. See also
                     # https://github.com/atom/autocomplete-plus/issues/577
                     nameToUseEscaped = nameToUse.replace('\\', '\\\\')
 
                     suggestionData.snippet     = if insertParameterList then @getFunctionSnippet(nameToUseEscaped, args) else null
-                    suggestionData.displayText = @getFunctionSignature(match.name, args)
+                    suggestionData.displayText = @getFunctionSignature(element.name, args)
 
                 suggestionData.data =
                     nameToImport: nameToImport
 
             else
                 # Use statements always get the full class name as completion.
-                suggestionData.text = match.name
+                suggestionData.text = element.name
 
             suggestions.push suggestionData
 

@@ -1,5 +1,3 @@
-fuzzaldrin = require 'fuzzaldrin'
-
 AbstractProvider = require "./AbstractProvider"
 
 module.exports =
@@ -112,62 +110,58 @@ class MemberProvider extends AbstractProvider
      * @return {array}
     ###
     findSuggestionsForPrefix: (classInfo, prefix, filterCallback, insertParameterList = true) ->
-        members = [];
-
-        # Ensure we have one big pool so we can optimally match using fuzzaldrin.
-        members.push(obj) for name,obj of classInfo.methods
-        members.push(obj) for name,obj of classInfo.constants
-        members.push(obj) for name,obj of classInfo.properties
-
-        matches = fuzzaldrin.filter(members, prefix, key: 'name')
-
         suggestions = []
 
-        for match in matches
-            if filterCallback and not filterCallback(match)
-                continue
+        processList = (list) =>
+            for name, member of list
+                if filterCallback and not filterCallback(member)
+                    continue
 
-            # Ensure we don't get very long return types by just showing the last part.
-            snippet = null
-            displayText = match.name
-            returnValue = @getClassShortName(match.return?.type)
+                # Ensure we don't get very long return types by just showing the last part.
+                snippet = null
+                displayText = member.name
+                returnValue = @getClassShortName(member.return?.type)
 
-            if match.name of classInfo.methods
-                type = 'method'
-                snippet = if insertParameterList then @getFunctionSnippet(match.name, match) else null
-                displayText = @getFunctionSignature(match.name, match)
+                if member.name of classInfo.methods
+                    type = 'method'
+                    snippet = if insertParameterList then @getFunctionSnippet(member.name, member) else null
+                    displayText = @getFunctionSignature(member.name, member)
 
-            else if match.name of classInfo.properties
-                type = 'property'
-
-            else
-                type = 'constant'
-
-            # Determine the short name of the location where this member is defined.
-            declaringStructureShortName = null
-
-            if match.declaringStructure.name
-                declaringStructure = null
-
-                if match.override
-                    declaringStructure = match.override.declaringStructure
-
-                else if match.implementation
-                    declaringStructure = match.implementation.declaringStructure
+                else if member.name of classInfo.properties
+                    type = 'property'
 
                 else
-                    declaringStructure = match.declaringStructure
+                    type = 'constant'
 
-                declaringStructureShortName = @getClassShortName(declaringStructure.name)
+                # Determine the short name of the location where this member is defined.
+                declaringStructureShortName = null
 
-            suggestions.push
-                text        : match.name,
-                type        : type
-                snippet     : snippet
-                displayText : displayText
-                leftLabel   : returnValue
-                rightLabel  : declaringStructureShortName
-                description : if match.descriptions.short? then match.descriptions.short else ''
-                className   : if match.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                if member.declaringStructure.name
+                    declaringStructure = null
+
+                    if member.override
+                        declaringStructure = member.override.declaringStructure
+
+                    else if member.implementation
+                        declaringStructure = member.implementation.declaringStructure
+
+                    else
+                        declaringStructure = member.declaringStructure
+
+                    declaringStructureShortName = @getClassShortName(declaringStructure.name)
+
+                suggestions.push
+                    text        : member.name,
+                    type        : type
+                    snippet     : snippet
+                    displayText : displayText
+                    leftLabel   : returnValue
+                    rightLabel  : declaringStructureShortName
+                    description : if member.descriptions.short? then member.descriptions.short else ''
+                    className   : if member.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
+
+        processList(classInfo.methods)
+        processList(classInfo.constants)
+        processList(classInfo.properties)
 
         return suggestions

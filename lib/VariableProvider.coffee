@@ -1,7 +1,5 @@
 {Point} = require 'atom'
 
-fuzzaldrin = require 'fuzzaldrin'
-
 AbstractProvider = require "./AbstractProvider"
 
 module.exports =
@@ -30,7 +28,7 @@ class VariableProvider extends AbstractProvider
     ###
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         return [] if not @service
-        
+
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix.length
 
@@ -50,23 +48,19 @@ class VariableProvider extends AbstractProvider
      * @return array
     ###
     findSuggestionsForPrefix: (variables, prefix) ->
-        flatList = (obj for name,obj of variables)
-
-        matches = fuzzaldrin.filter(flatList, prefix, key: 'name')
-
         suggestions = []
 
-        for match in matches
+        for name, variable of variables
             type = null
 
             # Just show the last part of a class name with a namespace.
-            if match.type
-                parts = match.type.split('\\')
+            if variable.type
+                parts = variable.type.split('\\')
                 type = parts.pop()
 
             suggestions.push
                 type              : 'variable'
-                text              : match.name
+                text              : variable.name
                 leftLabel         : type
                 replacementPrefix : prefix
 

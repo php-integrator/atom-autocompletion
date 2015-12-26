@@ -5,6 +5,7 @@
 * The class provider will now show a documentation URL for built-in classes, interfaces and traits.
 * Added a new command that sorts use statements according to the same algorithm that manages adding them.
 * The class provider will now show the type of the structural element (trait, interface or class) in the left label.
+* We no longer depend on fuzzaldrin directly. Filtering suggestions is now handled by the base autocomplete-plus package, allowing your configurations there to also take effect in this package.
 * $this will now always list private and protected members, which allows files that are being require-d inside classes to define a type override annotation for $this and still be able to access private and protected members there.
 
 ### Bugs fixed

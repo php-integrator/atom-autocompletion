@@ -1,5 +1,3 @@
-fuzzaldrin = require 'fuzzaldrin'
-
 AbstractProvider = require "./AbstractProvider"
 
 module.exports =
@@ -22,7 +20,7 @@ class ConstantProvider extends AbstractProvider
     ###
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         return [] if not @service
-        
+
         tmpPrefix = @getPrefix(editor, bufferPosition)
         return [] unless tmpPrefix.length
 
@@ -40,16 +38,12 @@ class ConstantProvider extends AbstractProvider
      * @return {array}
     ###
     findSuggestionsForPrefix: (constants, prefix) ->
-        flatList = (obj for name,obj of constants)
-
-        matches = fuzzaldrin.filter(flatList, prefix, key: 'name')
-
         suggestions = []
 
-        for match in matches
+        for name, constant of constants
             suggestions.push
-                text        : match.name,
+                text        : constant.name,
                 type        : 'constant',
-                description : if match.isBuiltin then 'Built-in PHP constant.' else 'Global PHP constant.'
+                description : if constant.isBuiltin then 'Built-in PHP constant.' else 'Global PHP constant.'
 
         return suggestions

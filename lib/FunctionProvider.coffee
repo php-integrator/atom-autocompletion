@@ -1,5 +1,3 @@
-fuzzaldrin = require 'fuzzaldrin'
-
 AbstractProvider = require "./AbstractProvider"
 
 module.exports =
@@ -43,29 +41,25 @@ class FunctionProvider extends AbstractProvider
      * @return {array}
     ###
     findSuggestionsForPrefix: (functions, prefix, insertParameterList = true) ->
-        flatList = (obj for name,obj of functions)
-
-        matches = fuzzaldrin.filter(flatList, prefix, key: 'name')
-
         suggestions = []
 
-        for match in matches
-            returnValue = @getClassShortName(match.return?.type)
+        for name, func of functions
+            returnValue = @getClassShortName(func.return?.type)
 
             # If we don't escape the slashes, they will not show up in the autocompleted text. See also
             # https://github.com/atom/autocomplete-plus/issues/577
-            nameToUseEscaped = match.name.replace('\\', '\\\\')
+            nameToUseEscaped = func.name.replace('\\', '\\\\')
 
             # NOTE: The description must not be empty for the 'More' button to show up.
             suggestions.push
-                text                : match,
+                text                : func,
                 type                : 'function',
-                description         : if match.isBuiltin then 'Built-in PHP function.' else match.descriptions.short
+                description         : if func.isBuiltin then 'Built-in PHP function.' else func.descriptions.short
                 leftLabel           : returnValue
-                descriptionMoreURL  : if match.isBuiltin then @config.get('php_documentation_base_urls').functions + match.name else null
-                className           : if match.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
-                snippet             : if insertParameterList then @getFunctionSnippet(nameToUseEscaped, match) else null
-                displayText         : @getFunctionSignature(match.name, match)
+                descriptionMoreURL  : if func.isBuiltin then @config.get('php_documentation_base_urls').functions + func.name else null
+                className           : if func.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                snippet             : if insertParameterList then @getFunctionSnippet(nameToUseEscaped, func) else null
+                displayText         : @getFunctionSignature(func.name, func)
                 replacementPrefix   : prefix
 
         return suggestions

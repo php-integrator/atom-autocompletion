@@ -23,7 +23,6 @@
     }
   },
   "dependencies": {
-    "fuzzaldrin": "^2.1.0"
   },
   "keywords": [
     "php",
