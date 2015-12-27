@@ -112,7 +112,7 @@ class MemberProvider extends AbstractProvider
     findSuggestionsForPrefix: (classInfo, prefix, filterCallback, insertParameterList = true) ->
         suggestions = []
 
-        processList = (list) =>
+        processList = (list, type) =>
             for name, member of list
                 if filterCallback and not filterCallback(member)
                     continue
@@ -122,16 +122,9 @@ class MemberProvider extends AbstractProvider
                 displayText = member.name
                 returnValue = @getClassShortName(member.return?.type)
 
-                if member.name of classInfo.methods
-                    type = 'method'
+                if type == 'method'
                     snippet = if insertParameterList then @getFunctionSnippet(member.name, member) else null
                     displayText = @getFunctionSignature(member.name, member)
-
-                else if member.name of classInfo.properties
-                    type = 'property'
-
-                else
-                    type = 'constant'
 
                 # Determine the short name of the location where this member is defined.
                 declaringStructureShortName = null
@@ -160,8 +153,8 @@ class MemberProvider extends AbstractProvider
                     description : if member.descriptions.short? then member.descriptions.short else ''
                     className   : if member.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
 
-        processList(classInfo.methods)
-        processList(classInfo.constants)
-        processList(classInfo.properties)
+        processList(classInfo.methods, 'method')
+        processList(classInfo.constants, 'constant')
+        processList(classInfo.properties, 'property')
 
         return suggestions
