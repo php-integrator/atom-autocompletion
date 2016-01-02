@@ -149,10 +149,13 @@ module.exports =
                 if firstClassNameParts[i] != secondClassNameParts[i]
                     return (firstClassNameParts[i].localeCompare(secondClassNameParts[i]))
 
+        # At this point, both FQSEN's share a common namespace, e.g. A\B and A\B\C\D, or XMLElement and XMLDocument.
+        # The one with the most namespace parts ends up last.
         if firstClassNameParts.length > secondClassNameParts.length
-            # Both items have part of their namespace in common, e.g. A\B and A\B\C\D, make sure the longest one ends up
-            # last.
             return 1
+
+        else if firstClassNameParts.length < secondClassNameParts.length
+            return -1
 
         # Both items have share the same namespace, sort from shortest to longest last word (class, interface, ...).
         return firstClassName.length > secondClassName.length ? 1 : -1

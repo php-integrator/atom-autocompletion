@@ -9,6 +9,7 @@
 * $this will now always list private and protected members, which allows files that are being require-d inside classes to define a type override annotation for $this and still be able to access private and protected members there.
 
 ### Bugs fixed
+* Fixed use statements ending up at an incorrect location in some situations.
 * Fixed a use statement still being added when starting a class name with a leading slash.
 * Fixed duplicate use statements being added in some cases with certain (unformatted) sorting combinations.
 * Fixed an unnecessary use statement being added when selecting the current class name during autocompletion.
