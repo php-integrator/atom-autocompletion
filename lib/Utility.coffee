@@ -28,6 +28,23 @@ module.exports =
         lineCount = editor.getLineCount()
         previousMatchThatSharedNamespacePrefixRow = null
 
+        # First see if the use statement is already present. The next loop stops early (and can't do this).
+        for i in [0 .. lineCount - 1]
+            line = editor.lineTextForBufferRow(i).trim()
+
+            continue if line.length == 0
+
+            scopeDescriptor = editor.scopeDescriptorForBufferPosition([i, line.length]).getScopeChain()
+
+            if scopeDescriptor.indexOf('.comment') >= 0
+                continue
+
+            break if line.match(@structureStartRegex)
+
+            if (matches = @useStatementRegex.exec(line))
+                if matches[1] == className or (matches[1][0] == '\\' and matches[1].substr(1) == className)
+                    return 0
+
         # Determine an appropriate location to place the use statement.
         for i in [0 .. lineCount - 1]
             line = editor.lineTextForBufferRow(i).trim()
@@ -45,9 +62,6 @@ module.exports =
                 bestUseRow = i
 
             if (matches = @useStatementRegex.exec(line))
-                if matches[1] == className or (matches[1][0] == '\\' and matches[1].substr(1) == className)
-                    return 0
-
                 bestUseRow = i
 
                 placeBelow = true

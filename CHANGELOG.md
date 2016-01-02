@@ -10,6 +10,7 @@
 
 ### Bugs fixed
 * Fixed a use statement still being added when starting a class name with a leading slash.
+* Fixed duplicate use statements being added in some cases with certain (unformatted) sorting combinations.
 * Fixed an unnecessary use statement being added when selecting the current class name during autocompletion.
 * When the base package service is not available, autocompletion will silently fail instead of spawning errors.
 
