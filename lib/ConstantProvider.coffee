@@ -22,7 +22,7 @@ class ConstantProvider extends AbstractProvider
         return [] if not @service
 
         # We always show all suggestions when there is no prefix.
-        if prefix != ''
+        if prefix.trim() != ''
             tmpPrefix = @getPrefix(editor, bufferPosition)
             return [] unless tmpPrefix != null
 

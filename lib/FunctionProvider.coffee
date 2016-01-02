@@ -21,7 +21,7 @@ class FunctionProvider extends AbstractProvider
         return [] if not @service
 
         # We always show all suggestions when there is no prefix.
-        if prefix != ''
+        if prefix.trim() != ''
             prefix = @getPrefix(editor, bufferPosition)
             return [] unless prefix != null
 
