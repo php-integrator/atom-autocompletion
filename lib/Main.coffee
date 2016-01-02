@@ -26,9 +26,9 @@ module.exports =
 
         insertNewlinesForUseStatements:
             title       : 'Insert newlines for use statements'
-            description : 'When enabled, the plugin will add additional newlines before or after an automatically added
-                           use statement when it can\'t add them nicely to an existing group. This results in more
-                           cleanly separated use statements but will create additional vertical whitespace.'
+            description : 'When enabled, additional newlines are inserted before or after an automatically added
+                           use statement when they can\'t be nicely added to an existing \'group\'. This results in
+                           more cleanly separated use statements but will create additional vertical whitespace.'
             type        : 'boolean'
             default     : false
             order       : 2
