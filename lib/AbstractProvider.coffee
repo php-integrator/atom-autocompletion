@@ -150,7 +150,7 @@ class AbstractProvider
      * @param {TextEditor} editor
      * @param {Point}      bufferPosition
      *
-     * @return {string}
+     * @return {string|null}
     ###
     getPrefix: (editor, bufferPosition) ->
         # Unfortunately the regex $ doesn't seem to match the end when using backwardsScanInRange, so we match the regex
@@ -163,4 +163,4 @@ class AbstractProvider
             # We always want the last match, as that's closest to the cursor itself.
             return matches[matches.length - 1]
 
-        return ''
+        return null

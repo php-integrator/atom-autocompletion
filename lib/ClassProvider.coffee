@@ -21,7 +21,7 @@ class ClassProvider extends AbstractProvider
         return [] if not @service
 
         prefix = @getPrefix(editor, bufferPosition)
-        return [] unless prefix.length
+        return [] unless prefix != null
 
         successHandler = (classes) =>
             return [] unless classes

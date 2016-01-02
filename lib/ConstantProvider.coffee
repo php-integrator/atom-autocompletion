@@ -22,7 +22,7 @@ class ConstantProvider extends AbstractProvider
         return [] if not @service
 
         tmpPrefix = @getPrefix(editor, bufferPosition)
-        return [] unless tmpPrefix.length
+        return [] unless tmpPrefix != null
 
         return @service.getGlobalConstants(true).then (constants) =>
             return [] unless constants

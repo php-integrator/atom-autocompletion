@@ -21,7 +21,7 @@ class FunctionProvider extends AbstractProvider
         return [] if not @service
 
         prefix = @getPrefix(editor, bufferPosition)
-        return [] unless prefix.length
+        return [] unless prefix != null
 
         return @service.getGlobalFunctions(true).then (functions) =>
             return [] unless functions

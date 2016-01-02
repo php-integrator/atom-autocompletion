@@ -30,7 +30,7 @@ class VariableProvider extends AbstractProvider
         return [] if not @service
 
         prefix = @getPrefix(editor, bufferPosition)
-        return [] unless prefix.length
+        return [] unless prefix != null
 
         # Don't include the variable we're completing.
         newBufferPosition = new Point(bufferPosition.row, bufferPosition.column - prefix.length)

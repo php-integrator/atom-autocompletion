@@ -31,7 +31,7 @@ class DocBlockProvider extends AbstractProvider
         return [] if not @service
 
         prefix = @getPrefix(editor, bufferPosition)
-        return [] unless prefix.length
+        return [] unless prefix != null
 
         return @findSuggestionsForPrefix(@fetchTagList(), prefix.trim())
 

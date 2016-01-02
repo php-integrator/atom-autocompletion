@@ -31,7 +31,7 @@ class MemberProvider extends AbstractProvider
         return [] if not @service
 
         prefix = @getPrefix(editor, bufferPosition)
-        return [] unless prefix.length
+        return [] unless prefix != null
 
         try
             className = @service.getResultingTypeAt(editor, bufferPosition, true)
