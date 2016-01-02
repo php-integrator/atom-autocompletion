@@ -3,6 +3,7 @@
 * The placement of use statements has been improved.
 * Added a new autocompletion provider that will provide snippets for tags in docblocks.
 * The class provider will now show a documentation URL for built-in classes, interfaces and traits.
+* Class (name), constant and function suggestions can now be shown even if nothing has been typed yet.
 * Added a new command that sorts use statements according to the same algorithm that manages adding them.
 * The class provider will now show the type of the structural element (trait, interface or class) in the left label.
 * We no longer depend on fuzzaldrin directly. Filtering suggestions is now handled by the base autocomplete-plus package, allowing your configurations there to also take effect in this package.

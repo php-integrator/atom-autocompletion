@@ -20,8 +20,10 @@ class ClassProvider extends AbstractProvider
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         return [] if not @service
 
-        prefix = @getPrefix(editor, bufferPosition)
-        return [] unless prefix != null
+        # We always show all suggestions when there is no prefix.
+        if prefix != ''
+            prefix = @getPrefix(editor, bufferPosition)
+            return [] unless prefix != null
 
         successHandler = (classes) =>
             return [] unless classes
