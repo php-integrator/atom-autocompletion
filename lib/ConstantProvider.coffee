@@ -1,5 +1,4 @@
 AbstractProvider = require "./AbstractProvider"
-MemberProvider = require "./MemberProvider"
 
 module.exports =
 
