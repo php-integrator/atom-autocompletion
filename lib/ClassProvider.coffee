@@ -25,6 +25,9 @@ class ClassProvider extends AbstractProvider
             prefix = @getPrefix(editor, bufferPosition)
             return [] unless prefix != null
 
+        else if scopeDescriptor.getScopeChain().indexOf('.keyword.operator.class') != -1
+            return [] # Don't show anything when autocompleting class members.
+
         successHandler = (classes) =>
             return [] unless classes
 
