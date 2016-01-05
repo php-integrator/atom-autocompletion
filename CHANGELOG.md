@@ -8,6 +8,7 @@
 * The class provider will now show the type of the structural element (trait, interface or class) in the left label.
 * We no longer depend on fuzzaldrin directly. Filtering suggestions is now handled by the base autocomplete-plus package, allowing your configurations there to also take effect in this package.
 * $this will now always list private and protected members, which allows files that are being require-d inside classes to define a type override annotation for $this and still be able to access private and protected members there.
+* The order in which providers are registered has slightly changed; this results in things that are more interesting being shown first, such as members, class names and variable names. Global constants and functions are 'less important' and are shown further down the list. Note that this only applies if, after filtering (fuzzy matching), there are suggestions present from multiple providers.
 
 ### Bugs fixed
 * Fixed use statements ending up at an incorrect location in some situations.
