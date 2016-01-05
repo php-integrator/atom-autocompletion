@@ -67,9 +67,9 @@ module.exports =
 
         @registerCommands()
 
+        @providers.push(new VariableProvider(@configuration))
         @providers.push(new MemberProvider(@configuration))
         @providers.push(new ClassProvider(@configuration))
-        @providers.push(new VariableProvider(@configuration))
         @providers.push(new FunctionProvider(@configuration))
         @providers.push(new ConstantProvider(@configuration))
         @providers.push(new DocBlockProvider(@configuration))
