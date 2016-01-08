@@ -21,10 +21,8 @@ class ConstantProvider extends AbstractProvider
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         return [] if not @service
 
-        # We always show all suggestions when there is no prefix.
-        if prefix != ''
-            tmpPrefix = @getPrefix(editor, bufferPosition)
-            return [] unless tmpPrefix != null
+        tmpPrefix = @getPrefix(editor, bufferPosition)
+        return [] unless tmpPrefix != null
 
         return @service.getGlobalConstants(true).then (constants) =>
             return [] unless constants
