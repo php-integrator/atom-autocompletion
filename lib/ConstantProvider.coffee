@@ -26,9 +26,6 @@ class ConstantProvider extends AbstractProvider
             tmpPrefix = @getPrefix(editor, bufferPosition)
             return [] unless tmpPrefix != null
 
-        else if scopeDescriptor.getScopeChain().indexOf('.keyword.operator.class') != -1
-            return [] # Don't show anything when autocompleting class members.
-
         return @service.getGlobalConstants(true).then (constants) =>
             return [] unless constants
 
