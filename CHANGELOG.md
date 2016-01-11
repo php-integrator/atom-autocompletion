@@ -1,3 +1,7 @@
+## 0.5.0
+### Features and enhancements
+* Parameters for functions and methods will still be shown during completion, but will no longer actually be completed anymore. Instead, your cursor will be put between the parentheses. As a replacement, please consider using the php-integrator-tooltips package (if you're not already), which can now provide call tips instead. Call tips are an improvement as there is no longer a need to remove parameters you don't want and jump around using tab.
+
 ## 0.4.0
 ### Features and enhancements
 * The placement of use statements has been improved.
