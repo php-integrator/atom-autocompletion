@@ -123,7 +123,7 @@ class MemberProvider extends AbstractProvider
                 returnValue = @getClassShortName(member.return?.type)
 
                 if type == 'method'
-                    snippet = if insertParameterList then @getFunctionSnippet(member.name, member) else null
+                    snippet = if insertParameterList then (member.name + '($0)') else null
                     displayText = @getFunctionSignature(member.name, member)
 
                 # Determine the short name of the location where this member is defined.

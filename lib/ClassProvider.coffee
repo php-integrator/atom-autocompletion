@@ -111,7 +111,7 @@ class ClassProvider extends AbstractProvider
                     # https://github.com/atom/autocomplete-plus/issues/577
                     nameToUseEscaped = nameToUse.replace('\\', '\\\\')
 
-                    suggestionData.snippet     = if insertParameterList then @getFunctionSnippet(nameToUseEscaped, args) else null
+                    suggestionData.snippet     = if insertParameterList then (nameToUseEscaped + '($0)') else null
                     suggestionData.displayText = @getFunctionSignature(element.name, args)
 
                 suggestionData.data =
