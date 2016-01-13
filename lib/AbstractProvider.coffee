@@ -87,49 +87,41 @@ class AbstractProvider
      * @return {string}
     ###
     getFunctionSnippet: (name, info) ->
+
+
+    ###*
+     * Builds the signature for a PHP function or method.
+     *
+     * @param {string} name The name of the function or method.
+     * @param {array}  info Information about the function or method.
+     *
+     * @return {string}
+    ###
+    getFunctionSignature: (name, info) ->
         body = name + "("
 
         isInOptionalList = false
 
         for param, index in info.parameters
             description = ''
-            description += '${' + (index + 1) + ':[' if param.isOptional and not isInOptionalList
+            description += '['   if param.isOptional and not isInOptionalList
             description += ', '  if index != 0
             description += '&'   if param.isReference
             description += '$' + param.name
             description += '...' if param.isVariadic
-            description += ']}'   if param.isOptional and index == (info.parameters.length - 1)
+            description += ']'   if param.isOptional and index == (info.parameters.length - 1)
 
             isInOptionalList = param.isOptional
 
             if not param.isOptional
-                body += '${' + (index + 1) + ':' + description + '}'
+                body += description
 
             else
                 body += description
 
         body += ")"
 
-        # Ensure the user ends up after the inserted text when he's done cycling through the parameters with tab.
-        body += "$0"
-
         return body
-
-    ###*
-     * Builds the signature for a PHP function or method.
-     *
-     * @param {string} word     The name of the function or method.
-     * @param {array}  elements The (optional and required) parameters.
-     *
-     * @return {string}
-    ###
-    getFunctionSignature: (word, element) ->
-        snippet = @getFunctionSnippet(word, element)
-
-        # Just strip out the placeholders.
-        signature = snippet.replace(/\$\{\d+:([^\}]+)\}/g, '$1')
-
-        return signature[0 .. -3]
 
     ###*
      * Retrieves the short name for the specified class name (i.e. the last segment, without the class namespace).
