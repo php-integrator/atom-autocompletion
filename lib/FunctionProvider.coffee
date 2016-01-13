@@ -58,7 +58,7 @@ class FunctionProvider extends AbstractProvider
                 leftLabel           : returnValue
                 descriptionMoreURL  : if func.isBuiltin then @config.get('php_documentation_base_urls').functions + func.name else null
                 className           : if func.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
-                snippet             : if insertParameterList then (nameToUseEscaped  + '($0)') else null
+                snippet             : if insertParameterList then @getFunctionSnippet(nameToUseEscaped, func) else null
                 displayText         : @getFunctionSignature(func.name, func)
                 replacementPrefix   : prefix
 

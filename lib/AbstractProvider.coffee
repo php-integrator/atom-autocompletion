@@ -79,17 +79,6 @@ class AbstractProvider
         throw new Error("This method is abstract and must be implemented!")
 
     ###*
-     * Builds the snippet for a PHP function or method.
-     *
-     * @param {string} name The name of the function or method.
-     * @param {array}  info Information about the function or method.
-     *
-     * @return {string}
-    ###
-    getFunctionSnippet: (name, info) ->
-
-
-    ###*
      * Builds the signature for a PHP function or method.
      *
      * @param {string} name The name of the function or method.
@@ -122,6 +111,20 @@ class AbstractProvider
         body += ")"
 
         return body
+
+    ###*
+     * Builds the snippet for a PHP function or method.
+     *
+     * @param {string} name The name of the function or method.
+     * @param {array}  info Information about the function or method.
+     *
+     * @return {string}
+    ###
+    getFunctionSnippet: (name, info) ->
+        if info.parameters.length > 0
+            return name + '($0)'
+
+        return name + '()$0'
 
     ###*
      * Retrieves the short name for the specified class name (i.e. the last segment, without the class namespace).
