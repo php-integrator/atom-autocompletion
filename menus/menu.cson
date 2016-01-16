@@ -1,0 +1,18 @@
+'menu': [
+    {
+        'label': 'Packages'
+        'submenu': [
+            {
+                'label': 'PHP Integrator',
+                'submenu': [
+                    {
+                        'label': 'Autocompletion'
+                        'submenu': [
+                            {'label': 'Sort Use Statements', 'command': 'php-integrator-autocomplete-plus:sort-use-statements'},
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
