@@ -18,7 +18,7 @@
   "consumedServices": {
     "php-integrator.service": {
       "versions": {
-        "^1.0.0": "setService"
+        "~0.5.0": "setService"
       }
     }
   },
