@@ -44,21 +44,17 @@ class FunctionProvider extends AbstractProvider
         suggestions = []
 
         for name, func of functions
-            returnValue = @getClassShortName(func.return?.type)
-
-            # If we don't escape the slashes, they will not show up in the autocompleted text. See also
-            # https://github.com/atom/autocomplete-plus/issues/577
-            nameToUseEscaped = func.name.replace('\\', '\\\\')
-
             # NOTE: The description must not be empty for the 'More' button to show up.
             suggestions.push
-                type                : 'function',
-                description         : if func.isBuiltin then 'Built-in PHP function.' else func.descriptions.short
-                leftLabel           : returnValue
-                descriptionMoreURL  : if func.isBuiltin then @config.get('php_documentation_base_urls').functions + func.name else null
-                className           : if func.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
-                snippet             : if insertParameterList then @getFunctionSnippet(nameToUseEscaped, func) else null
-                displayText         : @getFunctionSignature(func.name, func)
-                replacementPrefix   : prefix
+                text               : func.name
+                type               : 'function'
+                snippet            : if insertParameterList then @getFunctionSnippet(func.name, func) else null
+                displayText        : func.name
+                replacementPrefix  : prefix
+                leftLabel          : @getClassShortName(func.return?.type)
+                rightLabelHTML     : @getSuggestionRightLabel(name, func)
+                description        : if func.isBuiltin then 'Built-in PHP function.' else func.descriptions.short
+                descriptionMoreURL : if func.isBuiltin then @config.get('php_documentation_base_urls').functions + func.name else null
+                className          : 'php-integrator-autocomplete-plus-suggestion' + if func.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
 
         return suggestions

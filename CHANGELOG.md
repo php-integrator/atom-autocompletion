@@ -1,6 +1,7 @@
 ## 0.5.0
 ### Features and enhancements
 * Only (non-abstract) classes will be suggested after the new keyword.
+* The parameter list for methods will now be displayed in a different style for better visual recognition.
 * When autocompleting use statements, the suggestions will now have a different icon to indicate that it is an import.
 * Traits will now receive the 'mixin' type (which by default has the same icon as a 'class') to allow for separate styling.
 * Parameters for functions and methods will still be shown during completion, but will no longer actually be completed anymore. Instead, your cursor will be put between the parentheses. As a replacement, please consider using the [php-integrator-call-tips](https://github.com/Gert-dev/php-integrator-call-tips) package (if you're not already), which can now provide call tips instead. Call tips are an improvement as there is no longer a need to remove parameters you don't want and jump around using tab.

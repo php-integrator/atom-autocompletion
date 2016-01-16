@@ -117,41 +117,15 @@ class MemberProvider extends AbstractProvider
                 if filterCallback and not filterCallback(member)
                     continue
 
-                # Ensure we don't get very long return types by just showing the last part.
-                snippet = null
-                displayText = member.name
-                returnValue = @getClassShortName(member.return?.type)
-
-                if type == 'method'
-                    snippet = if insertParameterList then @getFunctionSnippet(member.name, member) else null
-                    displayText = @getFunctionSignature(member.name, member)
-
-                # Determine the short name of the location where this member is defined.
-                declaringStructureShortName = null
-
-                if member.declaringStructure.name
-                    declaringStructure = null
-
-                    if member.override
-                        declaringStructure = member.override.declaringStructure
-
-                    else if member.implementation
-                        declaringStructure = member.implementation.declaringStructure
-
-                    else
-                        declaringStructure = member.declaringStructure
-
-                    declaringStructureShortName = @getClassShortName(declaringStructure.name)
-
                 suggestions.push
-                    text        : member.name,
-                    type        : type
-                    snippet     : snippet
-                    displayText : displayText
-                    leftLabel   : returnValue
-                    rightLabel  : declaringStructureShortName
-                    description : if member.descriptions.short? then member.descriptions.short else ''
-                    className   : if member.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
+                    text           : member.name
+                    type           : type
+                    snippet        : if type == 'method' and insertParameterList then @getFunctionSnippet(member.name, member) else null
+                    displayText    : member.name
+                    leftLabel      : @getClassShortName(member.return?.type)
+                    rightLabelHTML : @getSuggestionRightLabel(name, member)
+                    description    : if member.descriptions.short? then member.descriptions.short else ''
+                    className      : 'php-integrator-autocomplete-plus-suggestion' + if member.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
 
         processList(classInfo.methods, 'method')
         processList(classInfo.constants, 'constant')

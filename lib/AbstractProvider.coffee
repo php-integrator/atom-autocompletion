@@ -86,8 +86,8 @@ class AbstractProvider
      *
      * @return {string}
     ###
-    getFunctionSignature: (name, info) ->
-        body = name + "("
+    getFunctionParameterList: (name, info) ->
+        body = "("
 
         isInOptionalList = false
 
@@ -111,6 +111,31 @@ class AbstractProvider
         body += ")"
 
         return body
+
+    getSuggestionRightLabel: (name, info) ->
+        parameterList = ''
+
+        if 'parameters' of info
+            parameterList = @getFunctionParameterList(name, info)
+
+        # Determine the short name of the location where this item is defined.
+        declaringStructureShortName = ''
+
+        if info.declaringStructure.name
+            declaringStructure = null
+
+            if info.override
+                declaringStructure = info.override.declaringStructure
+
+            else if info.implementation
+                declaringStructure = info.implementation.declaringStructure
+
+            else
+                declaringStructure = info.declaringStructure
+
+            declaringStructureShortName = @getClassShortName(declaringStructure.name)
+
+        return '<span class="parameters">' + parameterList + '</span><span class="origin">' + declaringStructureShortName + '</span>'
 
     ###*
      * Builds the snippet for a PHP function or method.
