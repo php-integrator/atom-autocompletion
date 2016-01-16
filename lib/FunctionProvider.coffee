@@ -52,7 +52,6 @@ class FunctionProvider extends AbstractProvider
 
             # NOTE: The description must not be empty for the 'More' button to show up.
             suggestions.push
-                text                : func,
                 type                : 'function',
                 description         : if func.isBuiltin then 'Built-in PHP function.' else func.descriptions.short
                 leftLabel           : returnValue
