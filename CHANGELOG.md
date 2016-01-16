@@ -1,5 +1,6 @@
 ## 0.5.0
 ### Features and enhancements
+* Only (non-abstract) classes will be suggested after the new keyword.
 * When autocompleting use statements, the suggestions will now have a different icon to indicate that it is an import.
 * Parameters for functions and methods will still be shown during completion, but will no longer actually be completed anymore. Instead, your cursor will be put between the parentheses. As a replacement, please consider using the php-integrator-tooltips package (if you're not already), which can now provide call tips instead. Call tips are an improvement as there is no longer a need to remove parameters you don't want and jump around using tab.
 

@@ -102,25 +102,17 @@ class ClassProvider extends AbstractProvider
                 replacementPrefix  : prefix
                 displayText        : element.name
 
-            # User is trying to do an instantiation? Print a list of class names that have a constructor.
-            if not isUse
-                if isInstantiation and element.methods and ("__construct" of element.methods)
-                    args = element.methods.__construct
-
-                    # If we don't escape the slashes, they will not show up in the autocompleted text. See also
-                    # https://github.com/atom/autocomplete-plus/issues/577
-                    nameToUseEscaped = nameToUse.replace('\\', '\\\\')
-
-                    suggestionData.snippet     = if insertParameterList then @getFunctionSnippet(nameToUseEscaped, element) else null
-                    suggestionData.displayText = @getFunctionSignature(element.name, args)
-
-                suggestionData.data =
-                    nameToImport: nameToImport
-
-            else
+            if isUse
                 # Use statements always get the full class name as completion.
                 suggestionData.text = element.name
                 suggestionData.type = 'import'
+
+            else
+                if isInstantiation and (element.type != 'class' or element.isAbstract)
+                    continue # Not possible to instantiate these.
+
+                suggestionData.data =
+                    nameToImport: nameToImport
 
             suggestions.push suggestionData
 
