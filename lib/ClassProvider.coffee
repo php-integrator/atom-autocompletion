@@ -120,6 +120,7 @@ class ClassProvider extends AbstractProvider
             else
                 # Use statements always get the full class name as completion.
                 suggestionData.text = element.name
+                suggestionData.type = 'import'
 
             suggestions.push suggestionData
 
