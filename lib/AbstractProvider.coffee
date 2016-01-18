@@ -121,7 +121,7 @@ class AbstractProvider
         # Determine the short name of the location where this item is defined.
         declaringStructureShortName = ''
 
-        if info.declaringStructure.name
+        if info.declaringStructure and info.declaringStructure.name
             declaringStructure = null
 
             if info.override
