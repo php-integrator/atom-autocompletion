@@ -22,7 +22,7 @@ class MemberProvider extends AbstractProvider
      *
      * Autocompletion for class members, i.e. after a ::, ->, ...
     ###
-    regex: /((?:\$?(?:[a-zA-Z0-9_]*)\s*(?:\(.*\))?\s*(?:->|::)\s*)+[a-zA-Z0-9_]*)$/
+    regex: /((?:\$?(?:[a-zA-Z0-9_]*)\s*(?:\(.*\))?\s*(?:->|::)\s*)+\$?[a-zA-Z0-9_]*)$/
 
     ###*
      * @inheritdoc
@@ -65,7 +65,7 @@ class MemberProvider extends AbstractProvider
             insertParameterList = if characterAfterPrefix == '(' then false else true
 
             nestedSuccessHandler = (classInfo) =>
-                return @findSuggestionsForPrefix(classInfo, elements[elements.length - 1].trim(), (element) =>
+                return @findSuggestionsForPrefix(classInfo, elements[elements.length - 1].trim(), mustBeStatic, (element) =>
                     # Constants are only available when statically accessed (actually not entirely correct, they will
                     # work in a non-static context as well, but it's not good practice).
                     return false if mustBeStatic and not element.isStatic
@@ -102,6 +102,7 @@ class MemberProvider extends AbstractProvider
      * Returns suggestions available matching the given prefix.
      *
      * @param {Object}   classInfo           Info about the class to show members of.
+     * @param {boolean}  mustBeStatic
      * @param {string}   prefix              Prefix to match (may be left empty to list all members).
      * @param {callback} filterCallback      A callback that should return true if the item should be added to the
      *                                       suggestions list.
@@ -109,7 +110,7 @@ class MemberProvider extends AbstractProvider
      *
      * @return {array}
     ###
-    findSuggestionsForPrefix: (classInfo, prefix, filterCallback, insertParameterList = true) ->
+    findSuggestionsForPrefix: (classInfo, prefix, mustBeStatic, filterCallback, insertParameterList = true) ->
         suggestions = []
 
         processList = (list, type) =>
@@ -117,15 +118,18 @@ class MemberProvider extends AbstractProvider
                 if filterCallback and not filterCallback(member)
                     continue
 
+                text = (if type == 'property' and mustBeStatic then '$' else '') + member.name
+
                 suggestions.push
-                    text           : member.name
-                    type           : type
-                    snippet        : if type == 'method' and insertParameterList then @getFunctionSnippet(member.name, member) else null
-                    displayText    : member.name
-                    leftLabel      : @getClassShortName(member.return?.type)
-                    rightLabelHTML : @getSuggestionRightLabel(name, member)
-                    description    : if member.descriptions.short? then member.descriptions.short else ''
-                    className      : 'php-integrator-autocomplete-plus-suggestion' + if member.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
+                    text              : text
+                    type              : type
+                    snippet           : if type == 'method' and insertParameterList then @getFunctionSnippet(member.name, member) else null
+                    displayText       : text
+                    replacementPrefix : prefix
+                    leftLabel         : @getClassShortName(member.return?.type)
+                    rightLabelHTML    : @getSuggestionRightLabel(name, member)
+                    description       : if member.descriptions.short? then member.descriptions.short else ''
+                    className         : 'php-integrator-autocomplete-plus-suggestion' + if member.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
 
         processList(classInfo.methods, 'method')
         processList(classInfo.constants, 'constant')
