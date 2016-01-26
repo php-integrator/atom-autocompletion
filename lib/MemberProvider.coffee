@@ -55,17 +55,21 @@ class MemberProvider extends AbstractProvider
                 currentClassParents = currentClassInfo.parents
 
             mustBeStatic = false
+            propertyAccessNeedsDollarSign = false
 
             objectBeingCompleted = elements[elements.length - 3].trim();
 
-            if elements[elements.length - 2] == '::' and objectBeingCompleted != 'parent'
-                mustBeStatic = true
+            if elements[elements.length - 2] == '::'
+                propertyAccessNeedsDollarSign = true
+
+                if objectBeingCompleted != 'parent'
+                    mustBeStatic = true
 
             characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
             insertParameterList = if characterAfterPrefix == '(' then false else true
 
             nestedSuccessHandler = (classInfo) =>
-                return @findSuggestionsForPrefix(classInfo, elements[elements.length - 1].trim(), mustBeStatic, (element) =>
+                return @findSuggestionsForPrefix(classInfo, elements[elements.length - 1].trim(), propertyAccessNeedsDollarSign, (element) =>
                     # Constants are only available when statically accessed (actually not entirely correct, they will
                     # work in a non-static context as well, but it's not good practice).
                     return false if mustBeStatic and not element.isStatic
@@ -101,16 +105,16 @@ class MemberProvider extends AbstractProvider
     ###*
      * Returns suggestions available matching the given prefix.
      *
-     * @param {Object}   classInfo           Info about the class to show members of.
-     * @param {boolean}  mustBeStatic
-     * @param {string}   prefix              Prefix to match (may be left empty to list all members).
-     * @param {callback} filterCallback      A callback that should return true if the item should be added to the
-     *                                       suggestions list.
-     * @param {bool}     insertParameterList Whether to insert a list of parameters for methods.
+     * @param {Object}   classInfo                     Info about the class to show members of.
+     * @param {string}   prefix                        Prefix to match (may be left empty to list all members).
+     * @param {boolean}  propertyAccessNeedsDollarSign
+     * @param {callback} filterCallback                A callback that should return true if the item should be added
+     *                                                 to the suggestions list.
+     * @param {bool}     insertParameterList           Whether to insert a list of parameters for methods.
      *
      * @return {array}
     ###
-    findSuggestionsForPrefix: (classInfo, prefix, mustBeStatic, filterCallback, insertParameterList = true) ->
+    findSuggestionsForPrefix: (classInfo, prefix, propertyAccessNeedsDollarSign, filterCallback, insertParameterList = true) ->
         suggestions = []
 
         processList = (list, type) =>
@@ -118,7 +122,7 @@ class MemberProvider extends AbstractProvider
                 if filterCallback and not filterCallback(member)
                     continue
 
-                text = (if type == 'property' and mustBeStatic then '$' else '') + member.name
+                text = (if type == 'property' and propertyAccessNeedsDollarSign then '$' else '') + member.name
 
                 suggestions.push
                     text              : text
