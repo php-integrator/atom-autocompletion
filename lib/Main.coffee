@@ -55,11 +55,13 @@ module.exports =
     ###
     activate: ->
         AtomConfig       = require './AtomConfig'
-        ClassProvider    = require './ClassProvider'
         MemberProvider   = require './MemberProvider'
+        SnippetProvider  = require './SnippetProvider'
+        ClassProvider    = require './ClassProvider'
         ConstantProvider = require './ConstantProvider'
         VariableProvider = require './VariableProvider'
         FunctionProvider = require './FunctionProvider'
+        KeywordProvider  = require './KeywordProvider'
         DocBlockProvider = require './DocBlockProvider'
 
         @configuration = new AtomConfig(@packageName)
@@ -68,9 +70,11 @@ module.exports =
 
         @providers.push(new VariableProvider(@configuration))
         @providers.push(new MemberProvider(@configuration))
+        @providers.push(new SnippetProvider(@configuration))
         @providers.push(new ClassProvider(@configuration))
         @providers.push(new FunctionProvider(@configuration))
         @providers.push(new ConstantProvider(@configuration))
+        @providers.push(new KeywordProvider(@configuration))
         @providers.push(new DocBlockProvider(@configuration))
 
     ###*

@@ -35,6 +35,7 @@ class Config
             php_documentation_base_urls : {
                 classes   : 'https://secure.php.net/'
                 functions : 'https://secure.php.net/function.'
+                keywords  : 'https://secure.php.net/manual/en/reserved.php'
             }
 
         @load()
