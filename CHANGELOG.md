@@ -1,4 +1,4 @@
-## 0.5.0
+## 0.5.0 (base 0.5.0)
 ### Features and enhancements
 * Only (non-abstract) classes will be suggested after the new keyword.
 * A new keyword provider will also show autocompletion for PHP keywords.
@@ -10,8 +10,9 @@
 
 ### Bugs fixed
 * Fixed autocompletion not properly completing and working with static class property access, such as `static::$foo->bar()`.
+* Autocompletion will now also trigger on a backslash for class names (i.e. `My\Namespace\` didn't trigger any autocompletion before, whilst `My\Namespace\A` did).
 
-## 0.4.0
+## 0.4.0 (base 0.4.0)
 ### Features and enhancements
 * The placement of use statements has been improved.
 * Added a new autocompletion provider that will provide snippets for tags in docblocks.
