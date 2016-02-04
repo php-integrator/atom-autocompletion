@@ -23,17 +23,17 @@ class KeywordProvider extends AbstractProvider
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix != null
 
-        return @findSuggestionsForPrefix(@fetchTagList(), prefix.trim())
+        return @addSuggestions(@fetchTagList(), prefix.trim())
 
     ###*
-     * Returns suggestions available matching the given prefix.
+     * Returns available suggestions.
      *
      * @param {array}  tagList
      * @param {string} prefix
      *
      * @return {array}
     ###
-    findSuggestionsForPrefix: (tagList, prefix) ->
+    addSuggestions: (tagList, prefix) ->
         suggestions = []
 
         for tag in tagList

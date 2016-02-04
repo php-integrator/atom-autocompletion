@@ -23,7 +23,7 @@ class SnippetProvider extends AbstractProvider
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix != null
 
-        return @findSuggestionsForPrefix(@fetchTagList(), prefix.trim())
+        return @addSuggestions(@fetchTagList(), prefix.trim())
 
     ###*
      * Returns suggestions available matching the given prefix.
@@ -33,7 +33,7 @@ class SnippetProvider extends AbstractProvider
      *
      * @return {array}
     ###
-    findSuggestionsForPrefix: (tagList, prefix) ->
+    addSuggestions: (tagList, prefix) ->
         suggestions = []
 
         for tag in tagList

@@ -27,17 +27,17 @@ class ConstantProvider extends AbstractProvider
         return @service.getGlobalConstants(true).then (constants) =>
             return [] unless constants
 
-            return @findSuggestionsForPrefix(constants, prefix.trim())
+            return @addSuggestions(constants, prefix.trim())
 
     ###*
-     * Returns suggestions available matching the given prefix
+     * Returns available suggestions.
      *
      * @param {array}  constants
      * @param {string} prefix
      *
      * @return {array}
     ###
-    findSuggestionsForPrefix: (constants, prefix) ->
+    addSuggestions: (constants, prefix) ->
         suggestions = []
 
         for name, constant of constants

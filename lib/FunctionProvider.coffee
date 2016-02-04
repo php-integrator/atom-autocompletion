@@ -29,10 +29,10 @@ class FunctionProvider extends AbstractProvider
             characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
             insertParameterList = if characterAfterPrefix == '(' then false else true
 
-            return @findSuggestionsForPrefix(functions, prefix.trim(), insertParameterList)
+            return @addSuggestions(functions, prefix.trim(), insertParameterList)
 
     ###*
-     * Returns suggestions available matching the given prefix.
+     * Returns available suggestions.
      *
      * @param {array}  functions
      * @param {string} prefix
@@ -40,7 +40,7 @@ class FunctionProvider extends AbstractProvider
      *
      * @return {array}
     ###
-    findSuggestionsForPrefix: (functions, prefix, insertParameterList = true) ->
+    addSuggestions: (functions, prefix, insertParameterList = true) ->
         suggestions = []
 
         for name, func of functions

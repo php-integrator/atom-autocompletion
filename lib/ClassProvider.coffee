@@ -29,7 +29,7 @@ class ClassProvider extends AbstractProvider
             characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
             insertParameterList = if characterAfterPrefix == '(' then false else true
 
-            return @findSuggestionsForPrefix(classes, prefix.trim(), insertParameterList)
+            return @addSuggestions(classes, prefix.trim(), insertParameterList)
 
         failureHandler = () =>
             # Just return no results.
@@ -38,7 +38,7 @@ class ClassProvider extends AbstractProvider
         return @service.getClassList(true).then(successHandler, failureHandler)
 
     ###*
-     * Returns suggestions available matching the given prefix
+     * Returns available suggestions.
      *
      * @param {array}  classes
      * @param {string} prefix
@@ -46,7 +46,7 @@ class ClassProvider extends AbstractProvider
      *
      * @return {array}
     ###
-    findSuggestionsForPrefix: (classes, prefix, insertParameterList = true) ->
+    addSuggestions: (classes, prefix, insertParameterList = true) ->
         # Get rid of the leading "new" or "use" keyword
         use = false
         hasLeadingSlash = false

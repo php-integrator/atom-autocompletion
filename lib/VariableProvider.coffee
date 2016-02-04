@@ -37,17 +37,17 @@ class VariableProvider extends AbstractProvider
 
         variables = @service.getAvailableVariables(editor, newBufferPosition)
 
-        return @findSuggestionsForPrefix(variables, prefix)
+        return @addSuggestions(variables, prefix)
 
     ###*
-     * Returns suggestions available matching the given prefix.
+     * Returns available suggestions.
      *
      * @param {array}  variables
      * @param {string} prefix
      *
      * @return array
     ###
-    findSuggestionsForPrefix: (variables, prefix) ->
+    addSuggestions: (variables, prefix) ->
         suggestions = []
 
         for name, variable of variables

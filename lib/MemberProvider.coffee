@@ -69,7 +69,7 @@ class MemberProvider extends AbstractProvider
             insertParameterList = if characterAfterPrefix == '(' then false else true
 
             nestedSuccessHandler = (classInfo) =>
-                return @findSuggestionsForPrefix(classInfo, elements[elements.length - 1].trim(), propertyAccessNeedsDollarSign, (element) =>
+                return @addSuggestions(classInfo, elements[elements.length - 1].trim(), propertyAccessNeedsDollarSign, (element) =>
                     # Constants are only available when statically accessed (actually not entirely correct, they will
                     # work in a non-static context as well, but it's not good practice).
                     return false if mustBeStatic and not element.isStatic
@@ -103,7 +103,7 @@ class MemberProvider extends AbstractProvider
         return @service.getClassInfo(currentClass, true).then(successHandler, failureHandler)
 
     ###*
-     * Returns suggestions available matching the given prefix.
+     * Returns available suggestions.
      *
      * @param {Object}   classInfo                     Info about the class to show members of.
      * @param {string}   prefix                        Prefix to match (may be left empty to list all members).
@@ -114,7 +114,7 @@ class MemberProvider extends AbstractProvider
      *
      * @return {array}
     ###
-    findSuggestionsForPrefix: (classInfo, prefix, propertyAccessNeedsDollarSign, filterCallback, insertParameterList = true) ->
+    addSuggestions: (classInfo, prefix, propertyAccessNeedsDollarSign, filterCallback, insertParameterList = true) ->
         suggestions = []
 
         processList = (list, type) =>
