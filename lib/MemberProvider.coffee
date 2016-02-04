@@ -55,12 +55,12 @@ class MemberProvider extends AbstractProvider
                 currentClassParents = currentClassInfo.parents
 
             mustBeStatic = false
-            propertyAccessNeedsDollarSign = false
+            hasDoubleDotSeparator = false
 
             objectBeingCompleted = elements[elements.length - 3].trim();
 
             if elements[elements.length - 2] == '::'
-                propertyAccessNeedsDollarSign = true
+                hasDoubleDotSeparator = true
 
                 if objectBeingCompleted != 'parent'
                     mustBeStatic = true
@@ -69,7 +69,7 @@ class MemberProvider extends AbstractProvider
             insertParameterList = if characterAfterPrefix == '(' then false else true
 
             nestedSuccessHandler = (classInfo) =>
-                return @addSuggestions(classInfo, elements[elements.length - 1].trim(), propertyAccessNeedsDollarSign, (element) =>
+                return @addSuggestions(classInfo, elements[elements.length - 1].trim(), hasDoubleDotSeparator, (element) =>
                     # Constants are only available when statically accessed (actually not entirely correct, they will
                     # work in a non-static context as well, but it's not good practice).
                     return false if mustBeStatic and not element.isStatic
@@ -107,22 +107,32 @@ class MemberProvider extends AbstractProvider
      *
      * @param {Object}   classInfo                     Info about the class to show members of.
      * @param {string}   prefix                        Prefix to match (may be left empty to list all members).
-     * @param {boolean}  propertyAccessNeedsDollarSign
+     * @param {boolean}  hasDoubleDotSeparator
      * @param {callback} filterCallback                A callback that should return true if the item should be added
      *                                                 to the suggestions list.
      * @param {bool}     insertParameterList           Whether to insert a list of parameters for methods.
      *
      * @return {array}
     ###
-    addSuggestions: (classInfo, prefix, propertyAccessNeedsDollarSign, filterCallback, insertParameterList = true) ->
+    addSuggestions: (classInfo, prefix, hasDoubleDotSeparator, filterCallback, insertParameterList = true) ->
         suggestions = []
+
+        if hasDoubleDotSeparator
+            suggestions.push
+                text              : 'class'
+                type              : 'keyword'
+                replacementPrefix : prefix
+                leftLabel         : 'string'
+                rightLabelHTML    : @getSuggestionRightLabel('class', {declaringStructure: {name: classInfo.name}})
+                description       : 'PHP static class keyword that evaluates to the FCQN.'
+                className         : 'php-integrator-autocomplete-plus-suggestion'
 
         processList = (list, type) =>
             for name, member of list
                 if filterCallback and not filterCallback(member)
                     continue
 
-                text = (if type == 'property' and propertyAccessNeedsDollarSign then '$' else '') + member.name
+                text = (if type == 'property' and hasDoubleDotSeparator then '$' else '') + member.name
 
                 suggestions.push
                     text              : text
