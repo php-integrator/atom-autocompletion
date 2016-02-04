@@ -1,3 +1,7 @@
+## 0.5.1 (base 0.5.0)
+### Bugs fixed
+* Fixed the `yield` keyword not being suggested.
+
 ## 0.5.0 (base 0.5.0)
 ### Features and enhancements
 * Only (non-abstract) classes will be suggested after the new keyword.
