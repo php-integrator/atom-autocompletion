@@ -176,7 +176,10 @@ module.exports =
 
             endLine = i
 
-            if (matches = @useStatementRegex.exec(lineText))
+            if not lineText or lineText.trim() == ''
+                continue
+
+            else if (matches = @useStatementRegex.exec(lineText))
                 if not startLine
                     startLine = i
 
@@ -186,9 +189,6 @@ module.exports =
                     text += ' as ' + matches[2]
 
                 useStatements.push(text);
-
-            else if lineText.trim() == ''
-                continue
 
             # We still do the regex check here to prevent continuing when there are no use statements at all.
             else if startLine or @structureStartRegex.test(lineText)
