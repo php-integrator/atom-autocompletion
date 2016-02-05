@@ -1,5 +1,6 @@
 ## 0.5.1 (base 0.5.0)
 ### Bugs fixed
+* Fixed a rare TypeError in the Utility file.
 * Fixed the `yield` keyword not being suggested.
 * Fixed the `class` keyword introduced in PHP 5.5 not being completed after two dots.
 
