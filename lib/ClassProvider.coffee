@@ -35,7 +35,7 @@ class ClassProvider extends AbstractProvider
             # Just return no results.
             return []
 
-        return @service.getClassList(true).then(successHandler, failureHandler)
+        return @service.getClassList(null, true).then(successHandler, failureHandler)
 
     ###*
      * Returns available suggestions.
