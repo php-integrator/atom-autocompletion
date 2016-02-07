@@ -89,7 +89,7 @@ class MemberProvider extends AbstractProvider
 
             return @service.getClassInfo(className, true).then(nestedSuccessHandler, nestedFailureHandler)
 
-        currentClass = @service.determineFullClassName(editor)
+        currentClass = @service.determineCurrentClassName(editor, bufferPosition)
 
         if not currentClass
             # There is no need to load the current class' information, return results immediately.

@@ -35,7 +35,7 @@ class ClassProvider extends AbstractProvider
             # Just return no results.
             return []
 
-        return @service.getClassList(null, true).then(successHandler, failureHandler)
+        return @service.getClassList(true).then(successHandler, failureHandler)
 
     ###*
      * Returns available suggestions.
@@ -128,7 +128,7 @@ class ClassProvider extends AbstractProvider
     onDidInsertSuggestion: ({editor, triggerPosition, suggestion}) ->
         return unless suggestion.data?.nameToImport
 
-        return if suggestion.data.nameToImport == @service.determineFullClassName(editor)
+        return if suggestion.data.nameToImport == @service.determineCurrentClassName(editor, triggerPosition)
 
         editor.transact () =>
             linesAdded = Utility.addUseClass(editor, suggestion.data.nameToImport, @config.get('insertNewlinesForUseStatements'))

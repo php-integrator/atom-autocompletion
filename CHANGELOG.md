@@ -1,3 +1,6 @@
+## 0.5.2 (base 0.6.0)
+* Updated to work with the most recent service from the base package.
+
 ## 0.5.1 (base 0.5.0)
 ### Bugs fixed
 * Fixed a rare TypeError in the Utility file.
