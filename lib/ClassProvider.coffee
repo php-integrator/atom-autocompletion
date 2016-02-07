@@ -136,7 +136,13 @@ class ClassProvider extends AbstractProvider
 
             currentNamespace = currentNamespaceParts.join('\\')
 
-            return if suggestion.data.nameToImport.indexOf(currentNamespace) == 0
+            if suggestion.data.nameToImport.indexOf(currentNamespace) == 0
+                 nameToImportRelativeToNamespace = suggestion.displayText.substr(currentNamespace.length + 1)
+
+                 # If a user is in A\B and wants to import A\B\C\D, we don't need to add a use statement if he is typing
+                 # C\D, as it will be relative, but we will need to add one when he typed just D as it won't be
+                 # relative.
+                 return if nameToImportRelativeToNamespace.split('\\').length == suggestion.text.split('\\').length
 
         editor.transact () =>
             linesAdded = Utility.addUseClass(editor, suggestion.data.nameToImport, @config.get('insertNewlinesForUseStatements'))
