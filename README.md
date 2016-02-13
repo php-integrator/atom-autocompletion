@@ -1,4 +1,8 @@
 # php-integrator-autocomplete-plus
+<p align="right">
+:coffee:
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YKTNLZCRHMRTJ">Send me some coffee beans</a>
+</p>
 
 This package provides autocompletion for your PHP source code using [PHP Integrator](https://github.com/Gert-dev/php-integrator-base) as well as Atom's [autocomplete-plus](https://github.com/atom/autocomplete-plus).
 
@@ -12,7 +16,5 @@ What is included?
   * Autocompletion for class, interface and trait names as well as their constructors.
   * Automatic adding of use statements when class names are autocompleted (with a somewhat intelligent positioning).
     * Included is a command to sort the current use statements.
-
-Regarding donations: they were not my primary intention when releasing this project as open source, but I do accept them and am very grateful for any donation you may give. A link is provided on the readme of the [php-integrator-base](https://github.com/Gert-dev/php-integrator-base) package.
 
 ![GPLv3 Logo](http://gplv3.fsf.org/gplv3-127x51.png)
