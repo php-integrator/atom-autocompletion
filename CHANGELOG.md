@@ -1,7 +1,4 @@
 ## 0.5.2 (base 0.6.0)
-### Features and enhancements
-* Updated to work with the most recent service from the base package.
-
 ### Bugs fixed
 * Use statements will no longer be added for classes in the same namespace. This was previously only done for the current class. This will also work for relative imports if the import is relative to the current namespace (i.e. use statements will not be added).
 
