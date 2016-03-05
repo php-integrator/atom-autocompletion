@@ -48,7 +48,7 @@ class ClassProvider extends AbstractProvider
     ###
     addSuggestions: (classes, prefix, insertParameterList = true) ->
         # Get rid of the leading "new" or "use" keyword
-        use = false
+        isUse = false
         hasLeadingSlash = false
         isInstantiation = false
 
