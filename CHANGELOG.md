@@ -1,4 +1,4 @@
-## 0.5.3 (base 0.6.0)
+## 0.5.3
 ### Bugs fixed
 * Use statements will no longer be added when typing a namespace name. (Existing items will still be suggested for convenience.)
 
