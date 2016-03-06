@@ -12,7 +12,7 @@ class ClassProvider extends AbstractProvider
      *
      * "new" keyword or word starting with capital letter
     ###
-    regex: /(?:^|[^\$:>\w])((?:(?:new|use)\s+)?\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+    regex: /(?:^|[^\$:>\w])((?:(?:namespace|new|use)\s+)?\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
 
     ###*
      * @inheritdoc
@@ -59,6 +59,10 @@ class ClassProvider extends AbstractProvider
         else if prefix.indexOf("use ") != -1
             isUse = true
             prefix = prefix.replace /use /, ''
+
+        else if prefix.indexOf("namespace ") != -1
+            isUse = true
+            prefix = prefix.replace /namespace /, ''
 
         if prefix.indexOf("\\") == 0
             hasLeadingSlash = true

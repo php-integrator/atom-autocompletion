@@ -1,3 +1,7 @@
+## 0.5.3 (base 0.6.0)
+### Bugs fixed
+* Use statements will no longer be added when typing a namespace name. (Existing items will still be suggested for convenience.)
+
 ## 0.5.2 (base 0.6.0)
 ### Bugs fixed
 * Use statements will no longer be added for classes in the same namespace. This was previously only done for the current class. This will also work for relative imports if the import is relative to the current namespace (i.e. use statements will not be added).
