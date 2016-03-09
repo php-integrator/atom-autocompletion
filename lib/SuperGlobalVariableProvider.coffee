@@ -9,7 +9,18 @@ class SuperGlobalVariableProvider extends VariableProvider
     ###*
      * @inheritdoc
     ###
-    addSuggestions: (variables, prefix) ->
+    getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
+        return [] if not @service
+
+        prefix = @getPrefix(editor, bufferPosition)
+        return [] unless prefix != null
+
+        return @addSuggestions(prefix)
+
+    ###*
+     * @inheritdoc
+    ###
+    addSuggestions: (prefix) ->
         suggestions = []
 
         variables = [
