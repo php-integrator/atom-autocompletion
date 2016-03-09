@@ -61,6 +61,7 @@ module.exports =
         ConstantProvider            = require './ConstantProvider'
         VariableProvider            = require './VariableProvider'
         SuperGlobalVariableProvider = require './SuperGlobalVariableProvider'
+        MagicConstantProvider       = require './MagicConstantProvider'
         FunctionProvider            = require './FunctionProvider'
         KeywordProvider             = require './KeywordProvider'
         DocBlockProvider            = require './DocBlockProvider'
@@ -71,6 +72,7 @@ module.exports =
 
         @providers.push(new VariableProvider(@configuration))
         @providers.push(new SuperGlobalVariableProvider(@configuration))
+        @providers.push(new MagicConstantProvider(@configuration))
         @providers.push(new MemberProvider(@configuration))
         @providers.push(new SnippetProvider(@configuration))
         @providers.push(new ClassProvider(@configuration))

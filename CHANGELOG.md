@@ -1,5 +1,6 @@
 ## 0.6.0 (base 0.7.0)
 ### Features and enhancements
+* Magic constants will now also be suggested.
 * Superglobal names will now also be suggested.
 
 ## 0.5.3
