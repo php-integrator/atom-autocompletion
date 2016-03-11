@@ -9,8 +9,6 @@ module.exports =
 class ClassProvider extends AbstractProvider
     ###*
      * @inheritdoc
-     *
-     * "new" keyword or word starting with capital letter
     ###
     regex: /(?:^|[^\$:>\w])((?:(?:namespace|new|use)\s+)?\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
 
