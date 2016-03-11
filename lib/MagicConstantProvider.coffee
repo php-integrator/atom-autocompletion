@@ -11,14 +11,6 @@ class MagicConstantProvider extends AbstractProvider
     ###*
      * @inheritdoc
      *
-     * Variables are allowed inside double quoted strings (see also
-     * {@link https://secure.php.net/manual/en/language.types.string.php#language.types.string.parsing}).
-    ###
-    disableForSelector: '.source.php .comment, .source.php .string.quoted.single'
-
-    ###*
-     * @inheritdoc
-     *
      * "new" keyword or word starting with capital letter
     ###
     regex: /(__?(?:[A-Z]+_?_?)?)$/
