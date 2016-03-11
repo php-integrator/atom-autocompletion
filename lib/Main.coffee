@@ -54,22 +54,24 @@ module.exports =
      * Activates the package.
     ###
     activate: ->
-        AtomConfig                  = require './AtomConfig'
-        MemberProvider              = require './MemberProvider'
-        SnippetProvider             = require './SnippetProvider'
-        ClassProvider               = require './ClassProvider'
-        ConstantProvider            = require './ConstantProvider'
-        VariableProvider            = require './VariableProvider'
-        SuperGlobalVariableProvider = require './SuperGlobalVariableProvider'
-        MagicConstantProvider       = require './MagicConstantProvider'
-        FunctionProvider            = require './FunctionProvider'
-        KeywordProvider             = require './KeywordProvider'
-        DocBlockProvider            = require './DocBlockProvider'
+        AtomConfig                      = require './AtomConfig'
+        MemberProvider                  = require './MemberProvider'
+        SnippetProvider                 = require './SnippetProvider'
+        ClassProvider                   = require './ClassProvider'
+        ConstantProvider                = require './ConstantProvider'
+        VariableProvider                = require './VariableProvider'
+        SuperGlobalVariableProvider     = require './SuperGlobalVariableProvider'
+        TypeHintNewVariableNameProvider = require './TypeHintNewVariableNameProvider'
+        MagicConstantProvider           = require './MagicConstantProvider'
+        FunctionProvider                = require './FunctionProvider'
+        KeywordProvider                 = require './KeywordProvider'
+        DocBlockProvider                = require './DocBlockProvider'
 
         @configuration = new AtomConfig(@packageName)
 
         @registerCommands()
 
+        @providers.push(new TypeHintNewVariableNameProvider(@configuration))
         @providers.push(new VariableProvider(@configuration))
         @providers.push(new SuperGlobalVariableProvider(@configuration))
         @providers.push(new MagicConstantProvider(@configuration))
