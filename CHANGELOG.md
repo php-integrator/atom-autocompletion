@@ -2,6 +2,7 @@
 ### Features and enhancements
 * Magic constants will now also be suggested.
 * Superglobal names will now also be suggested.
+* Local variables will now be fetched asynchronously, improving responsiveness.
 * New variable names will now be suggested after a type hint, for example typing `FooBarInterface $` will suggest `$fooBar` and `$fooBarInterface`.
 
 ### Bugs fixed

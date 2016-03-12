@@ -36,9 +36,8 @@ class VariableProvider extends AbstractProvider
         # Don't include the variable we're completing.
         newBufferPosition = new Point(bufferPosition.row, bufferPosition.column - prefix.length)
 
-        variables = @service.getAvailableVariables(editor, newBufferPosition)
-
-        return @addSuggestions(variables, prefix)
+        return @service.getAvailableVariables(editor, newBufferPosition, true).then (variables) =>
+            return @addSuggestions(variables, prefix)
 
     ###*
      * Returns available suggestions.
