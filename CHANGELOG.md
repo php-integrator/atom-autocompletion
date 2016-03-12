@@ -4,6 +4,9 @@
 * Superglobal names will now also be suggested.
 * New variable names will now be suggested after a type hint, for example typing `FooBarInterface $` will suggest `$fooBar` and `$fooBarInterface`.
 
+### Bugs fixed
+* Local variables will no longer be suggested after type hints.
+
 ## 0.5.3
 ### Bugs fixed
 * Use statements will no longer be added when typing a namespace name. (Existing items will still be suggested for convenience.)

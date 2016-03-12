@@ -18,10 +18,8 @@ class VariableProvider extends AbstractProvider
 
     ###*
      * @inheritdoc
-     *
-     * "new" keyword or word starting with capital letter
     ###
-    regex: /(\$(?:[a-zA-Z_][a-zA-Z0-9_]*)?)$/
+    regex: /((?:\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\s+)?\$(?:[a-zA-Z_][a-zA-Z0-9_]*)?)$/
 
     ###*
      * @inheritdoc
@@ -31,6 +29,9 @@ class VariableProvider extends AbstractProvider
 
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix != null
+
+        # Don't complete local variable names if we found a type hint.
+        return [] if prefix.split(/\s+/).length > 1
 
         # Don't include the variable we're completing.
         newBufferPosition = new Point(bufferPosition.row, bufferPosition.column - prefix.length)
