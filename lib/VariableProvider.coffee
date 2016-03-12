@@ -36,7 +36,16 @@ class VariableProvider extends AbstractProvider
         # Don't include the variable we're completing.
         newBufferPosition = new Point(bufferPosition.row, bufferPosition.column - prefix.length)
 
-        return @service.getAvailableVariables(editor, newBufferPosition, true).then (variables) =>
+        offset = editor.getBuffer().characterIndexForPosition(newBufferPosition)
+
+        text = editor.getBuffer().getText()
+
+        # Strip out the text currently being completed, as when the user is typing a variable name, a syntax error may
+        # ensue. The base service will start ignoring parts of the file if that happens, which causes inconsistent
+        # results.
+        text = text.substr(0, offset) + text.substr(offset + prefix.length)
+
+        return @service.getAvailableVariablesByOffset(null, text, offset, true).then (variables) =>
             return @addSuggestions(variables, prefix)
 
     ###*
