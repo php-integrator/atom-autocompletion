@@ -4,6 +4,26 @@
 * Superglobal names will now also be suggested.
 * Local variables will now be fetched asynchronously, improving responsiveness.
 * New variable names will now be suggested after a type hint, for example typing `FooBarInterface $` will suggest `$fooBar` and `$fooBarInterface`.
+* Due to changes to the way variables are fetched in the base service, you will notice some changes when local variable names are suggested:
+  * Variables outside current the scope will no longer be suggested. This previously only applied to variables outside the active function scope. Now, after you exit a statement such as an if statement, the variables contained in it will no longer be suggested:
+    ```php
+    $a = 1;
+
+    if (condition) {
+        $a = 2;
+        $b = 3;
+    } else {
+        $a = 4;
+        $c = 5;
+    }
+
+    $ // Autocompletion will not list $b and $c, only $a.
+    ```
+    Even though they technically remain available in PHP afterwards, their presence is not guaranteed and the absence of them during autocompletion will guard you for mistakes.
+  * Variables in other statements will no longer incorrectly be listed (for example, in the example above, `$b` will no longer show up inside the else block).
+  * `$this` will no longer be suggested in global functions and outside class, interface or trait scopes. It will still be suggested inside closures as they can have a `$this` context.
+
+
 
 ### Bugs fixed
 * Local variables will no longer be suggested after type hints.
