@@ -45,8 +45,13 @@ class VariableProvider extends AbstractProvider
         # results.
         text = text.substr(0, offset) + text.substr(offset + prefix.length)
 
-        return @service.getAvailableVariablesByOffset(null, text, offset, true).then (variables) =>
+        successHandler = (variables) =>
             return @addSuggestions(variables, prefix)
+
+        failureHandler = () =>
+            return []
+
+        return @service.getAvailableVariablesByOffset(null, text, offset, true).then(successHandler, failureHandler)
 
     ###*
      * Returns available suggestions.

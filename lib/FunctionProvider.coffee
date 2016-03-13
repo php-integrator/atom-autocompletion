@@ -23,13 +23,18 @@ class FunctionProvider extends AbstractProvider
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix != null
 
-        return @service.getGlobalFunctions(true).then (functions) =>
+        successHandler = (functions) =>
             return [] unless functions
 
             characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
             insertParameterList = if characterAfterPrefix == '(' then false else true
 
             return @addSuggestions(functions, prefix.trim(), insertParameterList)
+
+        failureHandler = () =>
+            return []
+
+        return @service.getGlobalFunctions(true).then(successHandler, failureHandler)
 
     ###*
      * Returns available suggestions.

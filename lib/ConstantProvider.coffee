@@ -24,10 +24,15 @@ class ConstantProvider extends AbstractProvider
         tmpPrefix = @getPrefix(editor, bufferPosition)
         return [] unless tmpPrefix != null
 
-        return @service.getGlobalConstants(true).then (constants) =>
+        successHandler = (constants) =>
             return [] unless constants
 
             return @addSuggestions(constants, prefix.trim())
+
+        failureHandler = () =>
+            return []
+
+        return @service.getGlobalConstants(true).then(successHandler, failureHandler)
 
     ###*
      * Returns available suggestions.
