@@ -23,8 +23,6 @@
   * Variables in other statements will no longer incorrectly be listed (for example, in the example above, `$b` will no longer show up inside the else block).
   * `$this` will no longer be suggested in global functions and outside class, interface or trait scopes. It will still be suggested inside closures as they can have a `$this` context.
 
-
-
 ### Bugs fixed
 * Local variables will no longer be suggested after type hints.
 
