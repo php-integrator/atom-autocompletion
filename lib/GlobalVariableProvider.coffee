@@ -23,25 +23,25 @@ class GlobalVariableProvider extends VariableProvider
     addSuggestions: (prefix) ->
         suggestions = []
 
-        variables = [
-            '$GLOBALS',
-            '$_SERVER',
-            '$_GET',
-            '$_POST',
-            '$_FILES',
-            '$_COOKIE',
-            '$_SESSION',
-            '$_REQUEST',
-            '$_ENV',
-            '$argc',
-            '$argv'
-        ]
+        variables = {
+            '$GLOBALS'  : 'array',
+            '$_SERVER'  : 'array',
+            '$_GET'     : 'array',
+            '$_POST'    : 'array',
+            '$_FILES'   : 'array',
+            '$_COOKIE'  : 'array',
+            '$_SESSION' : 'array',
+            '$_REQUEST' : 'array',
+            '$_ENV'     : 'array',
+            '$argc'     : 'int',
+            '$argv'     : 'array'
+        }
 
-        for variable in variables
+        for variable,type of variables
             suggestions.push
                 type              : 'variable'
                 text              : variable
-                leftLabel         : 'array'
+                leftLabel         : type
                 replacementPrefix : prefix
 
         return suggestions
