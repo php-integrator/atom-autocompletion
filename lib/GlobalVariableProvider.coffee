@@ -3,9 +3,9 @@ VariableProvider = require "./VariableProvider"
 module.exports =
 
 ##*
-# Provides autocompletion for superglobal variable names.
+# Provides autocompletion for global variable names (such as superglobals).
 ##
-class SuperGlobalVariableProvider extends VariableProvider
+class GlobalVariableProvider extends VariableProvider
     ###*
      * @inheritdoc
     ###
