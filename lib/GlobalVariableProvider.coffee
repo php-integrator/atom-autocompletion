@@ -32,7 +32,9 @@ class GlobalVariableProvider extends VariableProvider
             '$_COOKIE',
             '$_SESSION',
             '$_REQUEST',
-            '$_ENV'
+            '$_ENV',
+            '$argc',
+            '$argv'
         ]
 
         for variable in variables

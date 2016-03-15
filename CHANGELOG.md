@@ -1,3 +1,7 @@
+## 0.6.1 (base 0.8.0)
+### Features and enhancements
+* Also show `$argv` and `$argv` in the autocompletion suggestions.
+
 ## 0.6.0 (base 0.7.0)
 ### Features and enhancements
 * Magic constants will now also be suggested.
