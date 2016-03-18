@@ -1,6 +1,7 @@
 ## 0.6.1 (base 0.8.0)
 ### Features and enhancements
 * Also show `$argv` and `$argv` in the autocompletion suggestions.
+* Also show new variable suggestions without first typing the dollar sign for fluency.
 
 ## 0.6.0 (base 0.7.0)
 ### Features and enhancements

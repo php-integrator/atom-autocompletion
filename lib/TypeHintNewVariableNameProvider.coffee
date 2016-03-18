@@ -11,7 +11,7 @@ class TypeHintNewVariableNameProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    regex: /(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\s+\$(?:[a-zA-Z_][a-zA-Z0-9_]*)?)$/
+    regex: /(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\s+\$?(?:[a-zA-Z_][a-zA-Z0-9_]*)?)$/
 
     ###*
      * @inheritdoc
@@ -28,7 +28,6 @@ class TypeHintNewVariableNameProvider extends AbstractProvider
         prefix   = parts[1].trim()
 
         return [] if not typeHint
-        return [] if not prefix
 
         return @addSuggestions(typeHint, prefix)
 
