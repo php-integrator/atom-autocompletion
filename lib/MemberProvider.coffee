@@ -33,74 +33,71 @@ class MemberProvider extends AbstractProvider
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix != null
 
-        try
-            className = @service.getResultingTypeAt(editor, bufferPosition, true)
-
-        catch error
-            return []
-
-        return [] unless className
-
-        # We only autocomplete after splitters, so there must be at least one word, one splitter, and another word
-        # (the latter which could be empty).
-        elements = prefix.split(/(->|::)/)
-        return [] unless elements.length > 2
-
-        return [] if @service.isBasicType(className)
-
-        successHandler = (currentClassInfo) =>
-            currentClassParents = []
-
-            if currentClassInfo
-                currentClassParents = currentClassInfo.parents
-
-            mustBeStatic = false
-            hasDoubleDotSeparator = false
-
-            objectBeingCompleted = elements[elements.length - 3].trim();
-
-            if elements[elements.length - 2] == '::'
-                hasDoubleDotSeparator = true
-
-                if objectBeingCompleted != 'parent'
-                    mustBeStatic = true
-
-            characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
-            insertParameterList = if characterAfterPrefix == '(' then false else true
-
-            nestedSuccessHandler = (classInfo) =>
-                return @addSuggestions(classInfo, elements[elements.length - 1].trim(), hasDoubleDotSeparator, (element) =>
-                    # Constants are only available when statically accessed (actually not entirely correct, they will
-                    # work in a non-static context as well, but it's not good practice).
-                    return false if mustBeStatic and not element.isStatic
-
-                    if objectBeingCompleted != '$this'
-                        # Explicitly checking for '$this' allows files that are being require-d inside classes to define
-                        # a type override annotation for $this and still be able to access private and protected members
-                        # there.
-                        return false if element.isPrivate and element.declaringClass.name != currentClass
-                        return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in currentClassParents
-
-                    return true
-                , insertParameterList)
-
-            nestedFailureHandler = () =>
-                return []
-
-            return @service.getClassInfo(className, true).then(nestedSuccessHandler, nestedFailureHandler)
-
-        currentClass = @service.determineCurrentClassName(editor, bufferPosition)
-
-        if not currentClass
-            # There is no need to load the current class' information, return results immediately.
-            return successHandler(null)
-
         failureHandler = () =>
             # Just return no results.
             return []
 
-        # We need to fetch information about the current class, do it asynchronously (using promises).
-        return @service.getClassInfo(currentClass, true).then(successHandler, failureHandler)
+        resultingTypeSuccessHandler = (className) =>
+            return [] unless className
+
+            # We only autocomplete after splitters, so there must be at least one word, one splitter, and another word
+            # (the latter which could be empty).
+            elements = prefix.split(/(->|::)/)
+            return [] unless elements.length > 2
+
+            return [] if @service.isBasicType(className)
+
+            successHandler = (currentClassInfo) =>
+                currentClassParents = []
+
+                if currentClassInfo
+                    currentClassParents = currentClassInfo.parents
+
+                mustBeStatic = false
+                hasDoubleDotSeparator = false
+
+                objectBeingCompleted = elements[elements.length - 3].trim();
+
+                if elements[elements.length - 2] == '::'
+                    hasDoubleDotSeparator = true
+
+                    if objectBeingCompleted != 'parent'
+                        mustBeStatic = true
+
+                characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
+                insertParameterList = if characterAfterPrefix == '(' then false else true
+
+                nestedSuccessHandler = (classInfo) =>
+                    return @addSuggestions(classInfo, elements[elements.length - 1].trim(), hasDoubleDotSeparator, (element) =>
+                        # Constants are only available when statically accessed (actually not entirely correct, they will
+                        # work in a non-static context as well, but it's not good practice).
+                        return false if mustBeStatic and not element.isStatic
+
+                        if objectBeingCompleted != '$this'
+                            # Explicitly checking for '$this' allows files that are being require-d inside classes to define
+                            # a type override annotation for $this and still be able to access private and protected members
+                            # there.
+                            return false if element.isPrivate and element.declaringClass.name != currentClass
+                            return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in currentClassParents
+
+                        return true
+                    , insertParameterList)
+
+                return @service.getClassInfo(className, true).then(nestedSuccessHandler, failureHandler)
+
+            currentClass = @service.determineCurrentClassName(editor, bufferPosition)
+
+            if not currentClass
+                # There is no need to load the current class' information, return results immediately.
+                return successHandler(null)
+
+            # We need to fetch information about the current class, do it asynchronously (using promises).
+            return @service.getClassInfo(currentClass, true).then(successHandler, failureHandler)
+
+        return @service.getResultingTypeAt(editor, bufferPosition, true, true).then(
+            resultingTypeSuccessHandler,
+            failureHandler
+        )
 
     ###*
      * Returns available suggestions.

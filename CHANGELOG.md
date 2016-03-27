@@ -2,6 +2,7 @@
 ### Features and enhancements
 * Also show `$argv` and `$argv` in the autocompletion suggestions.
 * Also show new variable suggestions without first typing the dollar sign for fluency.
+* Fetching class members is now even more asynchronous, improving responsiveness of autocompletion.
 
 ## 0.6.0 (base 0.7.0)
 ### Features and enhancements
