@@ -33,10 +33,10 @@ class VariableProvider extends AbstractProvider
         # Don't complete local variable names if we found a type hint.
         return [] if prefix.split(/\s+/).length > 1
 
-        # Don't include the variable we're completing.
-        newBufferPosition = new Point(bufferPosition.row, bufferPosition.column - prefix.length)
+        offset = editor.getBuffer().characterIndexForPosition(bufferPosition)
 
-        offset = editor.getBuffer().characterIndexForPosition(newBufferPosition)
+        # Don't include the variable we're completing.
+        offset -= prefix.length
 
         text = editor.getBuffer().getText()
 
