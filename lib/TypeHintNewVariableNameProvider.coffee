@@ -22,6 +22,11 @@ class TypeHintNewVariableNameProvider extends AbstractProvider
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix != null
 
+        # Don't complete local variable names if we found something else than a type hint.
+        newBufferPosition = new Point(bufferPosition.row, bufferPosition.column - prefix.length)
+
+        return [] if editor.scopeDescriptorForBufferPosition(newBufferPosition).getScopeChain().indexOf('.support.class') == -1
+
         parts = prefix.split(/\s+/)
 
         typeHint = parts[0].trim()
