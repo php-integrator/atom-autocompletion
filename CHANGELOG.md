@@ -4,6 +4,10 @@
 * Also show new variable suggestions without first typing the dollar sign for fluency.
 * Fetching class members is now even more asynchronous, improving responsiveness of autocompletion.
 
+### Bugs fixed
+* Fixed no local variables being suggested after keywords suchas `return`.
+* Fixed new variable names were being suggested after keywords such as `return`.
+
 ## 0.6.0 (base 0.7.0)
 ### Features and enhancements
 * Magic constants will now also be suggested.
