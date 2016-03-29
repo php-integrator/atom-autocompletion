@@ -37,8 +37,13 @@ class VariableProvider extends AbstractProvider
 
         parts = prefix.split(/\s+/)
 
-        # typeHint = parts[0].trim()
-        prefix   = parts[1].trim()
+        typeHint = parts[0]
+        prefix   = parts[1]
+
+        if not prefix?
+            prefix = typeHint
+
+        prefix   = prefix.trim()
 
         offset = editor.getBuffer().characterIndexForPosition(bufferPosition)
 
