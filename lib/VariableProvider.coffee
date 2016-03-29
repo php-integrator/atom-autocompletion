@@ -31,7 +31,14 @@ class VariableProvider extends AbstractProvider
         return [] unless prefix != null
 
         # Don't complete local variable names if we found a type hint.
-        return [] if prefix.split(/\s+/).length > 1
+        newBufferPosition = new Point(bufferPosition.row, bufferPosition.column - prefix.length)
+
+        return [] if editor.scopeDescriptorForBufferPosition(newBufferPosition).getScopeChain().indexOf('.support.class') != -1
+
+        parts = prefix.split(/\s+/)
+
+        # typeHint = parts[0].trim()
+        prefix   = parts[1].trim()
 
         offset = editor.getBuffer().characterIndexForPosition(bufferPosition)
 
