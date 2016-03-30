@@ -24,6 +24,8 @@ class GlobalVariableProvider extends VariableProvider
         suggestions = []
 
         variables = {
+            '$argc'     : 'int',
+            '$argv'     : 'array',
             '$GLOBALS'  : 'array',
             '$_SERVER'  : 'array',
             '$_GET'     : 'array',
@@ -32,9 +34,7 @@ class GlobalVariableProvider extends VariableProvider
             '$_COOKIE'  : 'array',
             '$_SESSION' : 'array',
             '$_REQUEST' : 'array',
-            '$_ENV'     : 'array',
-            '$argc'     : 'int',
-            '$argv'     : 'array'
+            '$_ENV'     : 'array'
         }
 
         for variable,type of variables
