@@ -77,22 +77,26 @@ class MemberProvider extends AbstractProvider
                             # Explicitly checking for '$this' allows files that are being require-d inside classes to define
                             # a type override annotation for $this and still be able to access private and protected members
                             # there.
-                            return false if element.isPrivate and element.declaringClass.name != currentClass
-                            return false if element.isProtected and element.declaringClass.name != currentClass and element.declaringClass.name not in currentClassParents
+                            return false if element.isPrivate and element.declaringClass.name != currentClassInfo.name
+                            return false if element.isProtected and element.declaringClass.name != currentClassInfo.name and element.declaringClass.name not in currentClassParents
 
                         return true
                     , insertParameterList)
 
                 return @service.getClassInfo(className, true).then(nestedSuccessHandler, failureHandler)
 
-            currentClass = @service.determineCurrentClassName(editor, bufferPosition)
+            currentClassNameGetClassInfoHandler = (currentClass) =>
+                if not currentClass
+                    # There is no need to load the current class' information, return results immediately.
+                    return successHandler(null)
 
-            if not currentClass
-                # There is no need to load the current class' information, return results immediately.
-                return successHandler(null)
+                # We need to fetch information about the current class, do it asynchronously (using promises).
+                return @service.getClassInfo(currentClass, true).then(successHandler, failureHandler)
 
-            # We need to fetch information about the current class, do it asynchronously (using promises).
-            return @service.getClassInfo(currentClass, true).then(successHandler, failureHandler)
+            return @service.determineCurrentClassName(editor, bufferPosition, true).then(
+                currentClassNameGetClassInfoHandler,
+                failureHandler
+            )
 
         return @service.getResultingTypeAt(editor, bufferPosition, true, true).then(
             resultingTypeSuccessHandler,
