@@ -15,6 +15,99 @@ class FunctionProvider extends AbstractProvider
     regex: /(?:^|[^\$:>\w])((?:[a-zA-Z_][a-zA-Z0-9_]*\\)*[a-z_]+)$/
 
     ###*
+     # Cache object to help improve responsiveness of autocompletion.
+    ###
+    listCache: null
+
+    ###*
+     # A list of disposables to dispose on deactivation.
+    ###
+    disposables: null
+
+    ###*
+     # Keeps track of a currently pending promise to ensure only one is active at any given time.
+    ###
+    pendingPromise: null
+
+    ###*
+     # Keeps track of a currently pending timeout to ensure only one is active at any given time..
+    ###
+    timeoutHandle: null
+
+    ###*
+     * @inheritdoc
+    ###
+    activate: (@service) ->
+        {CompositeDisposable} = require 'atom'
+
+        @disposables = new CompositeDisposable()
+
+        @disposables.add(@service.onDidFinishIndexing(@onDidFinishIndexing.bind(this)))
+
+    ###*
+     * @inheritdoc
+    ###
+    deactivate: () ->
+        @disposables.dispose()
+        @disposables = null
+
+    ###*
+     * Called when reindexing successfully finishes.
+     *
+     * @param {Object} info
+    ###
+    onDidFinishIndexing: (info) ->
+        # Only reindex a couple of seconds after the last reindex. This prevents constant refreshes being scheduled
+        # while the user is still modifying the file. This is acceptable as this provider's data rarely changes and
+        # it is fairly expensive to refresh the cache.
+        if @timeoutHandle?
+            clearTimeout(@timeoutHandle)
+            @timeoutHandle = null
+
+        @timeoutHandle = setTimeout ( =>
+            @timeoutHandle = null
+            @refreshCache()
+        ), 5000
+
+    ###*
+     * Refreshes the internal cache. Returns a promise that resolves with the cache once it has been refreshed.
+     *
+     * @return {Promise}
+    ###
+    refreshCache: () ->
+        successHandler = (functions) =>
+            @pendingPromise = null
+
+            return unless functions
+
+            @listCache = functions
+
+            return @listCache
+
+        failureHandler = () =>
+            @pendingPromise = null
+
+            return []
+
+        if not @pendingPromise?
+            @pendingPromise = @service.getGlobalFunctions(true).then(successHandler, failureHandler)
+
+        return @pendingPromise
+
+    ###*
+     * Fetches a list of results that can be fed to the addSuggestions method.
+     *
+     * @return {Promise}
+    ###
+    fetchResults: () ->
+        return new Promise (resolve, reject) =>
+            if @listCache?
+                resolve(@listCache)
+                return
+
+            return @refreshCache()
+
+    ###*
      * @inheritdoc
     ###
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
@@ -34,7 +127,7 @@ class FunctionProvider extends AbstractProvider
         failureHandler = () =>
             return []
 
-        return @service.getGlobalFunctions(true).then(successHandler, failureHandler)
+        return @fetchResults().then(successHandler, failureHandler)
 
     ###*
      * Returns available suggestions.

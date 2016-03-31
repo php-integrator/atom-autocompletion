@@ -1,8 +1,10 @@
-## 0.6.1 (base 0.8.0)
+## 0.7.0 (base 0.8.0)
 ### Features and enhancements
 * Also show `$argv` and `$argv` in the autocompletion suggestions.
 * Also show new variable suggestions without first typing the dollar sign for fluency.
 * Fetching class members is now even more asynchronous, improving responsiveness of autocompletion.
+* Fetching class list, global function and global constant suggestions is now cached. This should further improve responsiveness of autocompletion.
+  * The suggestions change fairly rarely and fetching them is expensive because PHP processes are spawned constantly due to the changing contents of the buffer (the base service only caches the results until the next reindex, which happens when the buffer stops changing). Instead, these three lists are refreshed after a couple of seconds after the last successful reindex, (i.e. after a couple of seconds after the editor stops changing instead of after a couple hundred milliseconds, assuming the code in the editor is valid).
 
 ### Bugs fixed
 * Fixed no local variables being suggested after keywords suchas `return`.
