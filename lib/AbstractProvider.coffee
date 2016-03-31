@@ -110,6 +110,14 @@ class AbstractProvider
 
         return body
 
+    ###*
+     * Builds the right label for a PHP function or method.
+     *
+     * @param {string} name The name of the function or method.
+     * @param {array}  info Information about the function or method.
+     *
+     * @return {string}
+    ###
     getSuggestionRightLabel: (name, info) ->
         parameterList = ''
 
