@@ -38,6 +38,8 @@ class MemberProvider extends AbstractProvider
         elements = prefix.split(/(->|::)/)
         return [] unless elements.length > 2
 
+        objectBeingCompleted = elements[elements.length - 3].trim()
+
         failureHandler = () =>
             # Just return no results.
             return []
@@ -48,8 +50,6 @@ class MemberProvider extends AbstractProvider
 
             mustBeStatic = false
             hasDoubleDotSeparator = false
-
-            objectBeingCompleted = elements[elements.length - 3].trim();
 
             if elements[elements.length - 2] == '::'
                 hasDoubleDotSeparator = true
@@ -97,18 +97,23 @@ class MemberProvider extends AbstractProvider
             failureHandler
         )
 
-        currentClassNameGetClassInfoHandler = (currentClass) =>
-            return null if not currentClass
+        if objectBeingCompleted != '$this'
+            # We only need this data above under the same condition.
+            currentClassNameGetClassInfoHandler = (currentClass) =>
+                return null if not currentClass
 
-            getClassInfoHandler = (currentClassInfo) =>
-                return currentClassInfo
+                getClassInfoHandler = (currentClassInfo) =>
+                    return currentClassInfo
 
-            return @service.getClassInfo(currentClass, true).then(getClassInfoHandler, failureHandler)
+                return @service.getClassInfo(currentClass, true).then(getClassInfoHandler, failureHandler)
 
-        determineCurrentClassNamePromise = @service.determineCurrentClassName(editor, bufferPosition, true).then(
-            currentClassNameGetClassInfoHandler,
-            failureHandler
-        )
+            determineCurrentClassNamePromise = @service.determineCurrentClassName(editor, bufferPosition, true).then(
+                currentClassNameGetClassInfoHandler,
+                failureHandler
+            )
+
+        else
+            determineCurrentClassNamePromise = null
 
         return Promise.all([determineCurrentClassNamePromise, resultingTypeAtPromise]).then(successHandler, failureHandler)
 
