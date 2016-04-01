@@ -48,6 +48,8 @@ class MemberProvider extends AbstractProvider
             return [] if @service.isBasicType(className)
 
             currentClassNameGetClassInfoHandler = (currentClass) =>
+                return null if not currentClass
+
                 getClassInfoHandler = (currentClassInfo) =>
                     return currentClassInfo
 
