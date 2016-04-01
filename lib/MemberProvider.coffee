@@ -47,11 +47,25 @@ class MemberProvider extends AbstractProvider
 
             return [] if @service.isBasicType(className)
 
-            successHandler = (currentClassInfo) =>
-                currentClassParents = []
+            currentClassNameGetClassInfoHandler = (currentClass) =>
+                getClassInfoHandler = (currentClassInfo) =>
+                    return currentClassInfo
 
-                if currentClassInfo
-                    currentClassParents = currentClassInfo.parents
+                return @service.getClassInfo(currentClass, true).then(getClassInfoHandler, failureHandler)
+
+            determineCurrentClassNamePromise = @service.determineCurrentClassName(editor, bufferPosition, true).then(
+                currentClassNameGetClassInfoHandler,
+                failureHandler
+            )
+
+            getRelevantClassInfoHandler = (classInfo) =>
+                return classInfo
+
+            getRelevantClassInfoPromise = @service.getClassInfo(className, true).then(getRelevantClassInfoHandler, failureHandler)
+
+            successHandler = (values) =>
+                currentClassInfo = values[0]
+                classInfo = values[1]
 
                 mustBeStatic = false
                 hasDoubleDotSeparator = false
@@ -67,36 +81,27 @@ class MemberProvider extends AbstractProvider
                 characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
                 insertParameterList = if characterAfterPrefix == '(' then false else true
 
-                nestedSuccessHandler = (classInfo) =>
-                    return @addSuggestions(classInfo, elements[elements.length - 1].trim(), hasDoubleDotSeparator, (element) =>
-                        # Constants are only available when statically accessed (actually not entirely correct, they will
-                        # work in a non-static context as well, but it's not good practice).
-                        return false if mustBeStatic and not element.isStatic
+                currentClassParents = []
 
-                        if objectBeingCompleted != '$this'
-                            # Explicitly checking for '$this' allows files that are being require-d inside classes to define
-                            # a type override annotation for $this and still be able to access private and protected members
-                            # there.
-                            return false if element.isPrivate and element.declaringClass.name != currentClassInfo.name
-                            return false if element.isProtected and element.declaringClass.name != currentClassInfo.name and element.declaringClass.name not in currentClassParents
+                if currentClassInfo
+                    currentClassParents = currentClassInfo.parents
 
-                        return true
-                    , insertParameterList)
+                return @addSuggestions(classInfo, elements[elements.length - 1].trim(), hasDoubleDotSeparator, (element) =>
+                    # Constants are only available when statically accessed (actually not entirely correct, they will
+                    # work in a non-static context as well, but it's not good practice).
+                    return false if mustBeStatic and not element.isStatic
 
-                return @service.getClassInfo(className, true).then(nestedSuccessHandler, failureHandler)
+                    if objectBeingCompleted != '$this'
+                        # Explicitly checking for '$this' allows files that are being require-d inside classes to define
+                        # a type override annotation for $this and still be able to access private and protected members
+                        # there.
+                        return false if element.isPrivate and element.declaringClass.name != currentClassInfo.name
+                        return false if element.isProtected and element.declaringClass.name != currentClassInfo.name and element.declaringClass.name not in currentClassParents
 
-            currentClassNameGetClassInfoHandler = (currentClass) =>
-                if not currentClass
-                    # There is no need to load the current class' information, return results immediately.
-                    return successHandler(null)
+                    return true
+                , insertParameterList)
 
-                # We need to fetch information about the current class, do it asynchronously (using promises).
-                return @service.getClassInfo(currentClass, true).then(successHandler, failureHandler)
-
-            return @service.determineCurrentClassName(editor, bufferPosition, true).then(
-                currentClassNameGetClassInfoHandler,
-                failureHandler
-            )
+            return Promise.all([determineCurrentClassNamePromise, getRelevantClassInfoPromise]).then(successHandler, failureHandler)
 
         return @service.getResultingTypeAt(editor, bufferPosition, true, true).then(
             resultingTypeSuccessHandler,
