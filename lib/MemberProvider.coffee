@@ -33,85 +33,84 @@ class MemberProvider extends AbstractProvider
         prefix = @getPrefix(editor, bufferPosition)
         return [] unless prefix != null
 
+        # We only autocomplete after splitters, so there must be at least one word, one splitter, and another word
+        # (the latter which could be empty).
+        elements = prefix.split(/(->|::)/)
+        return [] unless elements.length > 2
+
         failureHandler = () =>
             # Just return no results.
             return []
 
+        successHandler = (values) =>
+            currentClassInfo = values[0]
+            classInfo = values[1]
+
+            mustBeStatic = false
+            hasDoubleDotSeparator = false
+
+            objectBeingCompleted = elements[elements.length - 3].trim();
+
+            if elements[elements.length - 2] == '::'
+                hasDoubleDotSeparator = true
+
+                if objectBeingCompleted != 'parent'
+                    mustBeStatic = true
+
+            characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
+            insertParameterList = if characterAfterPrefix == '(' then false else true
+
+            currentClassParents = []
+
+            if currentClassInfo
+                currentClassParents = currentClassInfo.parents
+
+            return @addSuggestions(classInfo, elements[elements.length - 1].trim(), hasDoubleDotSeparator, (element) =>
+                # Constants are only available when statically accessed (actually not entirely correct, they will
+                # work in a non-static context as well, but it's not good practice).
+                return false if mustBeStatic and not element.isStatic
+
+                if objectBeingCompleted != '$this'
+                    # Explicitly checking for '$this' allows files that are being require-d inside classes to define
+                    # a type override annotation for $this and still be able to access private and protected members
+                    # there.
+                    return false if element.isPrivate and element.declaringClass.name != currentClassInfo.name
+                    return false if element.isProtected and element.declaringClass.name != currentClassInfo.name and element.declaringClass.name not in currentClassParents
+
+                return true
+            , insertParameterList)
+
         resultingTypeSuccessHandler = (className) =>
             return [] unless className
-
-            # We only autocomplete after splitters, so there must be at least one word, one splitter, and another word
-            # (the latter which could be empty).
-            elements = prefix.split(/(->|::)/)
-            return [] unless elements.length > 2
-
             return [] if @service.isBasicType(className)
-
-            currentClassNameGetClassInfoHandler = (currentClass) =>
-                return null if not currentClass
-
-                getClassInfoHandler = (currentClassInfo) =>
-                    return currentClassInfo
-
-                return @service.getClassInfo(currentClass, true).then(getClassInfoHandler, failureHandler)
-
-            determineCurrentClassNamePromise = @service.determineCurrentClassName(editor, bufferPosition, true).then(
-                currentClassNameGetClassInfoHandler,
-                failureHandler
-            )
 
             getRelevantClassInfoHandler = (classInfo) =>
                 return classInfo
 
-            getRelevantClassInfoPromise = @service.getClassInfo(className, true).then(
+            return @service.getClassInfo(className, true).then(
                 getRelevantClassInfoHandler,
                 failureHandler
             )
 
-            successHandler = (values) =>
-                currentClassInfo = values[0]
-                classInfo = values[1]
-
-                mustBeStatic = false
-                hasDoubleDotSeparator = false
-
-                objectBeingCompleted = elements[elements.length - 3].trim();
-
-                if elements[elements.length - 2] == '::'
-                    hasDoubleDotSeparator = true
-
-                    if objectBeingCompleted != 'parent'
-                        mustBeStatic = true
-
-                characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
-                insertParameterList = if characterAfterPrefix == '(' then false else true
-
-                currentClassParents = []
-
-                if currentClassInfo
-                    currentClassParents = currentClassInfo.parents
-
-                return @addSuggestions(classInfo, elements[elements.length - 1].trim(), hasDoubleDotSeparator, (element) =>
-                    # Constants are only available when statically accessed (actually not entirely correct, they will
-                    # work in a non-static context as well, but it's not good practice).
-                    return false if mustBeStatic and not element.isStatic
-
-                    if objectBeingCompleted != '$this'
-                        # Explicitly checking for '$this' allows files that are being require-d inside classes to define
-                        # a type override annotation for $this and still be able to access private and protected members
-                        # there.
-                        return false if element.isPrivate and element.declaringClass.name != currentClassInfo.name
-                        return false if element.isProtected and element.declaringClass.name != currentClassInfo.name and element.declaringClass.name not in currentClassParents
-
-                    return true
-                , insertParameterList)
-
-            return Promise.all([determineCurrentClassNamePromise, getRelevantClassInfoPromise]).then(successHandler, failureHandler)
-
-        return @service.getResultingTypeAt(editor, bufferPosition, true, true).then(
+        resultingTypeAtPromise = @service.getResultingTypeAt(editor, bufferPosition, true, true).then(
             resultingTypeSuccessHandler,
             failureHandler
         )
+
+        currentClassNameGetClassInfoHandler = (currentClass) =>
+            return null if not currentClass
+
+            getClassInfoHandler = (currentClassInfo) =>
+                return currentClassInfo
+
+            return @service.getClassInfo(currentClass, true).then(getClassInfoHandler, failureHandler)
+
+        determineCurrentClassNamePromise = @service.determineCurrentClassName(editor, bufferPosition, true).then(
+            currentClassNameGetClassInfoHandler,
+            failureHandler
+        )
+
+        return Promise.all([determineCurrentClassNamePromise, resultingTypeAtPromise]).then(successHandler, failureHandler)
 
     ###*
      * Returns available suggestions.
