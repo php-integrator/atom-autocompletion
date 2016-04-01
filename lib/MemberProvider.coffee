@@ -62,7 +62,7 @@ class MemberProvider extends AbstractProvider
 
             currentClassParents = []
 
-            if currentClassInfo
+            if currentClassInfo?
                 currentClassParents = currentClassInfo.parents
 
             return @addSuggestions(classInfo, elements[elements.length - 1].trim(), hasDoubleDotSeparator, (element) =>
@@ -74,8 +74,8 @@ class MemberProvider extends AbstractProvider
                     # Explicitly checking for '$this' allows files that are being require-d inside classes to define
                     # a type override annotation for $this and still be able to access private and protected members
                     # there.
-                    return false if element.isPrivate and element.declaringClass.name != currentClassInfo.name
-                    return false if element.isProtected and element.declaringClass.name != currentClassInfo.name and element.declaringClass.name not in currentClassParents
+                    return false if element.isPrivate and element.declaringClass.name != currentClassInfo?.name
+                    return false if element.isProtected and element.declaringClass.name != currentClassInfo?.name and element.declaringClass.name not in currentClassParents
 
                 return true
             , insertParameterList)
