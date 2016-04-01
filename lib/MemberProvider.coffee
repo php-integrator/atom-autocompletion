@@ -61,7 +61,10 @@ class MemberProvider extends AbstractProvider
             getRelevantClassInfoHandler = (classInfo) =>
                 return classInfo
 
-            getRelevantClassInfoPromise = @service.getClassInfo(className, true).then(getRelevantClassInfoHandler, failureHandler)
+            getRelevantClassInfoPromise = @service.getClassInfo(className, true).then(
+                getRelevantClassInfoHandler,
+                failureHandler
+            )
 
             successHandler = (values) =>
                 currentClassInfo = values[0]
