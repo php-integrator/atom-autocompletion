@@ -71,6 +71,7 @@ module.exports =
 
         @registerCommands()
 
+        @providers.push(new SnippetProvider(@configuration))
         @providers.push(new MemberProvider(@configuration))
         @providers.push(new TypeHintNewVariableNameProvider(@configuration))
         @providers.push(new VariableProvider(@configuration))
@@ -81,7 +82,6 @@ module.exports =
         @providers.push(new MagicConstantProvider(@configuration))
         @providers.push(new KeywordProvider(@configuration))
         @providers.push(new DocBlockProvider(@configuration))
-        @providers.push(new SnippetProvider(@configuration))
 
     ###*
      * Deactivates the package.
