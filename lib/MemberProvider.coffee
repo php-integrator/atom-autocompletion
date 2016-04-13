@@ -87,12 +87,12 @@ class MemberProvider extends AbstractProvider
             getRelevantClassInfoHandler = (classInfo) =>
                 return classInfo
 
-            return @service.getClassInfo(className, true).then(
+            return @service.getClassInfo(className).then(
                 getRelevantClassInfoHandler,
                 failureHandler
             )
 
-        resultingTypeAtPromise = @service.getResultingTypeAt(editor, bufferPosition, true, true).then(
+        resultingTypeAtPromise = @service.getResultingTypeAt(editor, bufferPosition, true).then(
             resultingTypeSuccessHandler,
             failureHandler
         )
@@ -105,9 +105,9 @@ class MemberProvider extends AbstractProvider
                 getClassInfoHandler = (currentClassInfo) =>
                     return currentClassInfo
 
-                return @service.getClassInfo(currentClass, true).then(getClassInfoHandler, failureHandler)
+                return @service.getClassInfo(currentClass).then(getClassInfoHandler, failureHandler)
 
-            determineCurrentClassNamePromise = @service.determineCurrentClassName(editor, bufferPosition, true).then(
+            determineCurrentClassNamePromise = @service.determineCurrentClassName(editor, bufferPosition).then(
                 currentClassNameGetClassInfoHandler,
                 failureHandler
             )

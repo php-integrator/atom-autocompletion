@@ -90,7 +90,7 @@ class FunctionProvider extends AbstractProvider
             return []
 
         if not @pendingPromise?
-            @pendingPromise = @service.getGlobalFunctions(true).then(successHandler, failureHandler)
+            @pendingPromise = @service.getGlobalFunctions().then(successHandler, failureHandler)
 
         return @pendingPromise
 

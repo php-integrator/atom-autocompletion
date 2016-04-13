@@ -63,7 +63,7 @@ class VariableProvider extends AbstractProvider
         failureHandler = () =>
             return []
 
-        return @service.getAvailableVariablesByOffset(null, text, offset, true).then(successHandler, failureHandler)
+        return @service.getAvailableVariablesByOffset(null, text, offset).then(successHandler, failureHandler)
 
     ###*
      * Returns available suggestions.

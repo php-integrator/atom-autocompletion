@@ -91,7 +91,7 @@ class ConstantProvider extends AbstractProvider
             return []
 
         if not @pendingPromise?
-            @pendingPromise = @service.getGlobalConstants(true).then(successHandler, failureHandler)
+            @pendingPromise = @service.getGlobalConstants().then(successHandler, failureHandler)
 
         return @pendingPromise
 
