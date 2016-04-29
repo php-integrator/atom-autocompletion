@@ -74,23 +74,37 @@ class ClassProvider extends AbstractProvider
     ###
     refreshCache: () ->
         successHandler = (classes) =>
-            @pendingPromise = null
-
-            return unless classes
-
-            @listCache = classes
-
-            return @listCache
+            return @handleSuccessfulCacheRefresh(classes)
 
         failureHandler = () =>
-            @pendingPromise = null
-
-            return []
+            return @handleFailedCacheRefresh()
 
         if not @pendingPromise?
             @pendingPromise = @service.getClassList().then(successHandler, failureHandler)
 
         return @pendingPromise
+
+    ###*
+     * @param {Object} classes
+     *
+     * @return {Object}
+    ###
+    handleSuccessfulCacheRefresh: (classes) ->
+        @pendingPromise = null
+
+        return unless classes
+
+        @listCache = classes
+
+        return @listCache
+
+    ###*
+     * @return {Object}
+    ###
+    handleFailedCacheRefresh: () ->
+        @pendingPromise = null
+
+        return []
 
     ###*
      * Fetches a list of results that can be fed to the addSuggestions method.

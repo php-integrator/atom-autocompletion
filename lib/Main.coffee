@@ -73,6 +73,7 @@ module.exports =
         MagicConstantProvider           = require './MagicConstantProvider'
         FunctionProvider                = require './FunctionProvider'
         KeywordProvider                 = require './KeywordProvider'
+        DocblockAnnotationProvider      = require './DocblockAnnotationProvider'
         DocblockTagProvider             = require './DocblockTagProvider'
 
         @configuration = new AtomConfig(@packageName)
@@ -89,6 +90,7 @@ module.exports =
         @providers.push(new GlobalVariableProvider(@configuration))
         @providers.push(new MagicConstantProvider(@configuration))
         @providers.push(new KeywordProvider(@configuration))
+        @providers.push(new DocblockAnnotationProvider(@configuration))
         @providers.push(new DocblockTagProvider(@configuration))
 
     ###*
