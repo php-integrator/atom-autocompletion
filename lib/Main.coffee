@@ -73,7 +73,7 @@ module.exports =
         MagicConstantProvider           = require './MagicConstantProvider'
         FunctionProvider                = require './FunctionProvider'
         KeywordProvider                 = require './KeywordProvider'
-        DocBlockProvider                = require './DocBlockProvider'
+        DocblockTagProvider             = require './DocblockTagProvider'
 
         @configuration = new AtomConfig(@packageName)
 
@@ -89,7 +89,7 @@ module.exports =
         @providers.push(new GlobalVariableProvider(@configuration))
         @providers.push(new MagicConstantProvider(@configuration))
         @providers.push(new KeywordProvider(@configuration))
-        @providers.push(new DocBlockProvider(@configuration))
+        @providers.push(new DocblockTagProvider(@configuration))
 
     ###*
      * Deactivates the package.

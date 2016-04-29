@@ -3,9 +3,9 @@ AbstractProvider = require "./AbstractProvider"
 module.exports =
 
 ##*
-# Provides autocompletion for docblocks and tags.
+# Provides autocompletion for docblock tags.
 ##
-class DocBlockProvider extends AbstractProvider
+class DocblockTagProvider extends AbstractProvider
     ###*
      * @inheritdoc
      *
