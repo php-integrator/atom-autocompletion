@@ -22,6 +22,14 @@ module.exports =
             default     : false
             order       : 2
 
+        automaticallyAddUseStatements:
+            title       : 'Automatically add use statements when necessary'
+            description : 'When enabled, a use statement will be added when autocompleting a class name (if it isn\'t
+                           already present).'
+            type        : 'boolean'
+            default     : true
+            order       : 3
+
     ###*
      * The name of the package.
     ###

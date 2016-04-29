@@ -24,6 +24,7 @@ class Config
         @data =
             disableBuiltinAutocompletion   : true
             insertNewlinesForUseStatements : false
+            automaticallyAddUseStatements  : true
 
             # See also http://www.phpdoc.org/docs/latest/index.html .
             phpdoc_base_url : {

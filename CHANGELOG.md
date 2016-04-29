@@ -1,3 +1,7 @@
+## 0.7.1 (base 0.9.0)
+### Features and improvements
+* Add a setting that allows disabling the automatic adding of use statements.
+
 ## 0.7.0 (base 0.8.0)
 ### Features and enhancements
 * Also show `$argv` and `$argv` in the autocompletion suggestions.

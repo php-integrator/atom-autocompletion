@@ -222,6 +222,7 @@ class ClassProvider extends AbstractProvider
     ###
     onDidInsertSuggestion: ({editor, triggerPosition, suggestion}) ->
         return unless suggestion.data?.nameToImport
+        return unless @config.get('automaticallyAddUseStatements')
 
         successHandler = (currentClassName) =>
             if currentClassName
