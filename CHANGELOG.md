@@ -3,6 +3,9 @@
 * Added a setting that allows disabling the automatic adding of use statements.
 * Added a new docblock annotation provider that will list classes that are usable as annotation (i.e. have the `@Annotation` tag in their docblock) after the `@` sign in docblocks (used by e.g. Doctrine and Symfony).
 
+### Bugs fixed
+* Fix traits not having a different icon in the class suggestion list.
+
 ## 0.7.0 (base 0.8.0)
 ### Features and enhancements
 * Also show `$argv` and `$argv` in the autocompletion suggestions.

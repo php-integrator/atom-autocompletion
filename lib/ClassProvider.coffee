@@ -203,7 +203,7 @@ class ClassProvider extends AbstractProvider
 
             suggestionData =
                 text               : nameToUse
-                type               : if element.isTrait then 'mixin' else 'class'
+                type               : if element.type == 'trait' then 'mixin' else 'class'
                 description        : if element.isBuiltin then 'Built-in PHP structural element.' else element.descriptions.short
                 leftLabel          : element.type
                 descriptionMoreURL : if element.isBuiltin then @config.get('php_documentation_base_urls').classes + element.name else null
