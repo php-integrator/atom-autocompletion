@@ -12,7 +12,7 @@ class DocblockAnnotationProvider extends ClassProvider
      * These can only appear in docblocks. Including the space in the capturing group ensures that autocompletion will
      * start right after putting down an asterisk instead of when the tag symbol '@' is entered.
     ###
-    regex: /^\s*(?:\/\*)?\*\s@?(\\?[a-zA-Z_]?[a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+    regex: /^\s*(?:\/\*)?\*\s@(\\?[a-zA-Z_]?[a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
 
     ###*
      * @inheritdoc

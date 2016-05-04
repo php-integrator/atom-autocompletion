@@ -12,7 +12,7 @@ class DocblockTagProvider extends AbstractProvider
      * These can only appear in docblocks. Including the space in the capturing group ensures that autocompletion will
      * start right after putting down an asterisk instead of when the tag symbol '@' is entered.
     ###
-    regex: /^\s*(?:\/\*)?\*(\s@?\S*)$/
+    regex: /^\s*(?:\/\*)?\*(\s@\S*)$/
 
     ###*
      * @inheritdoc
