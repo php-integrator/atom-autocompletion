@@ -48,6 +48,8 @@ class MemberProvider extends AbstractProvider
             currentClassInfo = values[0]
             classInfo = values[1]
 
+            return [] if not classInfo?
+
             mustBeStatic = false
             hasDoubleDotSeparator = false
 
@@ -87,9 +89,12 @@ class MemberProvider extends AbstractProvider
             getRelevantClassInfoHandler = (classInfo) =>
                 return classInfo
 
+            getRelevantClassInfoFailureHandler = (classInfo) =>
+                return null
+
             return @service.getClassInfo(className).then(
                 getRelevantClassInfoHandler,
-                failureHandler
+                getRelevantClassInfoFailureHandler
             )
 
         resultingTypeAtPromise = @service.getResultingTypeAt(editor, bufferPosition, true).then(
