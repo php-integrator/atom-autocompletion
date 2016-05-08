@@ -1,3 +1,7 @@
+## 0.8.1
+### Bugs fixed
+* Fixed the `class` suggestion being shown for classlikes that didn't exist.
+
 ## 0.8.0 (base 0.9.0)
 ### Features and improvements
 * Added a setting that allows disabling the automatic adding of use statements.
