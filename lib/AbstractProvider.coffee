@@ -171,6 +171,17 @@ class AbstractProvider
         return parts.pop()
 
     ###*
+     * @param {Array} typeArray
+     *
+     * @return {String}
+    ###
+    getTypeSpecificationFromTypeArray: (typeArray) ->
+        typeNames = typeArray.map (type) =>
+            return @getClassShortName(type.type)
+
+        return typeNames.join('|')
+
+    ###*
      * Retrieves the prefix using the specified buffer position and the current class' configured regular expression.
      *
      * @param {TextEditor} editor

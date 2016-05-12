@@ -153,6 +153,7 @@ class MemberProvider extends AbstractProvider
                     continue
 
                 text = (if type == 'property' and hasDoubleDotSeparator then '$' else '') + member.name
+                typesToDisplay = if type == 'method' then member.returnTypes else member.types
 
                 suggestions.push
                     text              : text
@@ -160,9 +161,9 @@ class MemberProvider extends AbstractProvider
                     snippet           : if type == 'method' and insertParameterList then @getFunctionSnippet(member.name, member) else null
                     displayText       : text
                     replacementPrefix : prefix
-                    leftLabel         : @getClassShortName(member.return?.type)
+                    leftLabel         : @getTypeSpecificationFromTypeArray(typesToDisplay)
                     rightLabelHTML    : @getSuggestionRightLabel(name, member)
-                    description       : if member.descriptions.short? then member.descriptions.short else ''
+                    description       : if member.shortDescription then member.shortDescription else ''
                     className         : 'php-integrator-autocomplete-plus-suggestion' + if member.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
 
         processList(classInfo.methods, 'method')

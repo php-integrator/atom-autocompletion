@@ -149,9 +149,9 @@ class FunctionProvider extends AbstractProvider
                 snippet            : if insertParameterList then @getFunctionSnippet(func.name, func) else null
                 displayText        : func.name
                 replacementPrefix  : prefix
-                leftLabel          : @getClassShortName(func.return?.type)
+                leftLabel          : @getTypeSpecificationFromTypeArray(func.returnTypes)
                 rightLabelHTML     : @getSuggestionRightLabel(name, func)
-                description        : if func.isBuiltin then 'Built-in PHP function.' else func.descriptions.short
+                description        : if func.isBuiltin then 'Built-in PHP function.' else func.shortDescription
                 descriptionMoreURL : if func.isBuiltin then @config.get('php_documentation_base_urls').functions + func.name else null
                 className          : 'php-integrator-autocomplete-plus-suggestion' + if func.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
 
