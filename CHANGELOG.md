@@ -1,3 +1,8 @@
+## 0.8.2 (base 0.10.0)
+### Bugs fixed
+* Global constants will now also show their type in the left column.
+* Global constants will now properly show their short description instead of just "Global PHP constant".
+
 ## 0.8.1
 ### Bugs fixed
 * Fixed the `class` suggestion being shown for classlikes that didn't exist.

@@ -144,4 +144,13 @@ class ConstantProvider extends AbstractProvider
                 type        : 'constant',
                 description : if constant.isBuiltin then 'Built-in PHP constant.' else 'Global PHP constant.'
 
+            suggestions.push
+                text               : constant.name
+                type               : 'constant'
+                displayText        : constant.name
+                replacementPrefix  : prefix
+                leftLabel          : @getTypeSpecificationFromTypeArray(constant.types)
+                description        : if constant.isBuiltin then 'Built-in PHP function.' else constant.shortDescription
+                className          : 'php-integrator-autocomplete-plus-suggestion' + if constant.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
+
         return suggestions
