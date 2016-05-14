@@ -1,4 +1,18 @@
-## 0.8.2 (base 0.10.0)
+## 0.9.0 (base 0.10.0)
+
+### Features and improvements
+* "Branched" member autocompletion is now supported. This means that if a structural element returns multiple types, all of their members will be listed, for example:
+
+```php
+/**
+ * @return \IteratorAggregate|\Countable
+ */
+public function foo()
+{
+    $this->foo()-> // Will list members for both Countable and IteratorAggregate.
+}
+```
+
 ### Bugs fixed
 * Global constants will now also show their type in the left column.
 * Global constants will now properly show their short description instead of just "Global PHP constant".

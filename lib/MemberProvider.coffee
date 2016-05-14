@@ -46,9 +46,12 @@ class MemberProvider extends AbstractProvider
 
         successHandler = (values) =>
             currentClassInfo = values[0]
-            classInfo = values[1]
+            getClassInfoResults = values[1]
 
-            return [] if not classInfo?
+            getClassInfoResults = getClassInfoResults.filter (item) ->
+                return item?
+
+            return [] if getClassInfoResults.length == 0
 
             mustBeStatic = false
             hasDoubleDotSeparator = false
@@ -67,7 +70,7 @@ class MemberProvider extends AbstractProvider
             if currentClassInfo?
                 currentClassParents = currentClassInfo.parents
 
-            return @addSuggestions(classInfo, elements[elements.length - 1].trim(), hasDoubleDotSeparator, (element) =>
+            return @addSuggestions(getClassInfoResults, elements[elements.length - 1].trim(), hasDoubleDotSeparator, (element) =>
                 # Constants are only available when statically accessed (actually not entirely correct, they will
                 # work in a non-static context as well, but it's not good practice).
                 return false if mustBeStatic and not element.isStatic
@@ -82,23 +85,27 @@ class MemberProvider extends AbstractProvider
                 return true
             , insertParameterList)
 
-        resultingTypeSuccessHandler = (className) =>
-            return [] unless className
-            return [] if @service.isBasicType(className)
+        resultingTypesSuccessHandler = (types) =>
+            classTypePromises = []
 
-            getRelevantClassInfoHandler = (classInfo) =>
+            getRelevantClassInfoDataHandler = (classInfo) =>
                 return classInfo
 
-            getRelevantClassInfoFailureHandler = (classInfo) =>
+            getRelevantClassInfoDataFailureHandler = (classInfo) =>
                 return null
 
-            return @service.getClassInfo(className).then(
-                getRelevantClassInfoHandler,
-                getRelevantClassInfoFailureHandler
-            )
+            for type in types
+                continue if @service.isBasicType(type)
 
-        resultingTypeAtPromise = @service.getResultingTypeAt(editor, bufferPosition, true).then(
-            resultingTypeSuccessHandler,
+                classTypePromises.push @service.getClassInfo(type).then(
+                    getRelevantClassInfoDataHandler,
+                    getRelevantClassInfoDataFailureHandler
+                )
+
+            return Promise.all(classTypePromises)
+
+        resultingTypesAtPromise = @service.getResultingTypesAt(editor, bufferPosition, true).then(
+            resultingTypesSuccessHandler,
             failureHandler
         )
 
@@ -120,12 +127,12 @@ class MemberProvider extends AbstractProvider
         else
             determineCurrentClassNamePromise = null
 
-        return Promise.all([determineCurrentClassNamePromise, resultingTypeAtPromise]).then(successHandler, failureHandler)
+        return Promise.all([determineCurrentClassNamePromise, resultingTypesAtPromise]).then(successHandler, failureHandler)
 
     ###*
      * Returns available suggestions.
      *
-     * @param {Object}   classInfo                     Info about the class to show members of.
+     * @param {Array}    classInfoObjects
      * @param {string}   prefix                        Prefix to match (may be left empty to list all members).
      * @param {boolean}  hasDoubleDotSeparator
      * @param {callback} filterCallback                A callback that should return true if the item should be added
@@ -134,40 +141,41 @@ class MemberProvider extends AbstractProvider
      *
      * @return {array}
     ###
-    addSuggestions: (classInfo, prefix, hasDoubleDotSeparator, filterCallback, insertParameterList = true) ->
+    addSuggestions: (classInfoObjects, prefix, hasDoubleDotSeparator, filterCallback, insertParameterList = true) ->
         suggestions = []
 
-        if hasDoubleDotSeparator
-            suggestions.push
-                text              : 'class'
-                type              : 'keyword'
-                replacementPrefix : prefix
-                leftLabel         : 'string'
-                rightLabelHTML    : @getSuggestionRightLabel('class', {declaringStructure: {name: classInfo.name}})
-                description       : 'PHP static class keyword that evaluates to the FCQN.'
-                className         : 'php-integrator-autocomplete-plus-suggestion'
-
-        processList = (list, type) =>
-            for name, member of list
-                if filterCallback and not filterCallback(member)
-                    continue
-
-                text = (if type == 'property' and hasDoubleDotSeparator then '$' else '') + member.name
-                typesToDisplay = if type == 'method' then member.returnTypes else member.types
-
+        for classInfo in classInfoObjects
+            if hasDoubleDotSeparator
                 suggestions.push
-                    text              : text
-                    type              : type
-                    snippet           : if type == 'method' and insertParameterList then @getFunctionSnippet(member.name, member) else null
-                    displayText       : text
+                    text              : 'class'
+                    type              : 'keyword'
                     replacementPrefix : prefix
-                    leftLabel         : @getTypeSpecificationFromTypeArray(typesToDisplay)
-                    rightLabelHTML    : @getSuggestionRightLabel(name, member)
-                    description       : if member.shortDescription then member.shortDescription else ''
-                    className         : 'php-integrator-autocomplete-plus-suggestion' + if member.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
+                    leftLabel         : 'string'
+                    rightLabelHTML    : @getSuggestionRightLabel('class', {declaringStructure: {name: classInfo.name}})
+                    description       : 'PHP static class keyword that evaluates to the FCQN.'
+                    className         : 'php-integrator-autocomplete-plus-suggestion'
 
-        processList(classInfo.methods, 'method')
-        processList(classInfo.constants, 'constant')
-        processList(classInfo.properties, 'property')
+            processList = (list, type) =>
+                for name, member of list
+                    if filterCallback and not filterCallback(member)
+                        continue
+
+                    text = (if type == 'property' and hasDoubleDotSeparator then '$' else '') + member.name
+                    typesToDisplay = if type == 'method' then member.returnTypes else member.types
+
+                    suggestions.push
+                        text              : text
+                        type              : type
+                        snippet           : if type == 'method' and insertParameterList then @getFunctionSnippet(member.name, member) else null
+                        displayText       : text
+                        replacementPrefix : prefix
+                        leftLabel         : @getTypeSpecificationFromTypeArray(typesToDisplay)
+                        rightLabelHTML    : @getSuggestionRightLabel(name, member)
+                        description       : if member.shortDescription then member.shortDescription else ''
+                        className         : 'php-integrator-autocomplete-plus-suggestion' + if member.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
+
+            processList(classInfo.methods, 'method')
+            processList(classInfo.constants, 'constant')
+            processList(classInfo.properties, 'property')
 
         return suggestions
