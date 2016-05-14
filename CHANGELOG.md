@@ -1,5 +1,4 @@
 ## 0.9.0 (base 0.10.0)
-
 ### Features and improvements
 * "Branched" member autocompletion is now supported. This means that if a structural element returns multiple types, all of their members will be listed, for example:
 
