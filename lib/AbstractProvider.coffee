@@ -93,9 +93,9 @@ class AbstractProvider
             description = ''
             description += '['   if param.isOptional and not isInOptionalList
             description += ', '  if index != 0
+            description += '...' if param.isVariadic
             description += '&'   if param.isReference
             description += '$' + param.name
-            description += '...' if param.isVariadic
             description += ' = ' + param.defaultValue if param.defaultValue
             description += ']'   if param.isOptional and index == (info.parameters.length - 1)
 

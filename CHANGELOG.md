@@ -16,6 +16,7 @@ public function foo()
 ### Bugs fixed
 * Global constants will now also show their type in the left column.
 * Global constants will now properly show their short description instead of just "Global PHP constant".
+* The ellipsis for variadic parameters is now shown at the front instead of the back of the parameter, consistent with PHP's syntax.
 
 ## 0.8.1
 ### Bugs fixed
