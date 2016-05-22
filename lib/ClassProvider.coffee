@@ -10,7 +10,22 @@ class ClassProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    regex: /(?:^|[^\$:>\w])((?:(?:namespace|new|use)\s+)?\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+    regex: /(?:^|[^\$:>\w])(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+
+    ###*
+     # Regular expression matching class names after the new keyword.
+    ###
+    newRegex: /(?:^|[^\$:>\w])new\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+
+    ###*
+     # Regular expression matching class names after the use keyword.
+    ###
+    useRegex: /(?:^|[^\$:>\w])use\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+
+    ###*
+     # Regular expression matching class names after the namespace keyword.
+    ###
+    namespaceRegex: /(?:^|[^\$:>\w])namespace\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
 
     ###*
      # Cache object to help improve responsiveness of autocompletion.
@@ -125,16 +140,29 @@ class ClassProvider extends AbstractProvider
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         return [] if not @service
 
-        prefix = @getPrefix(editor, bufferPosition)
-        return [] unless prefix != null
+        regexesToTry = {
+            getNamespaceSuggestions : @namespaceRegex
+            getUseSuggestions       : @useRegex
+            getNewSuggestions       : @newRegex
+            getClassSuggestions     : @regex
+        }
+
+        matches = null
+        methodToUse = null
+
+        for method, regex of regexesToTry
+            matches = @getPrefixMatchesByRegex(editor, bufferPosition, regex)
+
+            if matches?
+                methodToUse = method
+                break
+
+        return [] if not methodToUse?
 
         successHandler = (classes) =>
             return [] unless classes
 
-            characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
-            insertParameterList = if characterAfterPrefix == '(' then false else true
-
-            return @addSuggestions(classes, prefix.trim(), insertParameterList)
+            return this[methodToUse].apply(this, [classes, matches])
 
         failureHandler = () =>
             # Just return no results.
@@ -143,96 +171,192 @@ class ClassProvider extends AbstractProvider
         return @fetchResults().then(successHandler, failureHandler)
 
     ###*
-     * Returns available suggestions.
+     * Retrieves suggestions for namespace names.
      *
-     * @param {array}  classes
-     * @param {string} prefix
-     * @param {bool}   insertParameterList Whether to insert a list of parameters for constructors or not.
+     * @param {Array} classes
+     * @param {Array} matches
      *
-     * @return {array}
+     * @return {Array}
     ###
-    addSuggestions: (classes, prefix, insertParameterList = true) ->
-        # Get rid of the leading "new" or "use" keyword
-        isUse = false
-        hasLeadingSlash = false
-        isInstantiation = false
-
-        if prefix.indexOf("new ") != -1
-            isInstantiation = true
-            prefix = prefix.replace /new /, ''
-
-        else if prefix.indexOf("use ") != -1
-            isUse = true
-            prefix = prefix.replace /use /, ''
-
-        else if prefix.indexOf("namespace ") != -1
-            isUse = true
-            prefix = prefix.replace /namespace /, ''
-
-        if prefix.indexOf("\\") == 0
-            hasLeadingSlash = true
-            prefix = prefix.substring(1, prefix.length)
+    getNamespaceSuggestions: (classes, matches) ->
+        prefix = matches[1]
 
         suggestions = []
 
-        for name, element of classes when element.name
-            prefixParts = prefix.split('\\')
-            suggestionParts = element.name.split('\\')
+        for name, element of classes
+            suggestion = @getSuggestionForData(element)
+            suggestion.type = 'import'
+            suggestion.replacementPrefix = prefix
 
-            # We try to add an import that has only as many parts of the namespace as needed, for example, if the user
-            # types 'Foo\Class' and confirms the suggestion 'My\Foo\Class', we add an import for 'My\Foo' and leave the
-            # user's code at 'Foo\Class' as a relative import. We only add the full 'My\Foo\Class' if the user were to
-            # type just 'Class' and then select 'My\Foo\Class' (i.e. we remove as many segments from the suggestion
-            # as the user already has in his code).
-            nameToUseParts = suggestionParts.slice(-1)
-            nameToImportParts = suggestionParts
-
-            if prefixParts.length > 1
-                partsToSlice = (prefixParts.length - 1)
-
-                nameToUseParts = suggestionParts.slice(-partsToSlice - 1)
-                nameToImportParts = suggestionParts.slice(0, -partsToSlice)
-
-            nameToUse = nameToUseParts.join('\\')
-            nameToImport = nameToImportParts.join('\\')
-
-            if hasLeadingSlash
-                # Don't try to add use statements for class names that the user wants to make absolute by adding a
-                # leading slash.
-                nameToImport = null
-
-            suggestionData =
-                text               : nameToUse
-                type               : if element.type == 'trait' then 'mixin' else 'class'
-                description        : if element.isBuiltin then 'Built-in PHP structural element.' else element.shortDescription
-                leftLabel          : element.type
-                descriptionMoreURL : if element.isBuiltin then @config.get('php_documentation_base_urls').classes + element.name else null
-                className          : if element.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
-                replacementPrefix  : prefix
-                displayText        : element.name
-
-            if isUse
-                # Use statements always get the full class name as completion.
-                suggestionData.text = element.name
-                suggestionData.type = 'import'
-
-            else
-                if isInstantiation and (element.type != 'class' or element.isAbstract)
-                    continue # Not possible to instantiate these.
-
-                suggestionData.data =
-                    nameToImport: nameToImport
-
-            suggestions.push suggestionData
+            suggestions.push(suggestion)
 
         return suggestions
+
+    ###*
+     * Retrieves suggestions for use statements.
+     *
+     * @param {Array} classes
+     * @param {Array} matches
+     *
+     * @return {Array}
+    ###
+    getUseSuggestions: (classes, matches) ->
+        prefix = matches[1]
+
+        suggestions = []
+
+        for name, element of classes
+            suggestion = @getSuggestionForData(element)
+            suggestion.type = 'import'
+            suggestion.replacementPrefix = prefix
+
+            suggestions.push(suggestion)
+
+        return suggestions
+
+    ###*
+     * Retrieves suggestions for class names after the new keyword.
+     *
+     * @param {Array} classes
+     * @param {Array} matches
+     *
+     * @return {Array}
+    ###
+    getNewSuggestions: (classes, matches) ->
+        prefix = matches[1]
+
+        suggestions = []
+
+        for name, element of classes
+            if element.type != 'class' or element.isAbstract
+                continue # Not possible to instantiate these.
+
+            suggestion = @getSuggestionForData(element)
+            suggestion.replacementPrefix = prefix
+
+            @applyAutomaticImportData(suggestion, prefix)
+
+            suggestions.push(suggestion)
+
+        return suggestions
+
+    ###*
+     * Retrieves suggestions for classlike names.
+     *
+     * @param {Array} classes
+     * @param {Array} matches
+     *
+     * @return {Array}
+    ###
+    getClassSuggestions: (classes, matches) ->
+        prefix = matches[1]
+
+        suggestions = []
+
+        for name, element of classes
+            suggestion = @getSuggestionForData(element)
+            suggestion.replacementPrefix = prefix
+
+            @applyAutomaticImportData(suggestion, prefix)
+
+            suggestions.push(suggestion)
+
+        return suggestions
+
+    ###*
+     * @param {Object} data
+     *
+     * @return {Array}
+    ###
+    getSuggestionForData: (data) ->
+        suggestionData =
+            text               : data.name
+            type               : if data.type == 'trait' then 'mixin' else 'class'
+            description        : if data.isBuiltin then 'Built-in PHP structural data.' else data.shortDescription
+            leftLabel          : data.type
+            descriptionMoreURL : if data.isBuiltin then @config.get('php_documentation_base_urls').classes + data.name else null
+            className          : if data.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
+            displayText        : data.name
+            data               : {}
+
+    ###*
+     * @param {Object} suggestion
+     * @param {String} prefix
+    ###
+    applyAutomaticImportData: (suggestion, prefix) ->
+        hasLeadingSlash = false
+
+        if prefix.length > 0 and prefix[0] == '\\'
+            hasLeadingSlash = true
+            prefix = prefix.substring(1, prefix.length)
+
+        prefixParts = prefix.split('\\')
+        partsToSlice = (prefixParts.length - 1)
+
+        fqcn = suggestion.text
+
+        # We try to add an import that has only as many parts of the namespace as needed, for example, if the user
+        # types 'Foo\Class' and confirms the suggestion 'My\Foo\Class', we add an import for 'My\Foo' and leave the
+        # user's code at 'Foo\Class' as a relative import. We only add the full 'My\Foo\Class' if the user were to
+        # type just 'Class' and then select 'My\Foo\Class' (i.e. we remove as many segments from the suggestion
+        # as the user already has in his code).
+        suggestion.data.nameToImport = null
+
+        if hasLeadingSlash
+            suggestion.text = '\\' + fqcn
+
+        else
+            # Don't try to add use statements for class names that the user wants to make absolute by adding a
+            # leading slash.
+            suggestion.text = @getNameToInsert(fqcn, partsToSlice)
+            suggestion.data.nameToImport = @getNameToImport(fqcn, partsToSlice)
+
+    ###*
+     * Returns the name to insert into the buffer.
+     *
+     * @param {String} fqcn            The FQCN of the class that needs to be imported.
+     * @param {Number} partsToShiftOff The amount of parts to leave extra for the class name. For example, a value of 1
+     *                                     will return B\C instead of A\B\C. A value of 0 will return just C.
+     *
+     * @return {String|null}
+    ###
+    getNameToInsert: (fqcn, extraPartsToMaintain) ->
+        if fqcn[0] == '\\'
+            fqcn = fqcn.substring(1)
+
+        fqcnParts = fqcn.split('\\')
+
+        if true
+            nameToUseParts = fqcnParts.slice(-extraPartsToMaintain - 1)
+
+        return nameToUseParts.join('\\')
+
+    ###*
+     * Returns the name to import via a use statement.
+     *
+     * @param {String} fqcn          The FQCN of the class that needs to be imported.
+     * @param {Number} partsToPopOff The amount of parts to leave off of the end of the class name. For example, a
+     *                               value of 1 will return A\B instead of A\B\C.
+     *
+     * @return {String|null}
+    ###
+    getNameToImport: (fqcn, partsToPopOff) ->
+        if fqcn[0] == '\\'
+            fqcn = fqcn.substring(1)
+
+        fqcnParts = fqcn.split('\\')
+
+        if partsToPopOff > 0
+            fqcnParts = fqcnParts.slice(0, -partsToPopOff)
+
+        return fqcnParts.join('\\')
 
     ###*
      * Called when the user confirms an autocompletion suggestion.
      *
      * @param {TextEditor} editor
      * @param {Position}   triggerPosition
-     * @param {object}     suggestion
+     * @param {Object}     suggestion
     ###
     onDidInsertSuggestion: ({editor, triggerPosition, suggestion}) ->
         return unless suggestion.data?.nameToImport
