@@ -15,17 +15,17 @@ class ClassProvider extends AbstractProvider
     ###*
      # Regular expression matching class names after the new keyword.
     ###
-    newRegex: /(?:^|[^\$:>\w])new\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+    newRegex: /new\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
 
     ###*
      # Regular expression matching class names after the use keyword.
     ###
-    useRegex: /(?:^|[^\$:>\w])use\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+    useRegex: /use\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
 
     ###*
      # Regular expression matching class names after the namespace keyword.
     ###
-    namespaceRegex: /(?:^|[^\$:>\w])namespace\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+    namespaceRegex: /namespace\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
 
     ###*
      # Cache object to help improve responsiveness of autocompletion.
