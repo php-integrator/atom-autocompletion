@@ -42,13 +42,14 @@ class DocblockAnnotationProvider extends ClassProvider
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         return [] if not @service
 
-        prefix = @getPrefix(editor, bufferPosition)
-        return [] unless prefix != null
+        matches = @getPrefixMatchesByRegex(editor, bufferPosition, @regex)
+
+        return [] unless matches?
 
         successHandler = (classes) =>
             return [] unless classes
 
-            return @getClassSuggestions(classes, prefix.trim())
+            return @getClassSuggestions(classes, matches)
 
         failureHandler = () =>
             # Just return no results.
