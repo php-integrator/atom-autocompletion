@@ -48,7 +48,7 @@ class DocblockAnnotationProvider extends ClassProvider
         successHandler = (classes) =>
             return [] unless classes
 
-            return @addSuggestions(classes, prefix.trim())
+            return @getClassSuggestions(classes, prefix.trim())
 
         failureHandler = () =>
             # Just return no results.
