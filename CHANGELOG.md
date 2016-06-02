@@ -1,5 +1,6 @@
 ## 0.9.0 (base 0.10.0)
 ### Features and improvements
+* Only appropriate classes or interfaces will now be listed after the `extends` keyword.
 * The default value for function and method parameters that have one will now be shown during autocompletion.
 * "Branched" member autocompletion is now supported. This means that if a structural element returns multiple types, all of their members will be listed, for example:
 

@@ -28,6 +28,12 @@ class ClassProvider extends AbstractProvider
     namespaceRegex: /namespace\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
 
     ###*
+     # Regular expression that extracts the classlike keyword and the class being extended from after the extends
+     # keyword.
+    ###
+    extendsRegex: /([A-Za-z]+)\s+[a-zA-Z_0-9]+\s+extends\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*)$/
+
+    ###*
      # Cache object to help improve responsiveness of autocompletion.
     ###
     listCache: null
@@ -122,7 +128,7 @@ class ClassProvider extends AbstractProvider
         return []
 
     ###*
-     * Fetches a list of results that can be fed to the addSuggestions method.
+     * Fetches a list of results that can be fed to the getSuggestions method.
      *
      * @return {Promise}
     ###
@@ -141,6 +147,7 @@ class ClassProvider extends AbstractProvider
         return [] if not @service
 
         regexesToTry = {
+            getExtendsSuggestions   : @extendsRegex
             getNamespaceSuggestions : @namespaceRegex
             getUseSuggestions       : @useRegex
             getNewSuggestions       : @newRegex
@@ -169,6 +176,35 @@ class ClassProvider extends AbstractProvider
             return []
 
         return @fetchResults().then(successHandler, failureHandler)
+
+    ###*
+     * Retrieves suggestions after the extends keyword.
+     *
+     * @param {Array} classes
+     * @param {Array} matches
+     *
+     * @return {Array}
+    ###
+    getExtendsSuggestions: (classes, matches) ->
+        prefix = matches[2]
+
+        suggestions = []
+
+        if matches[1] == 'trait'
+            return suggestions
+
+        for name, element of classes
+            if element.type != matches[1] or element.isFinal
+                continue # Interfaces can only extend interfaces and classes can only extend classes.
+
+            suggestion = @getSuggestionForData(element)
+            suggestion.replacementPrefix = prefix
+
+            @applyAutomaticImportData(suggestion, prefix)
+
+            suggestions.push(suggestion)
+
+        return suggestions
 
     ###*
      * Retrieves suggestions for namespace names.

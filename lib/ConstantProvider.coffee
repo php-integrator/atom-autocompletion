@@ -96,7 +96,7 @@ class ConstantProvider extends AbstractProvider
         return @pendingPromise
 
     ###*
-     * Fetches a list of results that can be fed to the addSuggestions method.
+     * Fetches a list of results that can be fed to the getSuggestions method.
      *
      * @return {Promise}
     ###
