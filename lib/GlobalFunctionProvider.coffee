@@ -3,9 +3,9 @@ AbstractProvider = require "./AbstractProvider"
 module.exports =
 
 ##*
-# Provides autocompletion for internal PHP functions.
+# Provides autocompletion for global PHP functions.
 ##
-class FunctionProvider extends AbstractProvider
+class GlobalFunctionProvider extends AbstractProvider
     ###*
      * @inheritdoc
      *
