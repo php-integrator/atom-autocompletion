@@ -10,33 +10,33 @@ class ClassProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    regex: /(?:^|[^\$:>\w])(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+    regex: /(?:^|[^\$:>\w])(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
 
     ###*
      # Regular expression matching class names after the new keyword.
     ###
-    newRegex: /new\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+    newRegex: /new\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
 
     ###*
      # Regular expression matching class names after the use keyword.
     ###
-    useRegex: /use\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+    useRegex: /use\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
 
     ###*
      # Regular expression matching class names after the namespace keyword.
     ###
-    namespaceRegex: /namespace\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+    namespaceRegex: /namespace\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
 
     ###*
      # Regular expression that extracts the classlike keyword and the class being extended from after the extends
      # keyword.
     ###
-    extendsRegex: /([A-Za-z]+)\s+[a-zA-Z_0-9]+\s+extends\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*)$/
+    extendsRegex: /([A-Za-z]+)\s+[a-zA-Z_0-9]+\s+extends\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*)?$/
 
     ###*
      # Regular expression matching (only the last) interface name after the implements keyword.
     ###
-    implementsRegex: /implements\s+(?:\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?,\s*)*(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+    implementsRegex: /implements\s+(?:\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?,\s*)*(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
 
     ###*
      # Cache object to help improve responsiveness of autocompletion.
@@ -192,7 +192,7 @@ class ClassProvider extends AbstractProvider
      * @return {Array}
     ###
     getExtendsSuggestions: (classes, matches) ->
-        prefix = matches[2]
+        prefix = if matches[2]? then matches[2] else ''
 
         suggestions = []
 
@@ -221,7 +221,7 @@ class ClassProvider extends AbstractProvider
      * @return {Array}
     ###
     getImplementsSuggestions: (classes, matches) ->
-        prefix = matches[1]
+        prefix = if matches[1]? then matches[1] else ''
 
         suggestions = []
 
@@ -247,7 +247,7 @@ class ClassProvider extends AbstractProvider
      * @return {Array}
     ###
     getNamespaceSuggestions: (classes, matches) ->
-        prefix = matches[1]
+        prefix = if matches[1]? then matches[1] else ''
 
         suggestions = []
 
@@ -269,7 +269,7 @@ class ClassProvider extends AbstractProvider
      * @return {Array}
     ###
     getUseSuggestions: (classes, matches) ->
-        prefix = matches[1]
+        prefix = if matches[1]? then matches[1] else ''
 
         suggestions = []
 
@@ -291,7 +291,7 @@ class ClassProvider extends AbstractProvider
      * @return {Array}
     ###
     getNewSuggestions: (classes, matches) ->
-        prefix = matches[1]
+        prefix = if matches[1]? then matches[1] else ''
 
         suggestions = []
 
@@ -317,7 +317,7 @@ class ClassProvider extends AbstractProvider
      * @return {Array}
     ###
     getClassSuggestions: (classes, matches) ->
-        prefix = matches[1]
+        prefix = if matches[1]? then matches[1] else ''
 
         suggestions = []
 
