@@ -34,6 +34,11 @@ class ClassProvider extends AbstractProvider
     extendsRegex: /([A-Za-z]+)\s+[a-zA-Z_0-9]+\s+extends\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*)$/
 
     ###*
+     # Regular expression matching (only the last) interface name after the implements keyword.
+    ###
+    implementsRegex: /implements\s+(?:\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?,\s*)*(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
+
+    ###*
      # Cache object to help improve responsiveness of autocompletion.
     ###
     listCache: null
@@ -147,11 +152,12 @@ class ClassProvider extends AbstractProvider
         return [] if not @service
 
         regexesToTry = {
-            getExtendsSuggestions   : @extendsRegex
-            getNamespaceSuggestions : @namespaceRegex
-            getUseSuggestions       : @useRegex
-            getNewSuggestions       : @newRegex
-            getClassSuggestions     : @regex
+            getExtendsSuggestions    : @extendsRegex
+            getImplementsSuggestions : @implementsRegex
+            getNamespaceSuggestions  : @namespaceRegex
+            getUseSuggestions        : @useRegex
+            getNewSuggestions        : @newRegex
+            getClassSuggestions      : @regex
         }
 
         matches = null
@@ -196,6 +202,32 @@ class ClassProvider extends AbstractProvider
         for name, element of classes
             if element.type != matches[1] or element.isFinal
                 continue # Interfaces can only extend interfaces and classes can only extend classes.
+
+            suggestion = @getSuggestionForData(element)
+            suggestion.replacementPrefix = prefix
+
+            @applyAutomaticImportData(suggestion, prefix)
+
+            suggestions.push(suggestion)
+
+        return suggestions
+
+    ###*
+     * Retrieves suggestions after the implements keyword.
+     *
+     * @param {Array} classes
+     * @param {Array} matches
+     *
+     * @return {Array}
+    ###
+    getImplementsSuggestions: (classes, matches) ->
+        prefix = matches[1]
+
+        suggestions = []
+
+        for name, element of classes
+            if element.type != 'interface'
+                continue
 
             suggestion = @getSuggestionForData(element)
             suggestion.replacementPrefix = prefix
