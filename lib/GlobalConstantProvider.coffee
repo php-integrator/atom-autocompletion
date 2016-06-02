@@ -13,7 +13,7 @@ class GlobalConstantProvider extends AbstractProvider
      * here to validate, but not to filter out the correct bits, as autocomplete-plus already seems to do this
      * correctly.
     ###
-    regex: /(?:^|[^\$:>\w])([A-Z_]+)$/
+    regex: /(?:^|[^\$:>\w\\])([A-Z_]+)$/
 
     ###*
      # Cache object to help improve responsiveness of autocompletion.

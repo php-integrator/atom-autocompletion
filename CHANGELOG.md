@@ -17,10 +17,11 @@ public function foo()
 
 ### Bugs fixed
 * Global constants will now also show their type in the left column.
-* Class suggestions will now be shown without having to type the first letter. 
+* Class suggestions will now be shown without having to type the first letter.
 * Global constants will now properly show their short description instead of just "Global PHP constant".
 * Fix the FQCN not properly being completed in some cases when starting with a leading slash (only the last part was completed).
 * The ellipsis for variadic parameters is now shown at the front instead of the back of the parameter, consistent with PHP's syntax.
+* Global constants will no longer show after a backslash. It would always result in a syntax error and puts the class list up front, which is more likely to be what you're looking for.
 
 ## 0.8.1
 ### Bugs fixed
