@@ -66,7 +66,7 @@ module.exports =
         MemberProvider                  = require './MemberProvider'
         SnippetProvider                 = require './SnippetProvider'
         ClassProvider                   = require './ClassProvider'
-        ConstantProvider                = require './ConstantProvider'
+        GlobalConstantProvider          = require './GlobalConstantProvider'
         VariableProvider                = require './VariableProvider'
         GlobalVariableProvider          = require './GlobalVariableProvider'
         TypeHintNewVariableNameProvider = require './TypeHintNewVariableNameProvider'
@@ -85,7 +85,7 @@ module.exports =
         @providers.push(new TypeHintNewVariableNameProvider(@configuration))
         @providers.push(new VariableProvider(@configuration))
         @providers.push(new FunctionProvider(@configuration))
-        @providers.push(new ConstantProvider(@configuration))
+        @providers.push(new GlobalConstantProvider(@configuration))
         @providers.push(new ClassProvider(@configuration))
         @providers.push(new GlobalVariableProvider(@configuration))
         @providers.push(new MagicConstantProvider(@configuration))
