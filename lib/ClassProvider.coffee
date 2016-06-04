@@ -10,7 +10,7 @@ class ClassProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    regex: /(?:^|[^\$:>\w])(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
+    regex: /(?:^|[^\$:>\w])(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)$/
 
     ###*
      # Regular expression matching class names after the new keyword.
