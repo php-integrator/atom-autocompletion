@@ -1,4 +1,4 @@
-## 0.9.0 (base 0.10.0)
+## 1.0.0 (base 0.10.0)
 ### Features and improvements
 * Only interfaces will now be listed after the `implements` keyword.
 * Only appropriate classes or interfaces will now be listed after the `extends` keyword.
