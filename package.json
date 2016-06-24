@@ -6,7 +6,7 @@
   "repository": "https://github.com/Gert-dev/php-integrator-autocomplete-plus.git",
   "license": "GPL-3.0",
   "engines": {
-    "atom": ">=1.0.0 <2.0.0"
+    "atom": ">=1.8.0 <2.0.0"
   },
   "providedServices": {
     "autocomplete.provider": {
