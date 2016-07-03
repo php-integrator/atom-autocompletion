@@ -30,6 +30,15 @@ module.exports =
             default     : true
             order       : 3
 
+        largeListRefreshTimeout:
+            title       : 'Timeout before refreshing large data (global functions, global constants, class list, ...)'
+            description : 'Because the contents of these large lists changes rarely in most code bases, they are
+                           refreshed less often than other items. The amount of time (in milliseconds) specified here
+                           will need to pass after the last reindexing occurs (in any editor).'
+            type        : 'string'
+            default     : '5000'
+            order       : 4
+
     ###*
      * The name of the package.
     ###

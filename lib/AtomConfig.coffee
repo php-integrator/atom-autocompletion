@@ -25,7 +25,8 @@ class AtomConfig extends Config
     load: () ->
         @set('disableBuiltinAutocompletion', atom.config.get("#{@packageName}.disableBuiltinAutocompletion"))
         @set('insertNewlinesForUseStatements', atom.config.get("#{@packageName}.insertNewlinesForUseStatements"))
-        @set('automaticallyAddUseStatements', atom.config.get("#{@packageName}.automaticallyAddUseStatements"))
+        @set('largeListRefreshTimeout', atom.config.get("#{@packageName}.automaticallyAddUseStatements"))
+        @set('largeListRefreshTimeout', atom.config.get("#{@packageName}.largeListRefreshTimeout"))
 
     ###*
      * Attaches listeners to listen to Atom configuration changes.
@@ -37,5 +38,8 @@ class AtomConfig extends Config
         atom.config.onDidChange "#{@packageName}.insertNewlinesForUseStatements", () =>
             @set('insertNewlinesForUseStatements', atom.config.get("#{@packageName}.insertNewlinesForUseStatements"))
 
-        atom.config.onDidChange "#{@packageName}.automaticallyAddUseStatements", () =>
+        atom.config.onDidChange "#{@packageName}.largeListRefreshTimeout", () =>
             @set('automaticallyAddUseStatements', atom.config.get("#{@packageName}.automaticallyAddUseStatements"))
+
+        atom.config.onDidChange "#{@packageName}.largeListRefreshTimeout", () =>
+            @set('largeListRefreshTimeout', atom.config.get("#{@packageName}.largeListRefreshTimeout"))

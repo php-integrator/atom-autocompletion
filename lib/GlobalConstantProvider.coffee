@@ -68,7 +68,7 @@ class GlobalConstantProvider extends AbstractProvider
         @timeoutHandle = setTimeout ( =>
             @timeoutHandle = null
             @refreshCache()
-        ), 5000
+        ), @config.get('largeListRefreshTimeout')
 
     ###*
      * Refreshes the internal cache. Returns a promise that resolves with the cache once it has been refreshed.

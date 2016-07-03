@@ -1,3 +1,7 @@
+## 1.1.0
+### Features and improvements
+* Make the timeout before refreshing global data adjustable via the settings panel.
+
 ## 1.0.0 (base 1.0.0)
 ### Features and improvements
 * Only interfaces will now be listed after the `implements` keyword.

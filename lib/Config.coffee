@@ -25,6 +25,7 @@ class Config
             disableBuiltinAutocompletion   : true
             insertNewlinesForUseStatements : false
             automaticallyAddUseStatements  : true
+            largeListRefreshTimeout        : 5000
 
             # See also http://www.phpdoc.org/docs/latest/index.html .
             phpdoc_base_url : {
