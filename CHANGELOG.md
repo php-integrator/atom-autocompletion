@@ -2,6 +2,9 @@
 ### Features and improvements
 * Make the timeout before refreshing global data adjustable via the settings panel.
 
+### Bugs fixed
+* Trait suggestions will now be shown after the `use` keyword occurs in a class.
+
 ## 1.0.0 (base 1.0.0)
 ### Features and improvements
 * Only interfaces will now be listed after the `implements` keyword.

@@ -18,9 +18,14 @@ class ClassProvider extends AbstractProvider
     newRegex: /new\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
 
     ###*
-     # Regular expression matching class names after the use keyword.
+     # Regular expression matching import names after the use keyword.
     ###
-    useRegex: /use\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
+    importUseRegex: /use\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
+
+    ###*
+     # Regular expression matching trait names after the use keyword.
+    ###
+    traitUseRegex: /use\s+(?:\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?,\s*)*(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
 
     ###*
      # Regular expression matching class names after the namespace keyword.
@@ -151,37 +156,50 @@ class ClassProvider extends AbstractProvider
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
         return [] if not @service
 
-        regexesToTry = {
-            getExtendsSuggestions    : @extendsRegex
-            getImplementsSuggestions : @implementsRegex
-            getNamespaceSuggestions  : @namespaceRegex
-            getUseSuggestions        : @useRegex
-            getNewSuggestions        : @newRegex
-            getClassSuggestions      : @regex
-        }
-
-        matches = null
-        methodToUse = null
-
-        for method, regex of regexesToTry
-            matches = @getPrefixMatchesByRegex(editor, bufferPosition, regex)
-
-            if matches?
-                methodToUse = method
-                break
-
-        return [] if not methodToUse?
-
-        successHandler = (classes) =>
-            return [] unless classes
-
-            return this[methodToUse].apply(this, [classes, matches])
-
         failureHandler = () =>
             # Just return no results.
             return []
 
-        return @fetchResults().then(successHandler, failureHandler)
+        determineCurrentClassNameSuccessHandler = (currentClassName) =>
+            matches = null
+            methodToUse = null
+
+            dynamicKey = 'getImportUseSuggestions'
+            dynamicRegex = @importUseRegex
+
+            if currentClassName?
+                dynamicKey = 'getTraitUseSuggestions'
+                dynamicRegex = @traitUseRegex
+
+            regexesToTry = [
+                ['getExtendsSuggestions',    @extendsRegex]
+                ['getImplementsSuggestions', @implementsRegex]
+                ['getNamespaceSuggestions',  @namespaceRegex]
+                [dynamicKey,                 dynamicRegex]
+                ['getNewSuggestions',        @newRegex]
+                ['getClassSuggestions',      @regex]
+            ]
+
+            for item in regexesToTry
+                method = item[0]
+                regex  = item[1]
+
+                matches = @getPrefixMatchesByRegex(editor, bufferPosition, regex)
+
+                if matches?
+                    methodToUse = method
+                    break
+
+            return [] if not methodToUse?
+
+            successHandler = (classes) =>
+                return [] unless classes
+
+                return this[methodToUse].apply(this, [classes, matches])
+
+            return @fetchResults().then(successHandler, failureHandler)
+
+        @service.determineCurrentClassName(editor, bufferPosition).then(determineCurrentClassNameSuccessHandler, failureHandler)
 
     ###*
      * Retrieves suggestions after the extends keyword.
@@ -268,7 +286,7 @@ class ClassProvider extends AbstractProvider
      *
      * @return {Array}
     ###
-    getUseSuggestions: (classes, matches) ->
+    getImportUseSuggestions: (classes, matches) ->
         prefix = if matches[1]? then matches[1] else ''
 
         suggestions = []
@@ -277,6 +295,32 @@ class ClassProvider extends AbstractProvider
             suggestion = @getSuggestionForData(element)
             suggestion.type = 'import'
             suggestion.replacementPrefix = prefix
+
+            suggestions.push(suggestion)
+
+        return suggestions
+
+    ###*
+     * Retrieves suggestions for use statements.
+     *
+     * @param {Array} classes
+     * @param {Array} matches
+     *
+     * @return {Array}
+    ###
+    getTraitUseSuggestions: (classes, matches) ->
+        prefix = if matches[1]? then matches[1] else ''
+
+        suggestions = []
+
+        for name, element of classes
+            if element.type != 'trait'
+                continue
+
+            suggestion = @getSuggestionForData(element)
+            suggestion.replacementPrefix = prefix
+
+            @applyAutomaticImportData(suggestion, prefix)
 
             suggestions.push(suggestion)
 
