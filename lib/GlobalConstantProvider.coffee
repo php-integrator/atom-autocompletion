@@ -138,16 +138,16 @@ class GlobalConstantProvider extends AbstractProvider
     addSuggestions: (constants, prefix) ->
         suggestions = []
 
-        for name, constant of constants
+        for fqcn, constant of constants
             suggestions.push
-                text        : constant.name,
+                text        : constant.fqcn,
                 type        : 'constant',
                 description : if constant.isBuiltin then 'Built-in PHP constant.' else 'Global PHP constant.'
 
             suggestions.push
-                text               : constant.name
+                text               : constant.fqcn
                 type               : 'constant'
-                displayText        : constant.name
+                displayText        : constant.fqcn
                 replacementPrefix  : prefix
                 leftLabel          : @getTypeSpecificationFromTypeArray(constant.types)
                 description        : if constant.isBuiltin then 'Built-in PHP function.' else constant.shortDescription
