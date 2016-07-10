@@ -1,3 +1,7 @@
+## 1.0.1
+### Bugs fixed
+* Add a sanity check for providers on package deactivation.
+
 ## 1.0.0 (base 1.0.0)
 ### Features and improvements
 * Only interfaces will now be listed after the `implements` keyword.

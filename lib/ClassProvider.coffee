@@ -72,8 +72,9 @@ class ClassProvider extends AbstractProvider
      * @inheritdoc
     ###
     deactivate: () ->
-        @disposables.dispose()
-        @disposables = null
+        if @disposables?
+            @disposables.dispose()
+            @disposables = null
 
     ###*
      * Called when reindexing successfully finishes.
