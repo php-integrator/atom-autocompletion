@@ -1,3 +1,7 @@
+## 1.0.2
+### Bugs fixed
+* Global function names with upper cased letters were not being autocompleted.
+
 ## 1.0.1
 ### Bugs fixed
 * Add a sanity check for providers on package deactivation.
