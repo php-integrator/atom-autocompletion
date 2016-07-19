@@ -12,7 +12,7 @@ class GlobalFunctionProvider extends AbstractProvider
      * These can appear pretty much everywhere, but not in variable names or as class members. Note that functions can
      * also appear inside namespaces, hence the middle part.
     ###
-    regex: /(?:^|[^\$:>\w])((?:[a-zA-Z_][a-zA-Z0-9_]*\\)*[a-z_]+)$/
+    regex: /(?:^|[^\$:>\w])((?:[a-zA-Z_][a-zA-Z0-9_]*\\)*[a-zA-Z_]+)$/
 
     ###*
      # Cache object to help improve responsiveness of autocompletion.

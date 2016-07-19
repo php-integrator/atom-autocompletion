@@ -5,6 +5,10 @@
 ### Bugs fixed
 * Trait suggestions will now be shown after the `use` keyword occurs in a class.
 
+## 1.0.2
+### Bugs fixed
+* Global function names with upper cased letters were not being autocompleted.
+
 ## 1.0.1
 ### Bugs fixed
 * Add a sanity check for providers on package deactivation.
