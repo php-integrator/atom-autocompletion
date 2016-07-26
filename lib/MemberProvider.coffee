@@ -70,6 +70,9 @@ class MemberProvider extends AbstractProvider
             if currentClassInfo?
                 currentClassParents = currentClassInfo.parents
 
+            if not currentClassParents?
+                currentClassParents = []
+
             return @addSuggestions(getClassInfoResults, elements[elements.length - 1].trim(), hasDoubleDotSeparator, (element) =>
                 # Constants are only available when statically accessed (actually not entirely correct, they will
                 # work in a non-static context as well, but it's not good practice).
