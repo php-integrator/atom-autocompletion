@@ -5,6 +5,10 @@
 ### Bugs fixed
 * Trait suggestions will now be shown after the `use` keyword occurs in a class.
 
+## 1.0.3
+### Bugs fixed
+* Fixed error with member autocompletion when there was no current class.
+
 ## 1.0.2
 ### Bugs fixed
 * Global function names with upper cased letters were not being autocompleted.
