@@ -80,6 +80,7 @@ class DocblockTagProvider extends AbstractProvider
             {name: '@example',        documentationName : 'example',        snippet : '@example ${1:example}$0'}
             {name: '@filesource',     documentationName : 'filesource',     snippet : '@filesource$0'}
             {name: '@ignore',         documentationName : 'ignore',         snippet : '@ignore ${1:[description]}$0'}
+            {name: '@inheritDoc',     documentationName : 'inheritDoc',     snippet : '@inheritDoc$0'}
             {name: '@internal',       documentationName : 'internal',       snippet : '@internal ${1:description}$0'}
             {name: '@license',        documentationName : 'license',        snippet : '@license ${1:[url]} ${2:name}$0'}
             {name: '@link',           documentationName : 'link',           snippet : '@link ${1:uri} ${2:[description]}$0'}
