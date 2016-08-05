@@ -1,3 +1,7 @@
+## 1.0.4
+### Bugs fixed
+* Fixed `@inheritDoc` being missing from docblock tag suggestions (thanks to [squio](https://github.com/squio)).
+
 ## 1.0.3
 ### Bugs fixed
 * Fixed error with member autocompletion when there was no current class.
