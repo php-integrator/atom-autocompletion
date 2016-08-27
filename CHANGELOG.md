@@ -1,3 +1,7 @@
+## 1.1.1
+### Bugs fixed
+* Fix constants being added to the suggestions twice, resulting in some information such as deprecation information getting lost.
+
 ## 1.1.0
 ### Features and improvements
 * Make the timeout before refreshing global data adjustable via the settings panel.

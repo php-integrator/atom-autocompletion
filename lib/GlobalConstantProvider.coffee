@@ -141,17 +141,12 @@ class GlobalConstantProvider extends AbstractProvider
 
         for fqcn, constant of constants
             suggestions.push
-                text        : constant.fqcn,
-                type        : 'constant',
-                description : if constant.isBuiltin then 'Built-in PHP constant.' else 'Global PHP constant.'
-
-            suggestions.push
                 text               : constant.fqcn
                 type               : 'constant'
                 displayText        : constant.fqcn
                 replacementPrefix  : prefix
                 leftLabel          : @getTypeSpecificationFromTypeArray(constant.types)
-                description        : if constant.isBuiltin then 'Built-in PHP function.' else constant.shortDescription
+                description        : if constant.isBuiltin then 'Built-in PHP constant.' else constant.shortDescription
                 className          : 'php-integrator-autocomplete-plus-suggestion' + if constant.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
 
         return suggestions
