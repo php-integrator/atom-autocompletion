@@ -153,15 +153,15 @@ class GlobalFunctionProvider extends AbstractProvider
 
             # NOTE: The description must not be empty for the 'More' button to show up.
             suggestions.push
-                text               : func.fqcn
+                text               : func.name
                 type               : 'function'
                 snippet            : if insertParameterList then @getFunctionSnippet(func.name, func) else null
-                displayText        : func.fqcn
+                displayText        : func.name
                 replacementPrefix  : prefix
                 leftLabel          : @getTypeSpecificationFromTypeArray(func.returnTypes)
                 rightLabelHTML     : @getSuggestionRightLabel(name, func)
                 description        : shortDescription
-                descriptionMoreURL : if func.isBuiltin then @config.get('php_documentation_base_urls').functions + func.fqcn else null
+                descriptionMoreURL : if func.isBuiltin then @config.get('php_documentation_base_urls').functions + func.name else null
                 className          : 'php-integrator-autocomplete-plus-suggestion' + if func.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
 
         return suggestions
