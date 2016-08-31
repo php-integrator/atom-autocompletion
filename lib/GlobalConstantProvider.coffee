@@ -141,9 +141,9 @@ class GlobalConstantProvider extends AbstractProvider
 
         for fqcn, constant of constants
             suggestions.push
-                text               : constant.fqcn
+                text               : constant.name
                 type               : 'constant'
-                displayText        : constant.fqcn
+                displayText        : constant.name
                 replacementPrefix  : prefix
                 leftLabel          : @getTypeSpecificationFromTypeArray(constant.types)
                 description        : if constant.isBuiltin then 'Built-in PHP constant.' else constant.shortDescription
