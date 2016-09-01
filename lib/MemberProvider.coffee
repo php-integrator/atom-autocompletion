@@ -154,7 +154,7 @@ class MemberProvider extends AbstractProvider
                     type              : 'keyword'
                     replacementPrefix : prefix
                     leftLabel         : 'string'
-                    rightLabelHTML    : @getSuggestionRightLabel('class', {declaringStructure: {name: classInfo.name}})
+                    rightLabelHTML    : @getSuggestionRightLabel({declaringStructure: {name: classInfo.name}})
                     description       : 'PHP static class keyword that evaluates to the FCQN.'
                     className         : 'php-integrator-autocomplete-plus-suggestion'
 
@@ -173,7 +173,7 @@ class MemberProvider extends AbstractProvider
                         displayText       : text
                         replacementPrefix : prefix
                         leftLabel         : @getTypeSpecificationFromTypeArray(typesToDisplay)
-                        rightLabelHTML    : @getSuggestionRightLabel(name, member)
+                        rightLabelHTML    : @getSuggestionRightLabel(member)
                         description       : if member.shortDescription then member.shortDescription else ''
                         className         : 'php-integrator-autocomplete-plus-suggestion' + if member.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
 

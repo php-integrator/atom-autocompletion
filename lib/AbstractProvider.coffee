@@ -79,12 +79,11 @@ class AbstractProvider
     ###*
      * Builds the signature for a PHP function or method.
      *
-     * @param {string} name The name of the function or method.
-     * @param {array}  info Information about the function or method.
+     * @param {array} info Information about the function or method.
      *
      * @return {string}
     ###
-    getFunctionParameterList: (name, info) ->
+    getFunctionParameterList: (info) ->
         body = "("
 
         isInOptionalList = false
@@ -114,16 +113,16 @@ class AbstractProvider
     ###*
      * Builds the right label for a PHP function or method.
      *
-     * @param {string} name The name of the function or method.
+     * @param {string} text The text to display.
      * @param {array}  info Information about the function or method.
      *
      * @return {string}
     ###
-    getSuggestionRightLabel: (name, info) ->
+    getSuggestionRightLabel: (info) ->
         parameterList = ''
 
         if 'parameters' of info
-            parameterList = @getFunctionParameterList(name, info)
+            parameterList = @getFunctionParameterList(info)
 
         # Determine the short name of the location where this item is defined.
         declaringStructureShortName = ''
