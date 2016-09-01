@@ -169,13 +169,13 @@ class MemberProvider extends AbstractProvider
                     displayText = text
 
                     if 'parameters' of member
-                        text += @getFunctionParameterList(member)
+                        displayText += @getFunctionParameterList(member)
 
                     suggestions.push
                         text              : text
                         type              : type
                         snippet           : if type == 'method' and insertParameterList then @getFunctionSnippet(member.name, member) else null
-                        displayText       : text
+                        displayText       : displayText
                         replacementPrefix : prefix
                         leftLabel         : @getTypeSpecificationFromTypeArray(typesToDisplay)
                         rightLabelHTML    : @getSuggestionRightLabel(member)
