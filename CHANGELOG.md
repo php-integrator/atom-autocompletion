@@ -1,3 +1,7 @@
+## 1.1.3
+### Bugs fixed
+* Fix the parameter list itself also being inserted for class methods calls.
+
 ## 1.1.2
 ### Bugs fixed
 * Fix incorrect styling on the parameter list for functions and methods. Unfortunately this meant removing the styling for the parameter list, see also [this ticket](https://github.com/atom/autocomplete-plus/issues/764).
