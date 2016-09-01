@@ -156,7 +156,7 @@ class GlobalFunctionProvider extends AbstractProvider
                 text               : func.name
                 type               : 'function'
                 snippet            : if insertParameterList then @getFunctionSnippet(func.name, func) else null
-                displayText        : func.name
+                displayText        : func.name + @getFunctionParameterList(func)
                 replacementPrefix  : prefix
                 leftLabel          : @getTypeSpecificationFromTypeArray(func.returnTypes)
                 rightLabelHTML     : @getSuggestionRightLabel(func)

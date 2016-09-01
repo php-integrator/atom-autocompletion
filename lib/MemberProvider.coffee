@@ -166,6 +166,11 @@ class MemberProvider extends AbstractProvider
                     text = (if type == 'property' and hasDoubleDotSeparator then '$' else '') + member.name
                     typesToDisplay = if type == 'method' then member.returnTypes else member.types
 
+                    displayText = text
+
+                    if 'parameters' of member
+                        text += @getFunctionParameterList(member)
+
                     suggestions.push
                         text              : text
                         type              : type
