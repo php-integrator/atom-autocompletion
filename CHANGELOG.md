@@ -1,3 +1,7 @@
+## 1.1.2
+### Bugs fixed
+* Fix incorrect styling on the parameter list for functions and methods. Unfortunately this meant removing the styling for the parameter list, see also [this ticket](https://github.com/atom/autocomplete-plus/issues/764).
+
 ## 1.1.1
 ### Bugs fixed
 * Fix constants being added to the suggestions twice, resulting in some information such as deprecation information getting lost.

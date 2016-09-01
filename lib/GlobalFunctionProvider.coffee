@@ -156,10 +156,10 @@ class GlobalFunctionProvider extends AbstractProvider
                 text               : func.name
                 type               : 'function'
                 snippet            : if insertParameterList then @getFunctionSnippet(func.name, func) else null
-                displayText        : func.name
+                displayText        : func.name + @getFunctionParameterList(func)
                 replacementPrefix  : prefix
                 leftLabel          : @getTypeSpecificationFromTypeArray(func.returnTypes)
-                rightLabelHTML     : @getSuggestionRightLabel(name, func)
+                rightLabelHTML     : @getSuggestionRightLabel(func)
                 description        : shortDescription
                 descriptionMoreURL : if func.isBuiltin then @config.get('php_documentation_base_urls').functions + func.name else null
                 className          : 'php-integrator-autocomplete-plus-suggestion' + if func.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
