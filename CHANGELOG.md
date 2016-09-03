@@ -1,3 +1,8 @@
+## 1.1.4
+### Bugs fixed
+* Fix not being able to navigate to the PHP documentation for built-in classes with longer FQCN's, such as classes from MongoDB.
+* Fix built-in classes sometimes navigating to the wrong page, e.g. `DateTime` was navigating to the overview page instead of the class documentation page.
+
 ## 1.1.3
 ### Bugs fixed
 * Fix the parameter list itself also being inserted for class methods calls.
