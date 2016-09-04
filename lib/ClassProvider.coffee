@@ -490,6 +490,9 @@ class ClassProvider extends AbstractProvider
 
         successHandler = (currentClassName) =>
             if currentClassName
+                if currentClassName[0] == '\\'
+                    currentClassName = currentClassName.substring(1)
+
                 currentNamespaceParts = currentClassName.split('\\')
                 currentNamespaceParts.pop()
 
