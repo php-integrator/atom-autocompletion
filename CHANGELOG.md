@@ -1,3 +1,7 @@
+## 1.1.5
+### Bugs fixed
+* Rename the package and repository.
+
 ## 1.1.4
 ### Bugs fixed
 * Fix not being able to navigate to the PHP documentation for built-in classes with longer FQCN's, such as classes from MongoDB.
