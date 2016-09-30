@@ -1,3 +1,6 @@
+## 1.2.0 (base 1.3.0)
+* Update to the new version of the base service.
+
 ## 1.1.5
 ### Bugs fixed
 * Rename the package and repository.
