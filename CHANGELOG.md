@@ -1,6 +1,7 @@
 ## 1.2.0 (base 1.3.0)
 * Actual namespaces will now be suggested after the namespace keyword instead of a list of classes.
 * Fix use statements unnecessarily being added for classes in the same namespace when the cursor was outside a class.
+* Fix use statements being added for non-compound classnames in anonymous namespaces or files without a namespace. This would result in PHP warnings on execution.
 
 ## 1.1.5
 ### Bugs fixed
