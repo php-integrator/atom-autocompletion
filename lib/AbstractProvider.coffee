@@ -207,6 +207,10 @@ class AbstractProvider
 
         if matches
             # We always want the last match, as that's closest to the cursor itself.
-            return matches[matches.length - 1]
+            match = matches[matches.length - 1]
+
+            # Turn undefined, which happens if the capture group has nothing to catch, into a valid string.
+            return '' if not match?
+            return match
 
         return null
