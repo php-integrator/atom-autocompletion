@@ -171,13 +171,26 @@ class MemberProvider extends AbstractProvider
                     if 'parameters' of member
                         displayText += @getFunctionParameterList(member)
 
+                    leftLabel = ''
+
+                    if member.isPublic
+                        leftLabel += '<span class="icon icon-globe import">&nbsp;</span>'
+
+                    else if member.isProtected
+                        leftLabel += '<span class="icon icon-key">&nbsp;</span>'
+
+                    else if member.isPrivate
+                        leftLabel += '<span class="icon icon-lock selector">&nbsp;</span>'
+
+                    leftLabel += @getTypeSpecificationFromTypeArray(typesToDisplay)
+
                     suggestions.push
                         text              : text
                         type              : type
                         snippet           : if type == 'method' and insertParameterList then @getFunctionSnippet(member.name, member) else null
                         displayText       : displayText
                         replacementPrefix : prefix
-                        leftLabel         : @getTypeSpecificationFromTypeArray(typesToDisplay)
+                        leftLabelHTML     : leftLabel
                         rightLabelHTML    : @getSuggestionRightLabel(member)
                         description       : if member.shortDescription then member.shortDescription else ''
                         className         : 'php-integrator-autocomplete-plus-suggestion' + if member.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
