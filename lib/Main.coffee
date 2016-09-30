@@ -74,6 +74,7 @@ module.exports =
         AtomConfig                      = require './AtomConfig'
         MemberProvider                  = require './MemberProvider'
         SnippetProvider                 = require './SnippetProvider'
+        NamespaceProvider               = require './NamespaceProvider'
         ClassProvider                   = require './ClassProvider'
         GlobalConstantProvider          = require './GlobalConstantProvider'
         VariableProvider                = require './VariableProvider'
@@ -95,6 +96,7 @@ module.exports =
         @providers.push(new VariableProvider(@configuration))
         @providers.push(new GlobalFunctionProvider(@configuration))
         @providers.push(new GlobalConstantProvider(@configuration))
+        @providers.push(new NamespaceProvider(@configuration))
         @providers.push(new ClassProvider(@configuration))
         @providers.push(new GlobalVariableProvider(@configuration))
         @providers.push(new MagicConstantProvider(@configuration))

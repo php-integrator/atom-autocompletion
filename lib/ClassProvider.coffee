@@ -28,11 +28,6 @@ class ClassProvider extends AbstractProvider
     traitUseRegex: /use\s+(?:\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?,\s*)*(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
 
     ###*
-     # Regular expression matching class names after the namespace keyword.
-    ###
-    namespaceRegex: /namespace\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
-
-    ###*
      # Regular expression that extracts the classlike keyword and the class being extended from after the extends
      # keyword.
     ###
@@ -175,7 +170,6 @@ class ClassProvider extends AbstractProvider
             regexesToTry = [
                 ['getExtendsSuggestions',    @extendsRegex]
                 ['getImplementsSuggestions', @implementsRegex]
-                ['getNamespaceSuggestions',  @namespaceRegex]
                 [dynamicKey,                 dynamicRegex]
                 ['getNewSuggestions',        @newRegex]
                 ['getClassSuggestions',      @regex]
@@ -252,28 +246,6 @@ class ClassProvider extends AbstractProvider
             suggestion.replacementPrefix = prefix
 
             @applyAutomaticImportData(suggestion, prefix)
-
-            suggestions.push(suggestion)
-
-        return suggestions
-
-    ###*
-     * Retrieves suggestions for namespace names.
-     *
-     * @param {Array} classes
-     * @param {Array} matches
-     *
-     * @return {Array}
-    ###
-    getNamespaceSuggestions: (classes, matches) ->
-        prefix = if matches[1]? then matches[1] else ''
-
-        suggestions = []
-
-        for name, element of classes
-            suggestion = @getSuggestionForData(element)
-            suggestion.type = 'import'
-            suggestion.replacementPrefix = prefix
 
             suggestions.push(suggestion)
 
