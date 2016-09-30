@@ -1,5 +1,5 @@
 ## 1.2.0 (base 1.3.0)
-* Update to the new version of the base service.
+* Fix use statements unnecessarily being added for classes in the same namespace when the cursor was outside a class.
 
 ## 1.1.5
 ### Bugs fixed
