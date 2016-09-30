@@ -3,6 +3,8 @@
 * Fix use statements unnecessarily being added for classes in the same namespace when the cursor was outside a class.
 * Member autocompletion suggestions will now show an icon indicating the access modifier of the method (public, private or protected).
 * Fix use statements being added for non-compound classnames in anonymous namespaces or files without a namespace. This would result in PHP warnings on execution.
+* Member autocompletion suggestions will no longer be filtered out based on their accessibility from the current scope.
+  * It wasn't transparant that this check was even happening. Instead, all suggestions are always available and if something is not accessible, the linter will show it [in the future](https://github.com/php-integrator/core/issues/20) instead.
 
 ## 1.1.5
 ### Bugs fixed

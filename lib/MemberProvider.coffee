@@ -77,14 +77,6 @@ class MemberProvider extends AbstractProvider
                 # Constants are only available when statically accessed (actually not entirely correct, they will
                 # work in a non-static context as well, but it's not good practice).
                 return false if mustBeStatic and not element.isStatic
-
-                if objectBeingCompleted != '$this'
-                    # Explicitly checking for '$this' allows files that are being require-d inside classes to define
-                    # a type override annotation for $this and still be able to access private and protected members
-                    # there.
-                    return false if element.isPrivate and element.declaringClass.name != currentClassInfo?.name
-                    return false if element.isProtected and element.declaringClass.name != currentClassInfo?.name and element.declaringClass.name not in currentClassParents
-
                 return true
             , insertParameterList)
 
