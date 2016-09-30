@@ -12,16 +12,6 @@ class NamespaceProvider extends AbstractProvider
     regex: /namespace\s+(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
 
     ###*
-     * @inheritdoc
-    ###
-    inclusionPriority: 2
-
-    ###*
-     * @inheritdoc
-    ###
-    excludeLowerPriority: true
-
-    ###*
      # Cache object to help improve responsiveness of autocompletion.
     ###
     listCache: null
