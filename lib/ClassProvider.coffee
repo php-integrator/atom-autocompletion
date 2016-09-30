@@ -489,17 +489,24 @@ class ClassProvider extends AbstractProvider
         return unless @config.get('automaticallyAddUseStatements')
 
         successHandler = (currentNamespaceName) =>
-            if currentNamespaceName?
-                if currentNamespaceName[0] == '\\'
-                    currentNamespaceName = currentNamespaceName.substring(1)
+            if not currentNamespaceName?
+                currentNamespaceName = ''
 
-                if suggestion.data.nameToImport.indexOf(currentNamespaceName) == 0
-                     nameToImportRelativeToNamespace = suggestion.displayText.substr(currentNamespaceName.length + 1)
+            else if currentNamespaceName[0] == '\\'
+                currentNamespaceName = currentNamespaceName.substring(1)
 
-                     # If a user is in A\B and wants to import A\B\C\D, we don't need to add a use statement if he is typing
-                     # C\D, as it will be relative, but we will need to add one when he typed just D as it won't be
-                     # relative.
-                     return if nameToImportRelativeToNamespace.split('\\').length == suggestion.text.split('\\').length
+            # When we have no namespace or are in an anonymous namespace, adding use statements for "non-compound"
+            # namespaces, such as "DateTime" will generate a warning.
+            if currentNamespaceName.length == 0
+                return if suggestion.displayText.split('\\').length == 1
+
+            else if suggestion.data.nameToImport.indexOf(currentNamespaceName) == 0
+                 nameToImportRelativeToNamespace = suggestion.displayText.substr(currentNamespaceName.length + 1)
+
+                 # If a user is in A\B and wants to import A\B\C\D, we don't need to add a use statement if he is typing
+                 # C\D, as it will be relative, but we will need to add one when he typed just D as it won't be
+                 # relative.
+                 return if nameToImportRelativeToNamespace.split('\\').length == suggestion.text.split('\\').length
 
             editor.transact () =>
                 linesAdded = Utility.addUseClass(editor, suggestion.data.nameToImport, @config.get('insertNewlinesForUseStatements'))
