@@ -39,6 +39,11 @@ class ClassProvider extends AbstractProvider
     implementsRegex: /implements\s+(?:\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?,\s*)*(\\?[a-zA-Z_][a-zA-Z0-9_]*(?:\\[a-zA-Z_][a-zA-Z0-9_]*)*\\?)?$/
 
     ###*
+     * @inheritdoc
+    ###
+    disableForSelector: '.source.php .comment.line.double-slash, .source.php .comment.block:not(.phpdoc), .source.php .string'
+
+    ###*
      # Cache object to help improve responsiveness of autocompletion.
     ###
     listCache: null
