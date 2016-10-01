@@ -1,4 +1,3 @@
-Utility = require './Utility'
 AbstractProvider = require './AbstractProvider'
 
 module.exports =
@@ -486,7 +485,11 @@ class ClassProvider extends AbstractProvider
                  return if nameToImportRelativeToNamespace.split('\\').length == suggestion.text.split('\\').length
 
             editor.transact () =>
-                linesAdded = Utility.addUseClass(editor, suggestion.data.nameToImport, @config.get('insertNewlinesForUseStatements'))
+                linesAdded = @service.getUseStatementHelper().addUseClass(
+                    editor,
+                    suggestion.data.nameToImport,
+                    @config.get('insertNewlinesForUseStatements')
+                )
 
         failureHandler = () ->
             # Do nothing.

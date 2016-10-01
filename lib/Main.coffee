@@ -13,22 +13,13 @@ module.exports =
             default     : true
             order       : 1
 
-        insertNewlinesForUseStatements:
-            title       : 'Insert newlines for use statements'
-            description : 'When enabled, additional newlines are inserted before or after an automatically added
-                           use statement when they can\'t be nicely added to an existing \'group\'. This results in
-                           more cleanly separated use statements but will create additional vertical whitespace.'
-            type        : 'boolean'
-            default     : false
-            order       : 2
-
         automaticallyAddUseStatements:
             title       : 'Automatically add use statements when necessary'
             description : 'When enabled, a use statement will be added when autocompleting a class name (if it isn\'t
                            already present).'
             type        : 'boolean'
             default     : true
-            order       : 3
+            order       : 2
 
         largeListRefreshTimeout:
             title       : 'Timeout before refreshing large data (global functions, global constants, class list, ...)'
@@ -37,7 +28,7 @@ module.exports =
                            will need to pass after the last reindexing occurs (in any editor).'
             type        : 'string'
             default     : '5000'
-            order       : 4
+            order       : 3
 
     ###*
      * The name of the package.
@@ -53,19 +44,6 @@ module.exports =
      * List of tooltip providers.
     ###
     providers: []
-
-    ###*
-     * Registers any commands that are available to the user.
-    ###
-    registerCommands: () ->
-        Utility = require './Utility'
-
-        atom.commands.add 'atom-workspace', "php-integrator-autocomplete-plus:sort-use-statements": =>
-            activeTextEditor = atom.workspace.getActiveTextEditor()
-
-            return if not activeTextEditor
-
-            Utility.sortUseStatements(activeTextEditor, @configuration.get('insertNewlinesForUseStatements'))
 
     ###*
      * Activates the package.
@@ -87,8 +65,6 @@ module.exports =
         DocblockTagProvider             = require './DocblockTagProvider'
 
         @configuration = new AtomConfig(@packageName)
-
-        @registerCommands()
 
         @providers.push(new SnippetProvider(@configuration))
         @providers.push(new MemberProvider(@configuration))

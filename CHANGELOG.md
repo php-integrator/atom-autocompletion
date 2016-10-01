@@ -1,4 +1,7 @@
 ## 1.2.0 (base 1.3.0)
+* The functionality for importing use statements has been moved to the base package. This also caused the setting `insertNewlinesForUseStatements` to be moved to the base package.
+  * If you had this enabled, you will need to reenable it in the base package after upgrading.
+  * If you had a shortcut attached to sorting menu items, you will need to point it to `php-integrator-base` instead of `php-integrator-autocomplete-plus` after upgrading.
 * Actual namespaces will now be suggested after the namespace keyword instead of a list of classes.
 * Fix use statements unnecessarily being added for classes in the same namespace when the cursor was outside a class.
 * Member autocompletion suggestions will now show an icon indicating the access modifier of the method (public, private or protected).
