@@ -148,7 +148,7 @@ class MemberProvider extends AbstractProvider
                     leftLabel         : 'string'
                     rightLabelHTML    : @getSuggestionRightLabel({declaringStructure: {name: classInfo.name}})
                     description       : 'PHP static class keyword that evaluates to the FCQN.'
-                    className         : 'php-integrator-autocomplete-plus-suggestion'
+                    className         : 'php-integrator-autocomplete-plus-suggestion php-integrator-autocomplete-plus-has-additional-icons'
 
             processList = (list, type) =>
                 for name, member of list
@@ -185,7 +185,7 @@ class MemberProvider extends AbstractProvider
                         leftLabelHTML     : leftLabel
                         rightLabelHTML    : @getSuggestionRightLabel(member)
                         description       : if member.shortDescription then member.shortDescription else ''
-                        className         : 'php-integrator-autocomplete-plus-suggestion' + if member.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
+                        className         : 'php-integrator-autocomplete-plus-suggestion php-integrator-autocomplete-plus-has-additional-icons' + if member.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
 
             processList(classInfo.methods, 'method')
             processList(classInfo.constants, 'constant')
