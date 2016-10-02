@@ -15,7 +15,7 @@ class MemberProvider extends AbstractProvider
      * the extra curly brackets, but it's better to have some autocompletion in a few rare erroneous cases than no
      * autocompletion at all in the most used cases.
     ###
-    disableForSelector: '.source.php .comment, .source.php .string.quoted.single'
+    disableForScopeSelector: '.source.php .comment, .source.php .string.quoted.single'
 
     ###*
      * @inheritdoc

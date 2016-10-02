@@ -12,7 +12,7 @@ class AbstractProvider
     ###*
      * The class selectors for which autocompletion triggers.
     ###
-    selector: '.source.php'
+    scopeSelector: '.source.php'
 
     ###*
      * The inclusion priority of the provider.
@@ -26,9 +26,9 @@ class AbstractProvider
     filterSuggestions: true
 
     ###*
-     * The class selectors autocompletion is explicitly disabled for (overrules the {@see selector}).
+     * The class selectors autocompletion is explicitly disabled for (overrules the {@see scopeSelector}).
     ###
-    disableForSelector: '.source.php .comment, .source.php .string'
+    disableForScopeSelector: '.source.php .comment, .source.php .string'
 
     ###*
      * The service (that can be used to query the source code and contains utility methods).

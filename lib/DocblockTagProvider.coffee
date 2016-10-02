@@ -17,12 +17,12 @@ class DocblockTagProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    selector: '.comment.block.documentation.phpdoc.php'
+    scopeSelector: '.comment.block.documentation.phpdoc.php'
 
     ###*
      * @inheritdoc
     ###
-    disableForSelector: ''
+    disableForScopeSelector: ''
 
     ###*
      * @inheritdoc

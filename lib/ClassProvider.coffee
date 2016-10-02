@@ -40,7 +40,7 @@ class ClassProvider extends AbstractProvider
     ###*
      * @inheritdoc
     ###
-    disableForSelector: '.source.php .comment.line.double-slash, .source.php .comment.block:not(.phpdoc), .source.php .string'
+    disableForScopeSelector: '.source.php .comment.line.double-slash, .source.php .comment.block:not(.phpdoc), .source.php .string'
 
     ###*
      # Cache object to help improve responsiveness of autocompletion.
