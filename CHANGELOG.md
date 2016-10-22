@@ -9,6 +9,7 @@
 * Member autocompletion suggestions will no longer be filtered out based on their accessibility from the current scope.
   * It wasn't transparant that this check was even happening. Instead, all suggestions are always available and if something is not accessible, the linter will show it [in the future](https://github.com/php-integrator/core/issues/20) instead.
 * [Version 3.0 of the `autocomplete-plus` provider specification](https://github.com/atom/autocomplete-plus/issues/776) is now used.
+* Fix the right label not always showing precisely where the method is defined. Instead, it was sometimes showing the overriden method's location, sometimes an implemented interface method location and sometimes the actual location of the method.
 
 ## 1.1.5
 ### Bugs fixed

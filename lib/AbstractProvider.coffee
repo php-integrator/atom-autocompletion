@@ -122,18 +122,7 @@ class AbstractProvider
         declaringStructureShortName = ''
 
         if info.declaringStructure and info.declaringStructure.name
-            declaringStructure = null
-
-            if info.override
-                declaringStructure = info.override.declaringStructure
-
-            else if info.implementation
-                declaringStructure = info.implementation.declaringStructure
-
-            else
-                declaringStructure = info.declaringStructure
-
-            declaringStructureShortName = @getClassShortName(declaringStructure.name)
+            return @getClassShortName(info.declaringStructure.name)
 
         return declaringStructureShortName
 
