@@ -140,16 +140,6 @@ class MemberProvider extends AbstractProvider
         suggestions = []
 
         for classInfo in classInfoObjects
-            if hasDoubleDotSeparator
-                suggestions.push
-                    text              : 'class'
-                    type              : 'keyword'
-                    replacementPrefix : prefix
-                    leftLabel         : 'string'
-                    rightLabelHTML    : @getSuggestionRightLabel({declaringStructure: {name: classInfo.name}})
-                    description       : 'PHP static class keyword that evaluates to the FCQN.'
-                    className         : 'php-integrator-autocomplete-plus-suggestion php-integrator-autocomplete-plus-has-additional-icons'
-
             processList = (list, type) =>
                 for name, member of list
                     if filterCallback and not filterCallback(member)
