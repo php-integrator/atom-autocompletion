@@ -1,3 +1,6 @@
+## 1.3.0
+* Use the new shield icon to denote protected members (feels more appropriate than a key).
+
 ## 1.2.0 (base 2.0.0)
 * The functionality for importing use statements has been moved to the base package. This also caused the setting `insertNewlinesForUseStatements` to be moved to the base package.
   * If you had this enabled, you will need to reenable it in the base package after upgrading.

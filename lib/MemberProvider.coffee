@@ -159,7 +159,7 @@ class MemberProvider extends AbstractProvider
                         leftLabel += '<span class="icon icon-globe import">&nbsp;</span>'
 
                     else if member.isProtected
-                        leftLabel += '<span class="icon icon-key">&nbsp;</span>'
+                        leftLabel += '<span class="icon icon-shield">&nbsp;</span>'
 
                     else if member.isPrivate
                         leftLabel += '<span class="icon icon-lock selector">&nbsp;</span>'
