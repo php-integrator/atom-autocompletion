@@ -1,5 +1,8 @@
 ## 1.3.0
 * Use the new shield icon to denote protected members (feels more appropriate than a key).
+* Constants are no longer listed after the arrow operator `->`.
+** Doing this results in an `Undefined property` notice.
+** This also fixes the issue where any valid property named `class` would be overridden by the `class` constant introduced in PHP 5.5.
 
 ## 1.2.0 (base 2.0.0)
 * The functionality for importing use statements has been moved to the base package. This also caused the setting `insertNewlinesForUseStatements` to be moved to the base package.

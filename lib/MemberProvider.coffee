@@ -145,6 +145,11 @@ class MemberProvider extends AbstractProvider
                     if filterCallback and not filterCallback(member)
                         continue
 
+                    if type == 'constant' and not hasDoubleDotSeparator
+                        # Constants can only be accessed statically. Also, it would cause the built-in PHP 5.5 'class'
+                        # keyword to be listed as member after ->, overriding any property with the name 'class'.
+                        continue
+
                     text = (if type == 'property' and hasDoubleDotSeparator then '$' else '') + member.name
                     typesToDisplay = if type == 'method' then member.returnTypes else member.types
 
