@@ -63,6 +63,7 @@ module.exports =
         KeywordProvider                 = require './KeywordProvider'
         DocblockAnnotationProvider      = require './DocblockAnnotationProvider'
         DocblockTagProvider             = require './DocblockTagProvider'
+        PHPUnitTagProvider              = require './PHPUnitTagProvider'
 
         @configuration = new AtomConfig(@packageName)
 
@@ -79,6 +80,7 @@ module.exports =
         @providers.push(new KeywordProvider(@configuration))
         @providers.push(new DocblockAnnotationProvider(@configuration))
         @providers.push(new DocblockTagProvider(@configuration))
+        @providers.push(new PHPUnitTagProvider(@configuration))
 
     ###*
      * Deactivates the package.
