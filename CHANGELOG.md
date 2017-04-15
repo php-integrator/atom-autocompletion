@@ -1,4 +1,5 @@
 ## 1.4.0
+* Add `finally` to keyword suggestions.
 * Add PHP 7 keywords to keyword suggestions.
 * Remove `resource`, `object`, `mixed` and `numeric` from keyword suggestions.
   * These are soft reserved in PHP, but aren't actual keywords so they aren't useful to the developer as suggestions.

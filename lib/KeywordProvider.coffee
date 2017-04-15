@@ -101,6 +101,7 @@ class KeywordProvider extends AbstractProvider
             {name : 'exit'},
             {name : 'extends'},
             {name : 'final'},
+            {name : 'finally'},
             {name : 'for'},
             {name : 'foreach'},
             {name : 'function'},
