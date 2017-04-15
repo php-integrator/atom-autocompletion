@@ -135,6 +135,6 @@ class KeywordProvider extends AbstractProvider
             {name : 'use'},
             {name : 'var'},
             {name : 'while'},
-            {name : 'yield'},
-            {name : 'xor'}
+            {name : 'xor'},
+            {name : 'yield'}
         ]
