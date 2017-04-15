@@ -1,3 +1,7 @@
+## 1.4.0
+* Give keywords a higher priority (https://github.com/php-integrator/atom-autocompletion/issues/96).
+  * As these are lowercase and class names should start with an uppercase character, these will seldom interfere with the completion of class names. Previously, on the other hand, when you wanted keywords, you would constantly get spammed with the list of classes.
+
 ## 1.3.0
 * Use the new shield icon to denote protected members (feels more appropriate than a key).
 * Constants are no longer listed after the arrow operator `->`.

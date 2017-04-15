@@ -52,6 +52,7 @@ module.exports =
         AtomConfig                      = require './AtomConfig'
         MemberProvider                  = require './MemberProvider'
         SnippetProvider                 = require './SnippetProvider'
+        KeywordProvider                 = require './KeywordProvider'
         NamespaceProvider               = require './NamespaceProvider'
         ClassProvider                   = require './ClassProvider'
         GlobalConstantProvider          = require './GlobalConstantProvider'
@@ -60,13 +61,13 @@ module.exports =
         TypeHintNewVariableNameProvider = require './TypeHintNewVariableNameProvider'
         MagicConstantProvider           = require './MagicConstantProvider'
         GlobalFunctionProvider          = require './GlobalFunctionProvider'
-        KeywordProvider                 = require './KeywordProvider'
         DocblockAnnotationProvider      = require './DocblockAnnotationProvider'
         DocblockTagProvider             = require './DocblockTagProvider'
 
         @configuration = new AtomConfig(@packageName)
 
         @providers.push(new SnippetProvider(@configuration))
+        @providers.push(new KeywordProvider(@configuration))
         @providers.push(new MemberProvider(@configuration))
         @providers.push(new TypeHintNewVariableNameProvider(@configuration))
         @providers.push(new VariableProvider(@configuration))
@@ -76,7 +77,6 @@ module.exports =
         @providers.push(new ClassProvider(@configuration))
         @providers.push(new GlobalVariableProvider(@configuration))
         @providers.push(new MagicConstantProvider(@configuration))
-        @providers.push(new KeywordProvider(@configuration))
         @providers.push(new DocblockAnnotationProvider(@configuration))
         @providers.push(new DocblockTagProvider(@configuration))
 
