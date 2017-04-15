@@ -1,3 +1,6 @@
+## 1.4.1
+* Fix parameter default values that were "falsy" in JavaScript not showing up (such as `0`).
+
 ## 1.4.0
 * Add `finally` to keyword suggestions.
 * Add PHP 7 keywords to keyword suggestions.
