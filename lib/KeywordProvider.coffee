@@ -66,6 +66,8 @@ class KeywordProvider extends AbstractProvider
             {name : 'true'},
             {name : 'false'},
             {name : 'null'},
+            {name : 'void'},
+            {name : 'iterable'},
             {name : 'resource'},
             {name : 'object'},
             {name : 'mixed'},

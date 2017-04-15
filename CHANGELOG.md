@@ -1,4 +1,5 @@
 ## 1.4.0
+* Add PHP 7 keywords to keyword suggestions.
 * Give keywords a higher priority (https://github.com/php-integrator/atom-autocompletion/issues/96).
   * As these are lowercase and class names should start with an uppercase character, these will seldom interfere with the completion of class names. Previously, on the other hand, when you wanted keywords, you would constantly get spammed with the list of classes.
 
