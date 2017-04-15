@@ -66,10 +66,8 @@ class KeywordProvider extends AbstractProvider
             {name : 'true'},
             {name : 'false'},
             {name : 'null'},
-            {name : 'resource'},
-            {name : 'object'},
-            {name : 'mixed'},
-            {name : 'numeric'},
+            {name : 'void'},
+            {name : 'iterable'},
 
             # From https://secure.php.net/manual/en/reserved.keywords.php.
             {name : '__halt_compiler'},
@@ -103,6 +101,7 @@ class KeywordProvider extends AbstractProvider
             {name : 'exit'},
             {name : 'extends'},
             {name : 'final'},
+            {name : 'finally'},
             {name : 'for'},
             {name : 'foreach'},
             {name : 'function'},
@@ -136,6 +135,6 @@ class KeywordProvider extends AbstractProvider
             {name : 'use'},
             {name : 'var'},
             {name : 'while'},
-            {name : 'yield'},
-            {name : 'xor'}
+            {name : 'xor'},
+            {name : 'yield'}
         ]
