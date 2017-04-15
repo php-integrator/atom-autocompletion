@@ -68,10 +68,6 @@ class KeywordProvider extends AbstractProvider
             {name : 'null'},
             {name : 'void'},
             {name : 'iterable'},
-            {name : 'resource'},
-            {name : 'object'},
-            {name : 'mixed'},
-            {name : 'numeric'},
 
             # From https://secure.php.net/manual/en/reserved.keywords.php.
             {name : '__halt_compiler'},

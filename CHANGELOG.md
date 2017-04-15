@@ -1,5 +1,7 @@
 ## 1.4.0
 * Add PHP 7 keywords to keyword suggestions.
+* Remove `resource`, `object`, `mixed` and `numeric` from keyword suggestions.
+  * These are soft reserved in PHP, but aren't actual keywords so they aren't useful to the developer as suggestions.
 * Give keywords a higher priority (https://github.com/php-integrator/atom-autocompletion/issues/96).
   * As these are lowercase and class names should start with an uppercase character, these will seldom interfere with the completion of class names. Previously, on the other hand, when you wanted keywords, you would constantly get spammed with the list of classes.
 
