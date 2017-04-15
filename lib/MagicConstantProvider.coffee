@@ -37,6 +37,7 @@ class MagicConstantProvider extends AbstractProvider
         suggestions = []
 
         constants = {
+            # See also https://secure.php.net/manual/en/reserved.keywords.php.
             '__CLASS__'     : 'string',
             '__DIR__'       : 'string',
             '__FILE__'      : 'string',
