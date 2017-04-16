@@ -25,6 +25,7 @@ class AtomConfig extends Config
     load: () ->
         @set('disableBuiltinAutocompletion', atom.config.get("#{@packageName}.disableBuiltinAutocompletion"))
         @set('insertNewlinesForUseStatements', atom.config.get("#{@packageName}.insertNewlinesForUseStatements"))
+        @set('enablePhpunitAnnotationTags', atom.config.get("#{@packageName}.enablePhpunitAnnotationTags"))
         @set('largeListRefreshTimeout', atom.config.get("#{@packageName}.automaticallyAddUseStatements"))
         @set('largeListRefreshTimeout', atom.config.get("#{@packageName}.largeListRefreshTimeout"))
 
@@ -37,6 +38,9 @@ class AtomConfig extends Config
 
         atom.config.onDidChange "#{@packageName}.insertNewlinesForUseStatements", () =>
             @set('insertNewlinesForUseStatements', atom.config.get("#{@packageName}.insertNewlinesForUseStatements"))
+
+        atom.config.onDidChange "#{@packageName}.enablePhpunitAnnotationTags", () =>
+            @set('enablePhpunitAnnotationTags', atom.config.get("#{@packageName}.enablePhpunitAnnotationTags"))
 
         atom.config.onDidChange "#{@packageName}.largeListRefreshTimeout", () =>
             @set('automaticallyAddUseStatements', atom.config.get("#{@packageName}.automaticallyAddUseStatements"))

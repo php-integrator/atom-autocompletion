@@ -25,12 +25,19 @@ class Config
             disableBuiltinAutocompletion   : true
             insertNewlinesForUseStatements : false
             automaticallyAddUseStatements  : true
+            enablePhpunitAnnotationTags    : true
             largeListRefreshTimeout        : 5000
 
             # See also http://www.phpdoc.org/docs/latest/index.html .
             phpdoc_base_url : {
                 prefix: 'http://www.phpdoc.org/docs/latest/references/phpdoc/tags/'
                 suffix: '.html'
+            }
+
+            # See also https://phpunit.de/manual/current/en/index.html .
+            phpunit_annotations_base_url : {
+                prefix: 'https://phpunit.de/manual/current/en/appendixes.annotations.html'
+                id_prefix: '#appendixes.annotations.'
             }
 
             # See also https://secure.php.net/urlhowto.php .

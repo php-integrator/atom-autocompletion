@@ -9,15 +9,21 @@ class PHPUnitTagProvider extends DocblockTagProvider
     ###*
      * @inheritdoc
     ###
+    getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix}) ->
+        return [] unless @config.get('enablePhpunitAnnotationTags')
+        super
+
+    ###*
+     * @inheritdoc
+    ###
     addSuggestions: (tagList, prefix) ->
         suggestions = []
 
         for tag in tagList
-            # TODO: This URL should go to the config file
-            documentationUrl = 'https://phpunit.de/manual/current/en/appendixes.annotations.html'
+            documentationUrl = @config.get('phpunit_annotations_base_url').prefix
 
             if tag.documentationName
-                documentationUrl += '#appendixes.annotations.' + tag.documentationName
+                documentationUrl += @config.get('phpunit_annotations_base_url').id_prefix + tag.documentationName
 
             # NOTE: The description must not be empty for the 'More' button to show up.
             suggestions.push
@@ -39,7 +45,7 @@ class PHPUnitTagProvider extends DocblockTagProvider
         return [
             {name: '@after',                          documentationName: 'after',                          snippet: '@after',                                       description: 'The method should be called after each test method in a test case class'}
             {name: '@afterClass',                     documentationName: 'afterClass',                     snippet: '@afterClass',                                  description: 'The static method should be called after all test methods in a test class have been run to clean up shared fixtures'}
-            {name: '@backupGlobals',                  documentationName: 'backupGlobals',                  snippet: '@backupGlobals ${1:disabled}',                 description: 'completely enable or disable the backup and restore operations for global variables'}
+            {name: '@backupGlobals',                  documentationName: 'backupGlobals',                  snippet: '@backupGlobals ${1:disabled}',                 description: 'Completely enable or disable the backup and restore operations for global variables'}
             {name: '@backupStaticAttributes',         documentationName: 'backupStaticAttributes',         snippet: '@backupStaticAttributes ${1:disabled}',        description: 'Back up all static property values in all declared classes before each test and restore them afterwards'}
             {name: '@before',                         documentationName: 'before',                         snippet: '@before',                                      description: 'The method should be called before each test method in a test case class'}
             {name: '@beforeClass',                    documentationName: 'beforeClass',                    snippet: '@beforeClass',                                 description: 'The static method should be called before any test methods in a test class are run to set up shared fixtures'}
@@ -51,10 +57,10 @@ class PHPUnitTagProvider extends DocblockTagProvider
             {name: '@coversNothing',                  documentationName: 'coversNothing',                  snippet: '@coversNothing',                               description: 'Specify no code coverage information will be recorded for the annotated test case'}
             {name: '@dataProvider',                   documentationName: 'dataProvider',                   snippet: '@dataProvider ${1:provider}',                  description: 'Specify the data provider method'}
             {name: '@depends',                        documentationName: 'depends',                        snippet: '@depends ${1:test}',                           description: 'Specify the test method this test depends'}
-            {name: '@expectedException',              documentationName: 'expectedException',              snippet: '@expectedException ${1:exception}',            description: 'Sepcify the exception that must be thrown inside the test method'}
-            {name: '@expectedExceptionCode',          documentationName: 'expectedExceptionCode',          snippet: '@expectedExceptionCode ${1:code}',             description: 'Sepcify the code for exception set by @expectedException'}
-            {name: '@expectedExceptionMessage',       documentationName: 'expectedExceptionMessage',       snippet: '@expectedExceptionMessage ${1:message}',       description: 'Sepcify the messege for exception set by @expectedException'}
-            {name: '@expectedExceptionMessageRegExp', documentationName: 'expectedExceptionMessageRegExp', snippet: '@expectedExceptionMessageRegExp ${1:message}', description: 'Sepcify the messege as a regular expression for exception set by @expectedException'}
+            {name: '@expectedException',              documentationName: 'expectedException',              snippet: '@expectedException ${1:exception}',            description: 'Specify the exception that must be thrown inside the test method'}
+            {name: '@expectedExceptionCode',          documentationName: 'expectedExceptionCode',          snippet: '@expectedExceptionCode ${1:code}',             description: 'Specify the code for exception set by @expectedException'}
+            {name: '@expectedExceptionMessage',       documentationName: 'expectedExceptionMessage',       snippet: '@expectedExceptionMessage ${1:message}',       description: 'Specify the messege for exception set by @expectedException'}
+            {name: '@expectedExceptionMessageRegExp', documentationName: 'expectedExceptionMessageRegExp', snippet: '@expectedExceptionMessageRegExp ${1:message}', description: 'Specify the messege as a regular expression for exception set by @expectedException'}
             {name: '@group',                          documentationName: 'group',                          snippet: '@group ${1:group}',                            description: 'Tag a test as belonging to one or more groups'}
             {name: '@large',                          documentationName: 'large',                          snippet: '@large',                                       description: 'An alias for @group large'}
             {name: '@medium',                         documentationName: 'medium',                         snippet: '@medium',                                      description: 'An alias for @group medium'}

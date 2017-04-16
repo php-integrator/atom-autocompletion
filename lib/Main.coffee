@@ -21,6 +21,13 @@ module.exports =
             default     : true
             order       : 2
 
+        enablePhpunitAnnotationTags:
+            title       : 'Autocomplete PHPUnit annotation tags'
+            description : 'When enabled, PHPUnit annotation tags will be autocompleted.'
+            type        : 'boolean'
+            default     : true
+            order       : 3
+
         largeListRefreshTimeout:
             title       : 'Timeout before refreshing large data (global functions, global constants, class list, ...)'
             description : 'Because the contents of these large lists changes rarely in most code bases, they are
@@ -28,7 +35,7 @@ module.exports =
                            will need to pass after the last reindexing occurs (in any editor).'
             type        : 'string'
             default     : '5000'
-            order       : 3
+            order       : 4
 
     ###*
      * The name of the package.
