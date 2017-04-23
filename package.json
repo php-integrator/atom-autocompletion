@@ -1,7 +1,7 @@
 {
   "name": "php-integrator-autocomplete-plus",
   "main": "./lib/Main",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Provides autocompletion for your PHP source code.",
   "repository": "php-integrator/atom-autocompletion",
   "license": "GPL-3.0",
