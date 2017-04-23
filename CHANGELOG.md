@@ -1,3 +1,8 @@
+## 1.5.0
+* Fix incorrect service version.
+* PHPUnit tags will now be autocompleted in docblocks (thanks to [msdm](https://github.com/msdm)).
+  * you can disable this via the settings.
+
 ## 1.4.1
 * Fix parameter default values that were "falsy" in JavaScript not showing up (such as `0`).
 
