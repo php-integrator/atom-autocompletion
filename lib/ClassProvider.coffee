@@ -358,7 +358,7 @@ class ClassProvider extends AbstractProvider
      * @return {Array}
     ###
     getSuggestionForData: (data) ->
-        fqcnWithoutLeadingSlash = data.name
+        fqcnWithoutLeadingSlash = data.fqcn
 
         if fqcnWithoutLeadingSlash[0] == '\\'
             fqcnWithoutLeadingSlash = fqcnWithoutLeadingSlash.substring(1)
@@ -368,7 +368,7 @@ class ClassProvider extends AbstractProvider
             type               : if data.type == 'trait' then 'mixin' else 'class'
             description        : if data.isBuiltin then 'Built-in PHP structural data.' else data.shortDescription
             leftLabel          : data.type
-            descriptionMoreURL : if data.isBuiltin then @config.get('php_documentation_base_urls').classes + @getNormalizeFqcnDocumentationUrl(data.name) else null
+            descriptionMoreURL : if data.isBuiltin then @config.get('php_documentation_base_urls').classes + @getNormalizeFqcnDocumentationUrl(data.fqcn) else null
             className          : if data.isDeprecated then 'php-integrator-autocomplete-plus-strike' else ''
             displayText        : fqcnWithoutLeadingSlash
             data               : {}
