@@ -146,7 +146,7 @@ class GlobalConstantProvider extends AbstractProvider
                 displayText        : constant.name
                 replacementPrefix  : prefix
                 leftLabel          : @getTypeSpecificationFromTypeArray(constant.types)
-                description        : if constant.isBuiltin then 'Built-in PHP constant.' else constant.shortDescription
+                description        : constant.shortDescription
                 className          : 'php-integrator-autocomplete-plus-suggestion' + if constant.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
 
         return suggestions

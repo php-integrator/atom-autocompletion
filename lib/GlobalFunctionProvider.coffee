@@ -148,9 +148,6 @@ class GlobalFunctionProvider extends AbstractProvider
             if func.shortDescription? and func.shortDescription.length > 0
                 shortDescription = func.shortDescription
 
-            else if func.isBuiltin
-                shortDescription = 'Built-in PHP function.'
-
             # NOTE: The description must not be empty for the 'More' button to show up.
             suggestions.push
                 text               : func.name
@@ -161,7 +158,7 @@ class GlobalFunctionProvider extends AbstractProvider
                 leftLabel          : @getTypeSpecificationFromTypeArray(func.returnTypes)
                 rightLabelHTML     : @getSuggestionRightLabel(func)
                 description        : shortDescription
-                descriptionMoreURL : if func.isBuiltin then @config.get('php_documentation_base_urls').functions + func.name else null
+                descriptionMoreURL : null
                 className          : 'php-integrator-autocomplete-plus-suggestion' + if func.isDeprecated then ' php-integrator-autocomplete-plus-strike' else ''
 
         return suggestions
