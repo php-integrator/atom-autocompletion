@@ -58,11 +58,6 @@ class ClassProvider extends AbstractProvider
     pendingPromise: null
 
     ###*
-     # Keeps track of a currently pending timeout to ensure only one is active at any given time..
-    ###
-    timeoutHandle: null
-
-    ###*
      * @inheritdoc
     ###
     activate: (@service) ->
@@ -86,17 +81,7 @@ class ClassProvider extends AbstractProvider
      * @param {Object} info
     ###
     onDidFinishIndexing: (info) ->
-        # Only reindex a couple of seconds after the last reindex. This prevents constant refreshes being scheduled
-        # while the user is still modifying the file. This is acceptable as this provider's data rarely changes and
-        # it is fairly expensive to refresh the cache.
-        if @timeoutHandle?
-            clearTimeout(@timeoutHandle)
-            @timeoutHandle = null
-
-        @timeoutHandle = setTimeout ( =>
-            @timeoutHandle = null
-            @refreshCache()
-        ), @config.get('largeListRefreshTimeout')
+        @refreshCache()
 
     ###*
      * Refreshes the internal cache. Returns a promise that resolves with the cache once it has been refreshed.
