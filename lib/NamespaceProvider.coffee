@@ -125,9 +125,9 @@ class NamespaceProvider extends AbstractProvider
         suggestions = []
 
         for namespace in namespaces
-            continue if namespace.namespace.length == 0
+            continue if namespace.name == null # No point in showing anonymous namespaces.
 
-            fqcnWithoutLeadingSlash = namespace.namespace
+            fqcnWithoutLeadingSlash = namespace.name
 
             if fqcnWithoutLeadingSlash[0] == '\\'
                 fqcnWithoutLeadingSlash = fqcnWithoutLeadingSlash.substring(1)
