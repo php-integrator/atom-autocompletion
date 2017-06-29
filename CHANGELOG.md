@@ -1,6 +1,7 @@
 ## 1.6.0
 * Fix not being able to disable automatic adding of use statements.
-* The setting to configure the large list timeout has been removed. Fetching these is now much less expensive than it was before, as the core maintains an internal registry instead of recalculating the list completely every time. As a result, hickups or delays in autocompletion as well as high CPU usage because of these being fetched should now be mostly mitigated.
+* Fetching large lists from the core is now much less expensive, as the core maintains an internal registry instead of recalculating the list completely every time.
+  * Calculating the data is now almost instant, but there may still be hangs in Atom if you set the large list timeout too low due to the sheer amount of data that is sent back over the socket. (This will be addressed at a later date, after which the large list timeout setting will be removed.)
 
 ## 1.5.0
 * Fix incorrect service version.
