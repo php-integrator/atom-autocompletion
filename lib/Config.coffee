@@ -27,6 +27,7 @@ class Config
             automaticallyAddUseStatements  : true
             enablePhpunitAnnotationTags    : true
             largeListRefreshTimeout        : 5000
+            largeListRefreshTimeoutJitter  : 3000
 
             # See also http://www.phpdoc.org/docs/latest/index.html .
             phpdoc_base_url : {

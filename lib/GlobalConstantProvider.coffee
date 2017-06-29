@@ -66,10 +66,13 @@ class GlobalConstantProvider extends AbstractProvider
             clearTimeout(@timeoutHandle)
             @timeoutHandle = null
 
+        timeoutTime = @config.get('largeListRefreshTimeout')
+        timeoutTime += Math.random() * @config.get('largeListRefreshTimeoutJitter')
+
         @timeoutHandle = setTimeout ( =>
             @timeoutHandle = null
             @refreshCache()
-        ), @config.get('largeListRefreshTimeout')
+        ), timeoutTime
 
     ###*
      * Refreshes the internal cache. Returns a promise that resolves with the cache once it has been refreshed.

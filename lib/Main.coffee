@@ -33,12 +33,21 @@ module.exports =
             description : 'Fetching these large lists from the core is almost costless since core 3.0, but due to the
                            sheer amount of data being sent over the socket, there may still be noticeable delays if this
                            setting is set too low. Also, the contents of these lists change relatively rarely during
-                           editing. This amount of time (in milliseconds), along with a random amount of jitter to
-                           reduce the likelihood of different lists being fetched at the same time, will pass after
-                           successful reindexing before the lists are refetched.'
+                           editing. This amount of time (in milliseconds) will pass after successful reindexing before
+                           the lists are refetched.'
             type        : 'integer'
             default     : 5000
             order       : 4
+
+        largeListRefreshTimeoutJitter:
+            title       : 'Jitter for timeout for refreshing large data'
+            description : 'Adds a random amount of jitter (between 0 and this number) to the large list refresh timeout
+                           above to ensure the large lists don\'t all get fetched at once. As sockets naturally queue,
+                           this adds a more even distribution of load on the socket and ensures other requests don\'t
+                           hang up too long.'
+            type        : 'integer'
+            default     : 3000
+            order       : 5
 
     ###*
      * The name of the package.

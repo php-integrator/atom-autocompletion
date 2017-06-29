@@ -28,6 +28,7 @@ class AtomConfig extends Config
         @set('enablePhpunitAnnotationTags', atom.config.get("#{@packageName}.enablePhpunitAnnotationTags"))
         @set('automaticallyAddUseStatements', atom.config.get("#{@packageName}.automaticallyAddUseStatements"))
         @set('largeListRefreshTimeout', atom.config.get("#{@packageName}.largeListRefreshTimeout"))
+        @set('largeListRefreshTimeoutJitter', atom.config.get("#{@packageName}.largeListRefreshTimeoutJitter"))
 
     ###*
      * Attaches listeners to listen to Atom configuration changes.
@@ -47,3 +48,6 @@ class AtomConfig extends Config
 
         atom.config.onDidChange "#{@packageName}.largeListRefreshTimeout", () =>
             @set('largeListRefreshTimeout', atom.config.get("#{@packageName}.largeListRefreshTimeout"))
+
+        atom.config.onDidChange "#{@packageName}.largeListRefreshTimeoutJitter", () =>
+            @set('largeListRefreshTimeoutJitter', atom.config.get("#{@packageName}.largeListRefreshTimeoutJitter"))
