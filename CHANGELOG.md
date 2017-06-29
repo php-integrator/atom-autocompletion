@@ -2,6 +2,7 @@
 * Fix not being able to disable automatic adding of use statements.
 * Fetching large lists from the core is now much less expensive, as the core maintains an internal registry instead of recalculating the list completely every time.
   * Calculating the data is now almost instant, but there may still be hangs in Atom if you set the large list timeout too low due to the sheer amount of data that is sent back over the socket. (This will be addressed at a later date, after which the large list timeout setting will be removed.)
+  * An additional (configurable) random jitter is now also added to the large list timeout, to prevent all of them from being fetched at the same time and cooperating in hogging up the socket for other requests.
 
 ## 1.5.0
 * Fix incorrect service version.
