@@ -27,6 +27,7 @@ class AtomConfig extends Config
         @set('insertNewlinesForUseStatements', atom.config.get("#{@packageName}.insertNewlinesForUseStatements"))
         @set('enablePhpunitAnnotationTags', atom.config.get("#{@packageName}.enablePhpunitAnnotationTags"))
         @set('automaticallyAddUseStatements', atom.config.get("#{@packageName}.automaticallyAddUseStatements"))
+        @set('largeListRefreshTimeout', atom.config.get("#{@packageName}.largeListRefreshTimeout"))
 
     ###*
      * Attaches listeners to listen to Atom configuration changes.
@@ -43,3 +44,6 @@ class AtomConfig extends Config
 
         atom.config.onDidChange "#{@packageName}.automaticallyAddUseStatements", () =>
             @set('automaticallyAddUseStatements', atom.config.get("#{@packageName}.automaticallyAddUseStatements"))
+
+        atom.config.onDidChange "#{@packageName}.largeListRefreshTimeout", () =>
+            @set('largeListRefreshTimeout', atom.config.get("#{@packageName}.largeListRefreshTimeout"))
