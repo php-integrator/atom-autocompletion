@@ -30,9 +30,12 @@ module.exports =
 
         largeListRefreshTimeout:
             title       : 'Timeout before refreshing large data (global functions, global constants, class list, ...)'
-            description : 'Because the contents of these large lists changes rarely in most code bases, they are
-                           refreshed less often than other items. The amount of time (in milliseconds) specified here
-                           will need to pass after the last reindexing occurs (in any editor).'
+            description : 'Fetching these large lists from the core is almost costless since core 3.0, but due to the
+                           sheer amount of data being sent over the socket, there may still be noticeable delays if this
+                           setting is set too low. Also, the contents of these lists change relatively rarely during
+                           editing. This amount of time (in milliseconds), along with a random amount of jitter to
+                           reduce the likelihood of different lists being fetched at the same time, will pass after
+                           successful reindexing before the lists are refetched.'
             type        : 'string'
             default     : '5000'
             order       : 4
