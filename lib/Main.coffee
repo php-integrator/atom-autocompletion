@@ -36,8 +36,8 @@ module.exports =
                            editing. This amount of time (in milliseconds), along with a random amount of jitter to
                            reduce the likelihood of different lists being fetched at the same time, will pass after
                            successful reindexing before the lists are refetched.'
-            type        : 'string'
-            default     : '5000'
+            type        : 'integer'
+            default     : 5000
             order       : 4
 
     ###*
