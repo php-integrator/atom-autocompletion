@@ -25,7 +25,7 @@ class TypeHintNewVariableNameProvider extends AbstractProvider
         # Don't complete local variable names if we found something else than a type hint.
         newBufferPosition = new Point(bufferPosition.row, bufferPosition.column - prefix.length)
 
-        return [] if editor.scopeDescriptorForBufferPosition(newBufferPosition).getScopeChain().indexOf('.support.class') == -1
+        return [] if editor.scopeDescriptorForBufferPosition(newBufferPosition).getScopeChain().indexOf('.meta.function.parameters') == -1
 
         parts = prefix.split(/\s+/)
 

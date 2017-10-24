@@ -1,3 +1,7 @@
+## 1.6.1
+* Fix parameter type hint variable name suggestions no longer working due to CSS changes in Atom 1.19
+  * This also means at least Atom 1.19 is now required for this package.
+
 ## 1.6.0 (base 3.0.0)
 * Fix not being able to disable automatic adding of use statements.
 * Fetching large lists from the core is now much less expensive, as the core maintains an internal registry instead of recalculating the list completely every time.
