@@ -120,10 +120,7 @@ class NamespaceProvider extends AbstractProvider
         successHandler = (namespaces) =>
             return [] unless namespaces
 
-            characterAfterPrefix = editor.getTextInRange([bufferPosition, [bufferPosition.row, bufferPosition.column + 1]])
-            insertParameterList = if characterAfterPrefix == '(' then false else true
-
-            return @addSuggestions(namespaces, prefix.trim(), insertParameterList)
+            return @addSuggestions(namespaces, prefix.trim())
 
         failureHandler = () =>
             return []
@@ -135,14 +132,14 @@ class NamespaceProvider extends AbstractProvider
      *
      * @param {array}  namespaces
      * @param {string} prefix
-     * @param {bool}   insertParameterList Whether to insert a list of parameters or not.
      *
      * @return {array}
     ###
-    addSuggestions: (namespaces, prefix, insertParameterList = true) ->
+    addSuggestions: (namespaces, prefix) ->
         suggestions = []
 
-        for namespace in namespaces
+        for id, namespace of namespaces
+
             continue if namespace.name == null # No point in showing anonymous namespaces.
 
             fqcnWithoutLeadingSlash = namespace.name
@@ -155,6 +152,4 @@ class NamespaceProvider extends AbstractProvider
                 text               : fqcnWithoutLeadingSlash
                 type               : 'import'
                 leftLabel          : 'namespace'
-                displayText        : fqcnWithoutLeadingSlash
-
         return suggestions
