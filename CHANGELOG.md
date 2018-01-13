@@ -1,3 +1,6 @@
+## 1.6.2
+* [Fix namespace suggestions no longer showing](https://github.com/php-integrator/atom-autocompletion/pull/108)(thanks to [msdm](https://github.com/msdm))
+
 ## 1.6.1
 * Fix parameter type hint variable name suggestions no longer working due to CSS changes in Atom 1.19
   * This also means at least Atom 1.19 is now required for this package.
